@@ -7,3 +7,10 @@ export type TEntryModel = {
   date: string;
   tags: string[];
 };
+
+export type TAutoCapitalize = 'none' | 'sentences' | 'words' | 'characters';
+
+export type TFilterButton = {
+  id: string;
+  title: string;
+};
