@@ -4,10 +4,17 @@ const styles = StyleSheet.create({
   viewContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    height: 67,
-    paddingLeft: 35,
+    height: 50,
+    paddingLeft: 20,
     paddingRight: 20,
     alignItems: 'center',
+    borderBottomWidth: 1,
+    borderColor: 'gray',
+    margin: 1,
+  },
+  icon: {
+    flex: 1,
+    marginLeft: 'auto',
   },
   containerImage: {
     width: 47,
@@ -16,13 +23,14 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   containerTitle: {
-    color: 'rgb(77, 81, 128)',
+    color: 'black',
     fontSize: 17,
     fontWeight: '700',
   },
   containerDescription: {
-    color: 'rgb(181, 182, 221)',
+    color: 'gray',
     fontSize: 12,
+    marginHorizontal: 10,
   },
 });
 

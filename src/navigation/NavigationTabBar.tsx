@@ -7,6 +7,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 import AddScreen from '../screens/addScreen/AddScreen';
 import SearchScreen from '../screens/searchScreen/SearchScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import NoteScreen from '../screens/noteScreen/NoteScreen';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -29,6 +30,7 @@ const StackHomeScreen = ({navigation: {navigate}}) => {
         }}
       />
       <HomeStack.Screen name="Settings" component={SettingsScreen} />
+      <HomeStack.Screen name="Note" component={NoteScreen} />
     </HomeStack.Navigator>
   );
 };

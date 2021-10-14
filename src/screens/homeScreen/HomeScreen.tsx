@@ -1,9 +1,11 @@
+import { useNavigation } from '@react-navigation/core';
 import React from 'react';
-import {View, Text, Button, FlatList} from 'react-native';
+import {View, Text, Button, FlatList, ListRenderItemInfo} from 'react-native';
 import NoteCell from '../../components/noteCell/NoteCell';
 import {useAppSelector} from '../../hooks/reduxHooks';
 import {diary} from '../../redux/selectors/diarySelector';
 import styles from './styles';
+import NoteScreen from '../noteScreen/NoteScreen';
 
 export interface Note {
   id: string;
@@ -12,21 +14,15 @@ export interface Note {
   date?: string;
 }
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation: {navigate}}) => {
   const entries = useAppSelector(diary);
 
-  const renderItem = () => {
-    return entries?.map((entry: any, index: number) => {
-      return (
-        <Text key={entry.id}>
-          {index}: {entry.title}, {entry.description}, {entry.date}
-        </Text>
-      );
-    });
+  const renderItem = ({item}: ListRenderItemInfo<Note>) => {
+    return <NoteCell note={item} onPress={() => navigate('Note')}/>
   };
 
   const ItemSeparatorComponent = () => {
-    return <View style={{margin: 10}} />;
+    return <View style={{margin: 5}} />;
   };
 
   const ListEmptyComponent = () => {
