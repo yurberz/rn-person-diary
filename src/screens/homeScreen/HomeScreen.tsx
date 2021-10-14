@@ -1,11 +1,9 @@
-import { useNavigation } from '@react-navigation/core';
 import React from 'react';
-import {View, Text, Button, FlatList, ListRenderItemInfo} from 'react-native';
+import {View, Text, FlatList, ListRenderItemInfo} from 'react-native';
 import NoteCell from '../../components/noteCell/NoteCell';
 import {useAppSelector} from '../../hooks/reduxHooks';
 import {diary} from '../../redux/selectors/diarySelector';
 import styles from './styles';
-import NoteScreen from '../noteScreen/NoteScreen';
 
 export interface Note {
   id: string;
