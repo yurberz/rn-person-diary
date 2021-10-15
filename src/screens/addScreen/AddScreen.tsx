@@ -1,13 +1,19 @@
-import React from 'react';
-import {View, Platform, Button, TextInput, KeyboardAvoidingView} from 'react-native';
+import React, {useState} from 'react';
+import {View, Platform, KeyboardAvoidingView,} from 'react-native';
+import ChooseImage from '../../components/chooseImage/ChooseImage';
 import styles from './styles';
 
 const AddScreen = () => {
+  const [image, setImage] = useState({uri: '#'})
 
   return (
     <View style={styles.viewContainer}>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
-        <Button title={'save'} onPress={alert('Button Pressed')}/>
+        <ChooseImage 
+      imageStyle={styles.image}
+      image={image}
+      imageSetter={setImage}
+      />
       </KeyboardAvoidingView>
     </View>
   );

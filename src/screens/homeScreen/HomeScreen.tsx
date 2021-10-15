@@ -4,18 +4,12 @@ import NoteCell from '../../components/noteCell/NoteCell';
 import {useAppSelector} from '../../hooks/reduxHooks';
 import {diary} from '../../redux/selectors/diarySelector';
 import styles from './styles';
-
-export interface Note {
-  id: string;
-  title?: string;
-  description?: string;
-  date?: string;
-}
+import {INoteProps} from '../../helpers/ts-helpers/interfaces';
 
 const HomeScreen = ({navigation: {navigate}}) => {
   const entries = useAppSelector(diary);
 
-  const renderItem = ({item}: ListRenderItemInfo<Note>) => {
+  const renderItem = ({item}: ListRenderItemInfo<INoteProps>) => {
     return <NoteCell note={item} onPress={() => navigate('Note')}/>
   };
 
