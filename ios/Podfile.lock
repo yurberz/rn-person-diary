@@ -351,7 +351,16 @@ PODS:
     - React
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNReanimated (2.2.2):
+  - RNImageCropPicker (0.36.4):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.36.4)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.36.4):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
+  - RNReanimated (2.3.0-beta.2):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -385,6 +394,7 @@ PODS:
     - React-RCTImage
   - RNVectorIcons (8.1.0):
     - React-Core
+  - TOCropViewController (2.6.0)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -449,6 +459,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -469,6 +480,7 @@ SPEC REPOS:
     - fmt
     - libevent
     - OpenSSL-Universal
+    - TOCropViewController
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -544,6 +556,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/masked-view"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -603,9 +617,11 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 26f25150da507524a7815f2ada06ca0967f65633
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNReanimated: cb89a0ea4040f487b0ad844e05e1cdfc38173f7b
+  RNImageCropPicker: 73891a709e6fd8a47d32104d942757971f220aee
+  RNReanimated: 0a220d11e97e5de1c552e943a9a3f89b06c2cbf2
   RNScreens: 6e1ea5787989f92b0671049b808aef64fa1ef98c
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
+  TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   Yoga: c11abbf5809216c91fcd62f5571078b83d9b6720
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

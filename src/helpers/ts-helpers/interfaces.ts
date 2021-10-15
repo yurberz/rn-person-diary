@@ -1,9 +1,24 @@
 import {ForwardedRef, LegacyRef} from 'react';
-import {ReturnKeyType, TextInput, ViewStyle} from 'react-native';
+import {ReturnKeyType, ImageSourcePropType, ViewStyle} from 'react-native';
 import {TEntryModel, TAutoCapitalize, TFilterButton} from './types';
 
 export interface IDiaryState {
   entries: TEntryModel[];
+}
+
+export interface ImageProps {
+  imageStyle?: object;
+  image?: ImageSourcePropType;
+  handleCamera(): void;
+  handleGellery(): void;
+}
+
+export interface INoteProps {
+  id: string;
+  title?: string;
+  description?: string;
+  date?: string;
+  image?: string;
 }
 
 export interface InputProps {
