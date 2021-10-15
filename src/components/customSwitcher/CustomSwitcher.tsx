@@ -1,23 +1,27 @@
 import React from 'react';
-import {Text, View, TouchableWithoutFeedback} from 'react-native';
-import {ICustomSwitcherProps} from '../../helpers/ts-helpers/interfaces';
+import {Text, View, TouchableOpacity} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {ICustomButtonsProps} from '../../helpers/ts-helpers/interfaces';
 import styles from './styles';
 
-const CustomSwitcher: React.FC<ICustomSwitcherProps> = ({
-  value,
-  onChange,
-  text,
+const CustomSwitcher: React.FC<ICustomButtonsProps> = ({
+  label,
+  onPress,
+  isSelected,
+  iconSize,
 }) => {
   return (
-    <TouchableWithoutFeedback onPress={() => onChange(!value)}>
-      <View style={styles.customSwitcherWrapperStyle}>
-        <Text style={styles.textSwitchStyle(value)}>{text}</Text>
+    <View style={styles.switcherStyle}>
+      <Text style={styles.textSwitcherStyle(isSelected)}>{label}</Text>
 
-        <View style={styles.switchContainerStyle(value)}>
-          <View style={styles.dotStyle} />
-        </View>
-      </View>
-    </TouchableWithoutFeedback>
+      <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
+        <MaterialCommunityIcons
+          name={isSelected ? 'toggle-switch' : 'toggle-switch-off'}
+          size={iconSize}
+          color={isSelected ? '#000000' : '#C7C7CD'}
+        />
+      </TouchableOpacity>
+    </View>
   );
 };
 

@@ -48,21 +48,19 @@ export interface IFilterButtonStyle {
   textStyle(value: boolean): ViewStyle;
 }
 
-export interface ICustomSwitcherProps {
-  value: boolean;
-  onChange(value: boolean): void;
-  text: string;
+export interface ICustomButtonsProps {
+  label?: string;
+  onPress(): void;
+  isSelected: boolean;
+  iconSize: number;
 }
 
-export interface ICustomSwitcherStyle {
-  customSwitcherWrapperStyle: ViewStyle;
-  textSwitchStyle(value: boolean): ViewStyle;
-  switchContainerStyle(value: boolean): ViewStyle;
-  dotStyle: ViewStyle;
+export interface ISwitcherStyle {
+  switcherStyle: ViewStyle;
+  textSwitcherStyle(value: boolean): ViewStyle;
 }
 
-export interface ICustomCheckboxStyle {
-  customCheckboxWrapperStyle: ViewStyle;
-  textCheckboxStyle(value: boolean): ViewStyle;
-  checkboxContainerStyle(value: boolean): ViewStyle;
+export interface IRadioButtonStyle {
+  radioButtonStyle: ViewStyle;
+  textRadioButtonStyle(value: boolean): ViewStyle;
 }

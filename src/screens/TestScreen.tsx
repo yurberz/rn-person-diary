@@ -16,7 +16,7 @@ import Input from '../components/textInput/Input';
 import SearchInput from '../components/searchInput/SearchInput';
 import FilterBar from '../components/filterBar/FilterBar';
 import CustomSwitcher from '../components/customSwitcher/CustomSwitcher';
-import CustomCheckbox from '../components/customCheckbox/CustomCheckbox';
+import CustomRadioButton from '../components/customRadioButton/CustomRadioButton';
 
 const TestScreen = () => {
   const dispatch = useAppDispatch();
@@ -24,30 +24,48 @@ const TestScreen = () => {
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [tags, setTags] = useState('');
+  const [date, setDate] = useState(new Date());
   const [inputValue, setInputValue] = useState('');
   const [filterBy, setFilterBy] = useState('tag');
   const [inDateSort, setInDateSort] = useState(false);
-  const [date, setDate] = useState(new Date());
-
-  const formattedDateTime = moment(date).format('DD-MM-YYYY hh:mm');
 
   const refSecondInput = useRef<TextInput>();
+  const refThirdInput = useRef<TextInput>();
 
   const testOnPress = () => {
     dispatch(
       addEntry({
+        title,
+        description,
+        tags,
         date,
       }),
     );
   };
+
+  const addHashTag = (value: string) => {
+    value = value.replace(/[^\w ]/g, '').replace(/(\w+)/gi, '#' + '$1');
+
+    setTags(value);
+  };
+
   const renderItem = () => {
     return entries?.map((entry: any, index: number) => {
-      const formattedDateTime = moment(entry.date).format('DD-MM-YYYY hh:mm');
+      const {title, description, tags, date} = entry;
+
+      const formattedDateTime = moment(date).format('DD-MM-YYYY hh:mm');
 
       return (
-        <Text style={{textAlign: 'center'}} key={entry.id}>
-          GLOBAL STORE: {index}: {formattedDateTime}
-        </Text>
+        <View key={index}>
+          <Text style={{textAlign: 'center'}} key={entry.id}>
+            GLOBAL STORE:
+          </Text>
+          <Text key={title}>{title}</Text>
+          <Text key={description}>{description}</Text>
+          <Text key={tags}>{tags}</Text>
+          <Text key={date}>{formattedDateTime}</Text>
+        </View>
       );
     });
   };
@@ -56,22 +74,21 @@ const TestScreen = () => {
     <View style={styles.container}>
       <ScrollView>
         <Text style={styles.text}>Hello PersonalDiary RN-App</Text>
+        {renderItem()}
 
-        <DatePicker
-          date={date}
-          onDateChange={setDate}
-          mode="datetime"
-          minimumDate={new Date('2021-01-01')}
-          maximumDate={new Date('2023-06-01')}
+        <CustomRadioButton
+          label="sort by date"
+          onPress={() => setInDateSort(!inDateSort)}
+          isSelected={inDateSort}
+          iconSize={25}
         />
 
-        <Button title="Test" onPress={testOnPress} />
-
-        <Text style={{textAlign: 'center'}}>
-          LOCAL STATE:{formattedDateTime}
-        </Text>
-
-        {renderItem()}
+        <CustomSwitcher
+          label="sort by date"
+          onPress={() => setInDateSort(!inDateSort)}
+          isSelected={inDateSort}
+          iconSize={50}
+        />
 
         <Input
           inputContainerStyle={styles.firstInputContainerStyle}
@@ -85,16 +102,38 @@ const TestScreen = () => {
         />
         <Input
           inputContainerStyle={styles.secondInputContainerStyle}
-          inputStyle={styles.inputStyles}
+          inputStyle={styles.secondInputStyles}
           placeholder="Description: maximum 2000 number of characters"
           maxLength={2000}
-          multiline={true}
           blurOnSubmit={true}
-          returnKeyType="done"
+          multiline={true}
+          returnKeyType="next"
+          onSubmitEditing={() => refThirdInput?.current?.focus()}
           ref={refSecondInput}
           value={description}
           onChange={value => setDescription(value)}
         />
+        <Input
+          inputContainerStyle={styles.thirdInputContainerStyle}
+          inputStyle={styles.thirdInputStyles}
+          placeholder="tags"
+          maxLength={200}
+          blurOnSubmit={true}
+          returnKeyType="done"
+          ref={refThirdInput}
+          value={tags}
+          onChange={addHashTag}
+        />
+
+        <DatePicker
+          date={date}
+          onDateChange={setDate}
+          mode="datetime"
+          minimumDate={new Date('2021-01-01')}
+          maximumDate={new Date('2023-06-01')}
+        />
+
+        <Button title="Test" onPress={testOnPress} />
 
         <SearchInput
           placeholder="search"
@@ -111,18 +150,13 @@ const TestScreen = () => {
               />
 
               <CustomSwitcher
-                text="sort by date"
-                value={inDateSort}
-                onChange={value => setInDateSort(value)}
+                label="sort by date"
+                onPress={() => setInDateSort(!inDateSort)}
+                isSelected={inDateSort}
+                iconSize={30}
               />
             </>
           }
-        />
-
-        <CustomCheckbox
-          text="sort by date"
-          value={inDateSort}
-          onChange={value => setInDateSort(value)}
         />
       </ScrollView>
     </View>
@@ -147,10 +181,14 @@ const styles = StyleSheet.create({
   secondInputContainerStyle: {
     marginTop: 15,
   },
-  inputStyles: {
+  thirdInputContainerStyle: {},
+  secondInputStyles: {
     height: 150,
     paddingVertical: 5,
     textAlignVertical: 'top',
+    borderBottomWidth: 0,
+  },
+  thirdInputStyles: {
     borderBottomWidth: 0,
   },
 });

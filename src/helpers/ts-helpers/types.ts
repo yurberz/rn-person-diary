@@ -5,7 +5,7 @@ export type TEntryModel = {
   image?: string;
   audio?: string;
   date: string;
-  tags: string[];
+  tags: string;
 };
 
 export type TAutoCapitalize = 'none' | 'sentences' | 'words' | 'characters';
