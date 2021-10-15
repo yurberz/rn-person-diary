@@ -3,6 +3,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   Text,
+  Platform,
   View,
 } from 'react-native';
 import BottomSheet from 'reanimated-bottom-sheet';
@@ -13,14 +14,35 @@ import styles from './styles';
 import {ImageProps} from '../../helpers/ts-helpers/interfaces';
 
 const ChooseImage: React.FC<ImageProps> = props => {
+  const handleChooseFromLibrary = () => {
+    ImagePicker.openPicker({
+      width: 500,
+      height: 500,
+    })
+    .then(image => {
+      const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
+      props.imageSetter({uri: imageUri});
+  });
+  }
+
+  const handleCamera = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+    }).then(image => {
+      const imageUri = image.path;
+      props.imageSetter({uri: imageUri});
+    });
+  }
+
   const renderContent = () => (
     <View style={styles.panel}>
-      <TouchableOpacity style={styles.panelButton} onPress={props.handleCamera}>
+      <TouchableOpacity style={styles.panelButton} onPress={handleCamera}>
         <Text style={styles.panelButtonTitle}>Take Photo</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
-        onPress={props.handleGellery}>
+        onPress={handleChooseFromLibrary}>
         <Text style={styles.panelButtonTitle}>Choose from library</Text>
       </TouchableOpacity>
       <TouchableOpacity
