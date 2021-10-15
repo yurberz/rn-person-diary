@@ -9,8 +9,9 @@ export interface IDiaryState {
 export interface ImageProps {
   imageStyle?: object;
   image?: ImageSourcePropType;
-  handleCamera(): void;
-  handleGellery(): void;
+  imageSetter: React.Dispatch<React.SetStateAction<{
+    uri: string;
+}>>
 }
 
 export interface INoteProps {
