@@ -1,5 +1,6 @@
 import {Dispatch, ForwardedRef, LegacyRef, SetStateAction} from 'react';
 import {ReturnKeyType, ImageSourcePropType, ViewStyle} from 'react-native';
+import {ImageOrVideo} from 'react-native-image-crop-picker';
 import {
   TEntryModel,
   TAutoCapitalize,
@@ -11,14 +12,19 @@ export interface IDiaryState {
   entries: TEntryModel[];
 }
 
-export interface ImageProps {
-  imageStyle?: object;
-  image?: ImageSourcePropType;
-  imageSetter: React.Dispatch<
-    React.SetStateAction<{
-      uri: string;
-    }>
-  >;
+// export interface ImageProps {
+//   imageStyle?: object;
+//   image?: ImageSourcePropType;
+//   imageSetter: React.Dispatch<
+//     React.SetStateAction<{
+//       uri: string;
+//     }>
+//   >;
+// }
+
+export interface IChooseImageProps {
+  stateImages: string[];
+  onFileSelected(value: any): void;
 }
 
 export interface INoteProps {

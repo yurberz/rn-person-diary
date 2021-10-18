@@ -5,9 +5,11 @@ import {
   KeyboardAvoidingView,
   TextInput,
   Alert,
+  Button,
+  Image,
+  ScrollView,
 } from 'react-native';
 import {useIsFocused} from '@react-navigation/core';
-import DatePicker from 'react-native-date-picker';
 import {HomeStackProps} from '../../../../helpers/ts-helpers/types';
 import addHashtag from '../../../../helpers/function-helpers/addHashtag';
 import {useAppDispatch} from '../../../../hooks/reduxHooks';
@@ -16,23 +18,31 @@ import Input from '../../../../components/textInput/Input';
 import DatePickerModal from '../../../../components/datePickerModal/DatePickerModal';
 import IconButton from '../../../../components/iconButton/IconButton';
 import styles from './styles';
+import ChooseImage from '../../../../components/chooseImage/ChooseImage';
 
 const AddScreen = ({navigation}: HomeStackProps) => {
   const dispatch = useAppDispatch();
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState('');
   const [date, setDate] = useState(new Date());
+  const [images, setImages] = useState<string[]>([]);
   const [isDateModal, setIsDateModal] = useState(false);
+  const [isAddAction, setIsAddAction] = useState(false);
+
   const tagsArr = tags.split(' ');
 
   const handleSubmit = () => {
+    setIsAddAction(true);
+
     if (title || description) {
       dispatch(
         addEntry({
           title,
           description,
-          tags: tagsArr.length > 2 ? tagsArr : [],
+          tags: tags.length > 2 ? tagsArr : [],
+          images,
           date,
         }),
       );
@@ -45,7 +55,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
     navigation.setOptions({
       headerRight: () => (
         <IconButton
-          onPress={() => handleSubmit()}
+          onPress={handleSubmit}
           iconName="checkmark-sharp"
           iconSize={30}
           iconColor="rgb(48, 209, 88)"
@@ -61,21 +71,20 @@ const AddScreen = ({navigation}: HomeStackProps) => {
     setDescription('');
     setTags('');
     setDate(new Date());
-
+    setIsAddAction(false);
     // refFirstInput.current?.focus();
   }, [isFocused]);
 
-  // const hasUnsavedChanges = () => {
-  //   return title !== '' || description !== '' || tags !== '';
-  // };
-  const hasUnsavedChanges = Boolean(title);
+  const hasUnsavedChanges = () => {
+    return title !== '' || description !== '';
+  };
 
   useEffect(
     () =>
       navigation.addListener(
         'beforeRemove',
         (evt: {preventDefault: () => void; data: {action: any}}) => {
-          if (!hasUnsavedChanges) {
+          if (!hasUnsavedChanges() && !isAddAction) {
             return;
           }
 
@@ -102,13 +111,19 @@ const AddScreen = ({navigation}: HomeStackProps) => {
     [navigation, hasUnsavedChanges],
   );
 
-  const refFirstInput = useRef<TextInput>();
-  const refSecondInput = useRef<TextInput>();
+  const refFirstInput = useRef<TextInput>(null);
+  const refSecondInput = useRef<TextInput>(null);
+  const sheetRef = useRef(null);
 
   const onChange = (value: string) => {
     const hashTagValue = addHashtag(value);
 
     setTags(hashTagValue);
+  };
+
+  const onFileSelected = (images: string[]) => {
+    setImages(images);
+    // sheetRef.current?.close();
   };
 
   return (
@@ -165,27 +180,44 @@ const AddScreen = ({navigation}: HomeStackProps) => {
           onChange={onChange}
         />
 
-        {/* <IconButton
-          onPress={() => setIsDateModal(true)}
-          iconName="ios-calendar"
-          iconSize={30}
-          iconColor="rgb(28, 28, 30)"
+        <Button
+          title="OPEN BOTTOM SHEET"
+          onPress={() => sheetRef.current?.open()}
         />
 
-        <DatePicker
-          modal
-          open={isDateModal}
-          date={date}
-          onConfirm={date => {
-            setIsDateModal(false);
-            setDate(date);
-          }}
-          onCancel={() => setIsDateModal(false)}
-          onDateChange={setDate}
-          mode="datetime"
-          minimumDate={new Date('2021-01-01')}
-          maximumDate={new Date('2023-06-01')}
-        /> */}
+        <ChooseImage
+          stateImages={images}
+          onFileSelected={onFileSelected}
+          ref={sheetRef}
+        />
+
+        <View
+          style={{
+            height: 150,
+            justifyContent: 'center',
+            borderWidth: 1,
+            borderColor: 'salmon',
+          }}>
+          <ScrollView
+            contentContainerStyle={{
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              paddingHorizontal: 5,
+            }}>
+            {images.map((image, index) => (
+              <Image
+                key={index}
+                source={{uri: image}}
+                style={{
+                  width: 100,
+                  height: 100,
+                  margin: 6,
+                  borderRadius: 7,
+                }}
+              />
+            ))}
+          </ScrollView>
+        </View>
       </KeyboardAvoidingView>
     </View>
   );
