@@ -47,7 +47,25 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
     backgroundColor: '#00000040',
-    marginBottom: 10, 
+    marginBottom: 10,
+  },
+  optionsContainerStyle: {
+    paddingHorizontal: 60,
+  },
+  optionPickerStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
+    paddingHorizontal: 3,
+    paddingVertical: 10,
+    borderRadius: 15,
+    backgroundColor: 'rgb(0,122,255)',
+  },
+  textStyle: {
+    marginLeft: 10,
+    fontSize: 16,
+    color: '#ffffff',
   },
 });
 
