@@ -1,9 +1,9 @@
 import React, {ForwardedRef, forwardRef, LegacyRef} from 'react';
 import {Text, View, TextInput} from 'react-native';
-import {InputProps} from '../../helpers/ts-helpers/interfaces';
+import {IInputProps} from '../../helpers/ts-helpers/interfaces';
 import styles from './styles';
 
-const Input = forwardRef<TextInput, InputProps>(
+const Input = forwardRef<TextInput, IInputProps>(
   (
     {
       inputContainerStyle,

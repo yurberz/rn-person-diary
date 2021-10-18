@@ -1,41 +1,79 @@
 import React from 'react';
-import {View, Text, FlatList, ListRenderItemInfo} from 'react-native';
-import NoteCell from '../../components/noteCell/NoteCell';
-import {useAppSelector} from '../../hooks/reduxHooks';
-import {diary} from '../../redux/selectors/diarySelector';
-import styles from './styles';
-import {INoteProps} from '../../helpers/ts-helpers/interfaces';
+import {createStackNavigator} from '@react-navigation/stack';
+import {DrawerActions} from '@react-navigation/native';
+import {
+  HomeStackParamList,
+  HomeStackProps,
+} from '../../helpers/ts-helpers/types';
+import IconButton from '../../components/iconButton/IconButton';
+import DefaultHomeScreen from './nestedScreens/defaultHomeScreen/DefaultHomeScreen';
+import AddScreen from './nestedScreens/addScreen/AddScreen';
+import NoteScreen from './nestedScreens/noteScreen/NoteScreen';
 
-const HomeScreen = ({navigation: {navigate}}) => {
-  const entries = useAppSelector(diary);
+const HomeStack = createStackNavigator<HomeStackParamList>();
 
-  const renderItem = ({item}: ListRenderItemInfo<INoteProps>) => {
-    return <NoteCell note={item} onPress={() => navigate('Note')}/>
-  };
-
-  const ItemSeparatorComponent = () => {
-    return <View style={{margin: 5}} />;
-  };
-
-  const ListEmptyComponent = () => {
-    return (
-      <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>No Notes yet</Text>
-      </View>
-    );
-  };
-
+const HomeScreen = ({
+  navigation: {navigate, goBack, dispatch},
+}: HomeStackProps) => {
   return (
-    <View style={styles.viewContainer}>
-      <FlatList<Note>
-        keyExtractor={(_, index) => String(index)}
-        style={styles.flatList}
-        data={entries}
-        renderItem={renderItem}
-        ListEmptyComponent={ListEmptyComponent}
-        ItemSeparatorComponent={ItemSeparatorComponent}
+    <HomeStack.Navigator
+      initialRouteName="DefaultHomeScreen"
+      screenOptions={{
+        headerShadowVisible: false,
+        headerTitleAlign: 'center',
+        headerLeftContainerStyle: {
+          paddingStart: 10,
+        },
+        headerRightContainerStyle: {
+          paddingEnd: 10,
+        },
+      }}>
+      <HomeStack.Screen
+        name="DefaultHomeScreen"
+        component={DefaultHomeScreen}
+        options={{
+          title: 'Diary',
+          headerLeft: () => (
+            <IconButton
+              onPress={() => dispatch(DrawerActions.openDrawer())}
+              iconName="ios-menu-outline"
+              iconSize={30}
+              iconColor="rgb(0,122,255)"
+            />
+          ),
+          headerRight: () => (
+            <IconButton
+              onPress={() => navigate('AddScreen')}
+              iconName="create-outline"
+              iconSize={30}
+              iconColor="rgb(48, 2, 30)"
+            />
+          ),
+        }}
       />
-    </View>
+      <HomeStack.Screen
+        name="NoteScreen"
+        component={NoteScreen}
+        options={{
+          title: 'Entry',
+        }}
+      />
+      <HomeStack.Screen
+        name="AddScreen"
+        component={AddScreen}
+        options={{
+          title: 'Add a diary entry',
+          headerLeft: () => (
+            <IconButton
+              onPress={() => goBack()}
+              iconName="close-sharp"
+              iconSize={30}
+              iconColor="rgb(255,69,68)"
+            />
+          ),
+        }}
+      />
+    </HomeStack.Navigator>
   );
 };
 

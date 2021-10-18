@@ -1,6 +1,11 @@
-import {ForwardedRef, LegacyRef} from 'react';
+import {Dispatch, ForwardedRef, LegacyRef, SetStateAction} from 'react';
 import {ReturnKeyType, ImageSourcePropType, ViewStyle} from 'react-native';
-import {TEntryModel, TAutoCapitalize, TFilterButton} from './types';
+import {
+  TEntryModel,
+  TAutoCapitalize,
+  TFilterButton,
+  TCalendarMode,
+} from './types';
 
 export interface IDiaryState {
   entries: TEntryModel[];
@@ -9,9 +14,11 @@ export interface IDiaryState {
 export interface ImageProps {
   imageStyle?: object;
   image?: ImageSourcePropType;
-  imageSetter: React.Dispatch<React.SetStateAction<{
-    uri: string;
-}>>
+  imageSetter: React.Dispatch<
+    React.SetStateAction<{
+      uri: string;
+    }>
+  >;
 }
 
 export interface INoteProps {
@@ -22,7 +29,7 @@ export interface INoteProps {
   image?: string;
 }
 
-export interface InputProps {
+export interface IInputProps {
   inputContainerStyle?: object;
   inputStyle?: object;
   placeholder: string;
@@ -79,4 +86,23 @@ export interface ISwitcherStyle {
 export interface IRadioButtonStyle {
   radioButtonStyle: ViewStyle;
   textRadioButtonStyle(value: boolean): ViewStyle;
+}
+
+export interface IIconButtonProps {
+  onPress(): void;
+  iconName: string;
+  iconSize: number;
+  iconColor: string;
+}
+
+export interface IDatePickerProps {
+  date: Date;
+  mode?: TCalendarMode;
+  minimumDate?: Date;
+  maximumDate?: Date;
+  onDateChange: Dispatch<SetStateAction<Date>>;
+  open: boolean;
+  onConfirm(date: Date): void;
+  onCancel(): void;
+  iconProps: IIconButtonProps;
 }

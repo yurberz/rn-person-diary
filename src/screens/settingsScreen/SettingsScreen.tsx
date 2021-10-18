@@ -2,18 +2,18 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {DrawerActions} from '@react-navigation/native';
 import {
-  SearchStackParamList,
-  SearchStackProps,
+  SettingsStackParamList,
+  SettingsStackProps,
 } from '../../helpers/ts-helpers/types';
 import IconButton from '../../components/iconButton/IconButton';
-import DefaultSearchScreen from './nestedScreens/defaultSearchScreen/DefaultSearchScreen';
+import DefaultSettingsScreen from './nestedScreens/defaultSettingsScreen/DefaultSettingsScreen';
 
-const SearchStack = createStackNavigator<SearchStackParamList>();
+const SettingsStack = createStackNavigator<SettingsStackParamList>();
 
-const SearchScreen = ({navigation: {dispatch}}: SearchStackProps) => {
+const SettingsScreen = ({navigation: {dispatch}}: SettingsStackProps) => {
   return (
-    <SearchStack.Navigator
-      initialRouteName="DefaultSearchScreen"
+    <SettingsStack.Navigator
+      initialRouteName="DefaultSettingsScreen"
       screenOptions={{
         headerShadowVisible: false,
         headerTitleAlign: 'center',
@@ -24,11 +24,11 @@ const SearchScreen = ({navigation: {dispatch}}: SearchStackProps) => {
           paddingEnd: 10,
         },
       }}>
-      <SearchStack.Screen
-        name="DefaultSearchScreen"
-        component={DefaultSearchScreen}
+      <SettingsStack.Screen
+        name="DefaultSettingsScreen"
+        component={DefaultSettingsScreen}
         options={{
-          title: 'Search entry',
+          title: 'Settings',
           headerLeft: () => (
             <IconButton
               onPress={() => dispatch(DrawerActions.openDrawer())}
@@ -39,8 +39,8 @@ const SearchScreen = ({navigation: {dispatch}}: SearchStackProps) => {
           ),
         }}
       />
-    </SearchStack.Navigator>
+    </SettingsStack.Navigator>
   );
 };
 
-export default SearchScreen;
+export default SettingsScreen;
