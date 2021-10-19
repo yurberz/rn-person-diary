@@ -19,8 +19,18 @@ export const diarySlice = createSlice({
         },
       ],
     }),
-    updateEntry: () => {},
-    deleteEntry: () => {},
+    updateEntry: (state, {payload}) => ({
+      entries: [
+        ...state.entries.map(entry => {
+          entry.id === payload.id ? (entry = {...entry, ...payload}) : entry;
+
+          return entry;
+        }),
+      ],
+    }),
+    deleteEntry: (state, {payload}) => ({
+      entries: [...state.entries.filter(entry => entry.id !== payload)],
+    }),
   },
 });
 
