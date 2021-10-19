@@ -48,7 +48,7 @@ export interface IInputProps {
   onSubmitEditing?(): void;
   value: string;
   onChange(value: string): void;
-  isEditable: boolean;
+  isEditable?: boolean;
 }
 
 export interface ISearchInputProps {

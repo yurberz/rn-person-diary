@@ -29,21 +29,21 @@ const AddScreen = ({navigation}: HomeStackProps) => {
   const [date, setDate] = useState(new Date());
   const [images, setImages] = useState<string[]>([]);
   const [isDateModal, setIsDateModal] = useState(false);
-  const [isAddAction, setIsAddAction] = useState(false);
+  let isAddAction: boolean = false;
 
   const tagsArr = tags.split(' ');
 
   const handleSubmit = () => {
-    setIsAddAction(true);
+    isAddAction = true;
 
     if (title || description) {
       dispatch(
         addEntry({
+          date,
           title,
           description,
           tags: tags.length > 2 ? tagsArr : [],
           images,
-          date,
         }),
       );
     }
@@ -71,8 +71,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
     setDescription('');
     setTags('');
     setDate(new Date());
-    setIsAddAction(false);
-    // refFirstInput.current?.focus();
+    isAddAction = false;
   }, [isFocused]);
 
   const hasUnsavedChanges = () => {
@@ -84,7 +83,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
       navigation.addListener(
         'beforeRemove',
         (evt: {preventDefault: () => void; data: {action: any}}) => {
-          if (!hasUnsavedChanges() && !isAddAction) {
+          if (!hasUnsavedChanges() || isAddAction) {
             return;
           }
 
@@ -123,7 +122,6 @@ const AddScreen = ({navigation}: HomeStackProps) => {
 
   const onFileSelected = (images: string[]) => {
     setImages(images);
-    // sheetRef.current?.close();
   };
 
   return (
