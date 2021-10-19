@@ -18,6 +18,7 @@ const Input = forwardRef<TextInput, IInputProps>(
       onSubmitEditing,
       value,
       onChange,
+      isEditable,
     },
     ref,
   ) => {
@@ -36,6 +37,7 @@ const Input = forwardRef<TextInput, IInputProps>(
           ref={ref}
           value={value}
           onChangeText={onChange}
+          editable={isEditable}
         />
       </View>
     );

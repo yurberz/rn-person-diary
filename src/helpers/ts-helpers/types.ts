@@ -7,6 +7,7 @@ export type HomeStackParamList = {
   NoteScreen: undefined;
 };
 
+
 export type HomeStackProps = StackScreenProps<
   HomeStackParamList,
   'DefaultHomeScreen'

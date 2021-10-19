@@ -42,6 +42,7 @@ export interface IInputProps {
   onSubmitEditing?(): void;
   value: string;
   onChange(value: string): void;
+  isEditable: boolean;
 }
 
 export interface ISearchInputProps {
@@ -100,9 +101,9 @@ export interface IDatePickerProps {
   mode?: TCalendarMode;
   minimumDate?: Date;
   maximumDate?: Date;
-  onDateChange: Dispatch<SetStateAction<Date>>;
-  open: boolean;
-  onConfirm(date: Date): void;
-  onCancel(): void;
-  iconProps: IIconButtonProps;
+  onDateChange?: Dispatch<SetStateAction<Date>>;
+  open?: boolean;
+  onConfirm?(date: Date): void;
+  onCancel?(): void;
+  iconProps?: IIconButtonProps;
 }

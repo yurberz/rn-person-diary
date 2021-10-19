@@ -11,7 +11,7 @@ const DefaultHomeScreen = ({navigation: {navigate}}: HomeStackProps) => {
   const entries = useAppSelector(diary);
 
   const renderItem = ({item}: ListRenderItemInfo<INoteProps>) => {
-    return <NoteCell note={item} onPress={() => navigate('NoteScreen')} />;
+    return <NoteCell note={item} onPress={() => navigate('NoteScreen', {note: item})} />;
   };
 
   const ItemSeparatorComponent = () => {
