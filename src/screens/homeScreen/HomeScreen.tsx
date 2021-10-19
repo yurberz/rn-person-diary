@@ -56,6 +56,14 @@ const HomeScreen = ({
         component={NoteScreen}
         options={{
           title: 'Entry',
+          headerLeft: () => (
+            <IconButton
+              onPress={() => goBack()}
+              iconName="caret-back-outline"
+              iconSize={30}
+              iconColor="black"
+            />
+          ),
         }}
       />
       <HomeStack.Screen
