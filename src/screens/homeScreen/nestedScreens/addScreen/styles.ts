@@ -7,6 +7,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#ffffff',
   },
+  headerStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+  },
+  leftSideStyle: {
+    flex: 1,
+  },
+  dateTextStyle: {
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  rightSideStyle: {
+    flex: 0.5,
+  },
+  headerButtonsContainerStyle: {
+    justifyContent: 'space-around',
+  },
   firstInputContainerStyle: {},
   secondInputContainerStyle: {},
   thirdInputContainerStyle: {},
@@ -34,6 +54,11 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10,
     borderBottomLeftRadius: 10,
     borderBottomWidth: 0,
+  },
+  buttonContainerStyle: {
+    justifyContent: 'space-around',
+    marginHorizontal: 70,
+    marginTop: 10,
   },
 });
 

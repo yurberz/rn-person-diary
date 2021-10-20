@@ -1,6 +1,5 @@
-import {Dispatch, ForwardedRef, LegacyRef, SetStateAction} from 'react';
-import {ReturnKeyType, ImageSourcePropType, ViewStyle} from 'react-native';
-import {ImageOrVideo} from 'react-native-image-crop-picker';
+import {Dispatch, SetStateAction} from 'react';
+import {ReturnKeyType, ViewStyle} from 'react-native';
 import {
   TEntryModel,
   TAutoCapitalize,
@@ -12,19 +11,14 @@ export interface IDiaryState {
   entries: TEntryModel[];
 }
 
-// export interface ImageProps {
-//   imageStyle?: object;
-//   image?: ImageSourcePropType;
-//   imageSetter: React.Dispatch<
-//     React.SetStateAction<{
-//       uri: string;
-//     }>
-//   >;
-// }
-
 export interface IChooseImageProps {
   stateImages: string[];
   onFileSelected(value: any): void;
+  closeSheet(): void;
+}
+
+export interface IImagesContainer {
+  images: string[];
 }
 
 export interface INoteProps {
@@ -49,6 +43,7 @@ export interface IInputProps {
   value: string;
   onChange(value: string): void;
   isEditable?: boolean;
+  numberOfLines?: number;
 }
 
 export interface ISearchInputProps {
@@ -107,9 +102,16 @@ export interface IDatePickerProps {
   mode?: TCalendarMode;
   minimumDate?: Date;
   maximumDate?: Date;
-  onDateChange?: Dispatch<SetStateAction<Date>>;
+  onDateChange: Dispatch<SetStateAction<Date>>;
   open?: boolean;
   onConfirm?(date: Date): void;
   onCancel?(): void;
-  iconProps?: IIconButtonProps;
+}
+
+export interface IBlockButtonsProps {
+  buttonsContainerStyle: object;
+  calendarButton(): void;
+  imageButton(): void;
+  recordButton(): void;
+  iconeSize: number;
 }

@@ -7,7 +7,6 @@ export type HomeStackParamList = {
   NoteScreen: undefined;
 };
 
-
 export type HomeStackProps = StackScreenProps<
   HomeStackParamList,
   'DefaultHomeScreen'
@@ -41,12 +40,12 @@ export type DrawerContentProps = DrawerContentComponentProps;
 
 export type TEntryModel = {
   id: string;
-  title: string;
-  description: string;
-  image?: string[];
-  audio?: string;
   date: string;
+  title?: string;
+  description?: string;
   tags?: string[];
+  images?: string[];
+  audio?: string;
 };
 
 export type TAutoCapitalize = 'none' | 'sentences' | 'words' | 'characters';

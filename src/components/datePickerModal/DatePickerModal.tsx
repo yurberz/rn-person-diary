@@ -1,10 +1,6 @@
 import React from 'react';
-import {Text, View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {IDatePickerProps} from '../../helpers/ts-helpers/interfaces';
-import dateFormat from '../../helpers/function-helpers/dateFormat';
-import styles from './styles';
-import IconButton from '../iconButton/IconButton';
 
 const DatePickerModal: React.FC<IDatePickerProps> = ({
   mode = 'datetime',
@@ -15,29 +11,20 @@ const DatePickerModal: React.FC<IDatePickerProps> = ({
   date,
   onConfirm,
   onCancel,
-  iconProps,
 }) => {
-  const formattedDateTime = dateFormat(date);
-
   return (
-    <View style={styles.calendarContainerStyle}>
-      <Text style={styles.calendarTextStyle}>{formattedDateTime}</Text>
-
-      <IconButton {...iconProps} />
-
-      <DatePicker
-        modal
-        open={open}
-        date={date}
-        onConfirm={onConfirm}
-        onCancel={onCancel}
-        onDateChange={onDateChange}
-        mode={mode}
-        minimumDate={minimumDate}
-        maximumDate={maximumDate}
-        // timeZoneOffsetInMinutes={3 * 60}
-      />
-    </View>
+    <DatePicker
+      modal
+      open={open}
+      date={date}
+      onConfirm={onConfirm}
+      onCancel={onCancel}
+      onDateChange={onDateChange}
+      mode={mode}
+      minimumDate={minimumDate}
+      maximumDate={maximumDate}
+      // timeZoneOffsetInMinutes={3 * 60}
+    />
   );
 };
 
