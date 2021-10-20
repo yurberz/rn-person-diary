@@ -19,6 +19,7 @@ const Input = forwardRef<TextInput, IInputProps>(
       value,
       onChange,
       isEditable,
+      numberOfLines,
     },
     ref,
   ) => {
@@ -38,6 +39,7 @@ const Input = forwardRef<TextInput, IInputProps>(
           value={value}
           onChangeText={onChange}
           editable={isEditable}
+          numberOfLines={numberOfLines}
         />
       </View>
     );

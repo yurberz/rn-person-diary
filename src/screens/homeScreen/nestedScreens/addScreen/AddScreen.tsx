@@ -1,27 +1,30 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
+  Text,
   Platform,
   KeyboardAvoidingView,
   TextInput,
   Alert,
-  Button,
-  Image,
-  ScrollView,
 } from 'react-native';
+import RBSheet from 'react-native-raw-bottom-sheet';
 import {useIsFocused} from '@react-navigation/core';
 import {HomeStackProps} from '../../../../helpers/ts-helpers/types';
 import addHashtag from '../../../../helpers/function-helpers/addHashtag';
+import dateFormat from '../../../../helpers/function-helpers/dateFormat';
 import {useAppDispatch} from '../../../../hooks/reduxHooks';
 import {addEntry} from '../../../../redux/reducers/diaryReducer';
+import IconButton from '../../../../components/iconButton/IconButton';
 import Input from '../../../../components/textInput/Input';
 import DatePickerModal from '../../../../components/datePickerModal/DatePickerModal';
-import IconButton from '../../../../components/iconButton/IconButton';
-import styles from './styles';
 import ChooseImage from '../../../../components/chooseImage/ChooseImage';
+import ImagesContainer from '../../../../components/imagesContainer/ImagesContainer';
+import BlockButtons from '../../../../components/blockButtons/BlockButtons';
+import styles from './styles';
 
 const AddScreen = ({navigation}: HomeStackProps) => {
   const dispatch = useAppDispatch();
+  const isFocused = useIsFocused();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -63,8 +66,6 @@ const AddScreen = ({navigation}: HomeStackProps) => {
       ),
     });
   }, [navigation, handleSubmit]);
-
-  const isFocused = useIsFocused();
 
   useEffect(() => {
     setTitle('');
@@ -112,7 +113,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
 
   const refFirstInput = useRef<TextInput>(null);
   const refSecondInput = useRef<TextInput>(null);
-  const sheetRef = useRef(null);
+  const sheetRef = useRef<RBSheet>(null);
 
   const onChange = (value: string) => {
     const hashTagValue = addHashtag(value);
@@ -124,26 +125,27 @@ const AddScreen = ({navigation}: HomeStackProps) => {
     setImages(images);
   };
 
+  const formattedDateTime = dateFormat(date);
+
   return (
     <View style={styles.containerStyle}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <DatePickerModal
-          open={isDateModal}
-          date={date}
-          onDateChange={setDate}
-          onConfirm={date => {
-            setIsDateModal(false);
-            setDate(date);
-          }}
-          onCancel={() => setIsDateModal(false)}
-          iconProps={{
-            onPress: () => setIsDateModal(true),
-            iconName: 'ios-calendar',
-            iconSize: 20,
-            iconColor: 'rgb(28, 28, 30)',
-          }}
-        />
+        <View style={styles.headerStyle}>
+          <View style={styles.leftSideStyle}>
+            <Text style={styles.dateTextStyle}>{formattedDateTime}</Text>
+          </View>
+
+          <View style={styles.rightSideStyle}>
+            <BlockButtons
+              buttonsContainerStyle={styles.headerButtonsContainerStyle}
+              calendarButton={() => setIsDateModal(true)}
+              imageButton={() => sheetRef.current!.open()}
+              recordButton={() => {}}
+              iconeSize={20}
+            />
+          </View>
+        </View>
 
         <Input
           inputContainerStyle={styles.firstInputContainerStyle}
@@ -152,7 +154,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
           maxLength={200}
           returnKeyType="next"
           ref={refFirstInput}
-          onSubmitEditing={() => refSecondInput.current?.focus()}
+          onSubmitEditing={() => refSecondInput.current!.focus()}
           value={title}
           onChange={value => setTitle(value)}
         />
@@ -178,44 +180,33 @@ const AddScreen = ({navigation}: HomeStackProps) => {
           onChange={onChange}
         />
 
-        <Button
-          title="OPEN BOTTOM SHEET"
-          onPress={() => sheetRef.current?.open()}
+        {images.length > 0 ? <ImagesContainer images={images} /> : null}
+
+        <BlockButtons
+          buttonsContainerStyle={styles.buttonContainerStyle}
+          calendarButton={() => setIsDateModal(true)}
+          imageButton={() => sheetRef.current!.open()}
+          recordButton={() => {}}
+          iconeSize={30}
+        />
+
+        <DatePickerModal
+          open={isDateModal}
+          date={date}
+          onDateChange={setDate}
+          onConfirm={date => {
+            setIsDateModal(false);
+            setDate(date);
+          }}
+          onCancel={() => setIsDateModal(false)}
         />
 
         <ChooseImage
           stateImages={images}
           onFileSelected={onFileSelected}
+          closeSheet={() => sheetRef.current!.close()}
           ref={sheetRef}
         />
-
-        <View
-          style={{
-            height: 150,
-            justifyContent: 'center',
-            borderWidth: 1,
-            borderColor: 'salmon',
-          }}>
-          <ScrollView
-            contentContainerStyle={{
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              paddingHorizontal: 5,
-            }}>
-            {images.map((image, index) => (
-              <Image
-                key={index}
-                source={{uri: image}}
-                style={{
-                  width: 100,
-                  height: 100,
-                  margin: 6,
-                  borderRadius: 7,
-                }}
-              />
-            ))}
-          </ScrollView>
-        </View>
       </KeyboardAvoidingView>
     </View>
   );

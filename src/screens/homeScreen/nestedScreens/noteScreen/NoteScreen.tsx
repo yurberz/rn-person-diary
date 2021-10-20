@@ -154,6 +154,7 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
             value={description}
             onChange={value => setDescription(value)}
             isEditable={isInEditMode}
+            numberOfLines={20}
           />
           <Input
             inputContainerStyle={styles.thirdInputContainerStyle}
