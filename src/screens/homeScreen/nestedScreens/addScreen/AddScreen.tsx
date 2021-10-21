@@ -6,10 +6,15 @@ import {
   KeyboardAvoidingView,
   TextInput,
   Alert,
+  LayoutAnimation,
+  UIManager,
 } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {useIsFocused} from '@react-navigation/core';
-import {HomeStackProps} from '../../../../helpers/ts-helpers/types';
+import {
+  HomeStackProps,
+  TImageModel,
+} from '../../../../helpers/ts-helpers/types';
 import addHashtag from '../../../../helpers/function-helpers/addHashtag';
 import dateFormat from '../../../../helpers/function-helpers/dateFormat';
 import {useAppDispatch} from '../../../../hooks/reduxHooks';
@@ -18,9 +23,16 @@ import IconButton from '../../../../components/iconButton/IconButton';
 import Input from '../../../../components/textInput/Input';
 import DatePickerModal from '../../../../components/datePickerModal/DatePickerModal';
 import ChooseImage from '../../../../components/chooseImage/ChooseImage';
-import ImagesContainer from '../../../../components/imagesContainer/ImagesContainer';
-import BlockButtons from '../../../../components/blockButtons/BlockButtons';
+import ButtonsBlock from '../../../../components/buttonsBlock/ButtonsBlock';
 import styles from './styles';
+import ImagesBlock from '../../../../components/imagesBlock/ImagesBlock';
+
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 const AddScreen = ({navigation}: HomeStackProps) => {
   const dispatch = useAppDispatch();
@@ -30,7 +42,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState('');
   const [date, setDate] = useState(new Date());
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<TImageModel[]>([]);
   const [isDateModal, setIsDateModal] = useState(false);
   let isAddAction: boolean = false;
 
@@ -121,11 +133,23 @@ const AddScreen = ({navigation}: HomeStackProps) => {
     setTags(hashTagValue);
   };
 
-  const onFileSelected = (images: string[]) => {
+  const onFileSelected = (images: TImageModel[]) => {
     setImages(images);
   };
 
   const formattedDateTime = dateFormat(date);
+
+  const removeImage = (id: string) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+
+    setImages(prev => prev.filter(image => image.id !== id));
+  };
+
+  const showImage = (_: any, url: string) => {
+    navigation.navigate('FullImageScreen', {
+      image: url,
+    });
+  };
 
   return (
     <View style={styles.containerStyle}>
@@ -137,7 +161,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
           </View>
 
           <View style={styles.rightSideStyle}>
-            <BlockButtons
+            <ButtonsBlock
               buttonsContainerStyle={styles.headerButtonsContainerStyle}
               calendarButton={() => setIsDateModal(true)}
               imageButton={() => sheetRef.current!.open()}
@@ -180,9 +204,18 @@ const AddScreen = ({navigation}: HomeStackProps) => {
           onChange={onChange}
         />
 
-        {images.length > 0 ? <ImagesContainer images={images} /> : null}
+        {images.length > 0 ? (
+          <ImagesBlock
+            images={images}
+            onPress={removeImage}
+            iconName="ios-trash-bin-outline"
+            iconSize={30}
+            iconColor="#000000"
+            iconStyle={styles.iconStyle}
+          />
+        ) : null}
 
-        <BlockButtons
+        <ButtonsBlock
           buttonsContainerStyle={styles.buttonContainerStyle}
           calendarButton={() => setIsDateModal(true)}
           imageButton={() => sheetRef.current!.open()}

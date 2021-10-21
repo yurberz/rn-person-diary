@@ -4,7 +4,7 @@ import {IBlockButtonsProps} from '../../helpers/ts-helpers/interfaces';
 import IconButton from '../iconButton/IconButton';
 import styles from './styles';
 
-const BlockButtons: React.FC<IBlockButtonsProps> = ({
+const ButtonsBlock: React.FC<IBlockButtonsProps> = ({
   buttonsContainerStyle,
   calendarButton,
   imageButton,
@@ -37,4 +37,4 @@ const BlockButtons: React.FC<IBlockButtonsProps> = ({
   );
 };
 
-export default BlockButtons;
+export default ButtonsBlock;
