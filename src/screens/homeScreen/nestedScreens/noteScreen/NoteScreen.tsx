@@ -5,9 +5,10 @@ import {
   KeyboardAvoidingView,
   TextInput,
   Text,
+  LayoutAnimation,
 } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {HomeStackProps} from '../../../../helpers/ts-helpers/types';
+import {HomeStackProps, TImageModel} from '../../../../helpers/ts-helpers/types';
 import {useAppDispatch} from '../../../../hooks/reduxHooks';
 import {
   updateEntry,
@@ -19,8 +20,8 @@ import IconButton from '../../../../components/iconButton/IconButton';
 import addHashtag from '../../../../helpers/function-helpers/addHashtag';
 import dateFormat from '../../../../helpers/function-helpers/dateFormat';
 import ChooseImage from '../../../../components/chooseImage/ChooseImage';
-import ImagesContainer from '../../../../components/imagesContainer/ImagesContainer';
-import BlockButtons from '../../../../components/blockButtons/BlockButtons';
+import ButtonsBlock from '../../../../components/buttonsBlock/ButtonsBlock';
+import ImagesBlock from '../../../../components/imagesBlock/ImagesBlock';
 import moment from 'moment';
 import styles from './styles';
 
@@ -31,7 +32,7 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
   const [description, setDescription] = useState(note.description);
   const [tags, setTags] = useState(note.tags.join(' '));
   const [date, setDate] = useState(moment(note.date).toDate());
-  const [images, setImages] = useState<string[]>(note.images);
+  const [images, setImages] = useState<TImageModel[]>(note.images);
   const [isDateModal, setIsDateModal] = useState(false);
   const [isInEditMode, setIsInEditMode] = useState(false);
   const dispatch = useAppDispatch();
@@ -102,8 +103,8 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
     });
   }, [navigation, isInEditMode, removeEntry]);
 
-  const refFirstInput = useRef<TextInput>();
-  const refSecondInput = useRef<TextInput>();
+  const refFirstInput = useRef<TextInput>(null);
+  const refSecondInput = useRef<TextInput>(null);
   const sheetRef = useRef<RBSheet>(null);
 
   const onChange = (value: string) => {
@@ -112,8 +113,20 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
     setTags(hashTagValue);
   };
 
-  const onFileSelected = (images: string[]) => {
+  const onFileSelected = (images: TImageModel[]) => {
     setImages(images);
+  };
+
+  const removeImage = (id: string) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+
+    setImages(prev => prev.filter(image => image.id !== id));
+  };
+
+  const showImage = (_: any, url: string) => {
+    navigation.navigate('FullImageScreen', {
+      image: url,
+    });
   };
 
   const formattedDateTime = dateFormat(date);
@@ -128,7 +141,6 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
           </View>
         </View>
         <Input
-          disabled={true}
           inputContainerStyle={styles.firstInputContainerStyle}
           inputStyle={styles.firstInputStyles}
           placeholder="Title*"
@@ -165,7 +177,17 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
           onChange={onChange}
           isEditable={isInEditMode}
         />
-        {images.length > 0 ? <ImagesContainer images={images} isEditable={isInEditMode}/> : null}
+        {images.length > 0 ? (
+          <ImagesBlock
+            images={images}
+            onPress={isInEditMode ?  removeImage : showImage}
+            iconName={isInEditMode ? "ios-close-outline" : "ios-expand"}
+            iconSize={30}
+            iconColor="white"
+            iconStyle={styles.iconStyle}
+            editable={isInEditMode}
+          />
+        ) : null}
         <DatePickerModal
           open={isDateModal}
           date={date}
@@ -183,7 +205,7 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
           ref={sheetRef}
         />
         {isInEditMode && (
-          <BlockButtons
+          <ButtonsBlock
             buttonsContainerStyle={styles.buttonContainerStyle}
             calendarButton={() => setIsDateModal(true)}
             imageButton={() => sheetRef.current!.open()}

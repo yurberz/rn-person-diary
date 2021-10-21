@@ -18,12 +18,17 @@ const ImagesBlock: React.FC<IImagesBlockProps> = ({
   iconSize,
   iconColor,
   iconStyle,
+  editable,
 }) => {
+  const isInEditMode = editable;
   const renderItem = ({item: {id, url}}: ListRenderItemInfo<TImageModel>) => {
     return (
       <View>
         <View>
-          <Image source={{uri: url}} style={styles.imageStyle} />
+          <Image
+            source={{uri: url}}
+            style={styles.imageStyle}
+          />
 
           <TouchableOpacity
             style={[iconStyle]}
@@ -44,7 +49,7 @@ const ImagesBlock: React.FC<IImagesBlockProps> = ({
       horizontal={false}
       numColumns={2}
       columnWrapperStyle={styles.columnWrapperStyle}
-      style={styles.flatListStyle}
+      style={[styles.flatListStyle, styles.selectedContainerStyle(isInEditMode)]}
     />
   );
 };

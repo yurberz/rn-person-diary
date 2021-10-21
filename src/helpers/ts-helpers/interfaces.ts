@@ -34,6 +34,7 @@ export interface IImagesBlockProps {
   iconSize: number;
   iconColor: string;
   iconStyle: object;
+  editable: boolean;
 }
 
 export interface INoteProps {
@@ -93,10 +94,10 @@ export interface IInputStyle {
   selectedInputStyle(value: boolean): ViewStyle;
 }
 
-export interface IImagesContainerStyle {
-  containerStyle: ViewStyle;
-  contentContainerStyle: ViewStyle;
-  imageStyle: ViewStyle;
+export interface IImagesBlockStyle {
+  columnWrapperStyle:ViewStyle,
+  flatListStyle:ViewStyle,
+  imageStyle:ViewStyle,
   selectedContainerStyle(value: boolean): ViewStyle;
 }
 
