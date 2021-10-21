@@ -2,6 +2,7 @@ import React, {forwardRef} from 'react';
 import {TouchableOpacity, Text, View, Platform} from 'react-native';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import BottomSheet from 'react-native-raw-bottom-sheet';
+import {v4 as uuidv4} from 'uuid';
 import {IChooseImageProps} from '../../helpers/ts-helpers/interfaces';
 import {styles, sheetStyles} from './styles';
 
@@ -18,7 +19,13 @@ const ChooseImage = forwardRef<BottomSheet, IChooseImageProps>(
             freeStyleCropEnabled: true,
           })
             .then(image => {
-              onFileSelected([...stateImages, image.path]);
+              onFileSelected([
+                ...stateImages,
+                {
+                  id: uuidv4(),
+                  url: image.path,
+                },
+              ]);
             })
             .catch(err => {});
         },
@@ -34,11 +41,14 @@ const ChooseImage = forwardRef<BottomSheet, IChooseImageProps>(
             freeStyleCropEnabled: true,
           })
             .then(images => {
-              const arrOfLinks = images.map(image => {
-                return Platform.OS === 'ios' ? image.sourceURL : image.path;
+              const arrOfImages = images.map(image => {
+                return {
+                  id: uuidv4(),
+                  url: Platform.OS === 'ios' ? image.sourceURL : image.path,
+                };
               });
 
-              onFileSelected([...stateImages, ...arrOfLinks]);
+              onFileSelected([...stateImages, ...arrOfImages]);
             })
             .catch(err => {});
         },

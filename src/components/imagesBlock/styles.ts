@@ -1,19 +1,17 @@
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
-  containerStyle: {
-    justifyContent: 'center',
-    height: 250,
-  },
-  contentContainerStyle: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+  columnWrapperStyle: {
     paddingHorizontal: 5,
+  },
+  flatListStyle: {
+    marginTop: 10,
+    height: 250,
   },
   imageStyle: {
     width: 150,
     height: 150,
-    margin: 9,
+    margin: 10,
     borderRadius: 7,
   },
 });

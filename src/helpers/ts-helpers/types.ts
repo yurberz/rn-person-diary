@@ -5,6 +5,9 @@ export type HomeStackParamList = {
   DefaultHomeScreen: undefined;
   AddScreen: undefined;
   NoteScreen: undefined;
+  FullImageScreen: {
+    image: string;
+  };
 };
 
 export type HomeStackProps = StackScreenProps<
@@ -44,7 +47,7 @@ export type TEntryModel = {
   title?: string;
   description?: string;
   tags?: string[];
-  images?: string[];
+  images?: TImageModel[];
   audio?: string;
 };
 
@@ -56,3 +59,8 @@ export type TFilterButton = {
 };
 
 export type TCalendarMode = 'datetime' | 'date' | 'time';
+
+export type TImageModel = {
+  id: string;
+  url: string;
+};
