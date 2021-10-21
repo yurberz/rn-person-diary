@@ -39,13 +39,13 @@ const CustomDrawer = ({navigation: {navigate}}: DrawerContentProps) => {
           <DrawerItem
             icon={() => (
               <Ionicons
-                name="search-outline"
+                name="ios-images-outline"
                 size={30}
                 color="rgb(0,122,255)"
               />
             )}
-            label="Search entry"
-            onPress={() => navigate('SearchScreen')}
+            label="Images"
+            onPress={() => navigate('ImageGalleryScreen')}
           />
           <DrawerItem
             icon={() => (

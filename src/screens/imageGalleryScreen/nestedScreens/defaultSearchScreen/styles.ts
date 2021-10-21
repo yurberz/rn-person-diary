@@ -1,0 +1,16 @@
+import {StyleSheet} from 'react-native';
+
+const styles = StyleSheet.create({
+  containerStyle: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
+  imageStyle: {
+    width: 150,
+    height: 150,
+    margin: 10,
+    borderRadius: 7,
+  },
+});
+
+export default styles;

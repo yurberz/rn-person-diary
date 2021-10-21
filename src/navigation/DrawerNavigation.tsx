@@ -2,7 +2,7 @@ import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {DrawerParamList} from '../helpers/ts-helpers/types';
 import HomeScreen from '../screens/homeScreen/HomeScreen';
-import SearchScreen from '../screens/searchScreen/SearchScreen';
+import ImageGalleryScreen from '../screens/imageGalleryScreen/ImageGalleryScreen';
 import SettingsScreen from '../screens/settingsScreen/SettingsScreen';
 import CustomDrawer from '../components/customDrawer/CustomDrawer';
 
@@ -25,10 +25,10 @@ const DrawerNavigation = () => {
         }}
       />
       <Drawer.Screen
-        name="SearchScreen"
-        component={SearchScreen}
+        name="ImageGalleryScreen"
+        component={ImageGalleryScreen}
         options={{
-          title: 'Search entry',
+          title: 'Images',
         }}
       />
       <Drawer.Screen
