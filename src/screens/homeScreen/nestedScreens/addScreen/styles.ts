@@ -55,6 +55,23 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
     borderBottomWidth: 0,
   },
+  columnWrapperStyle: {
+    paddingHorizontal: 5,
+  },
+  flatListStyle: {
+    marginTop: 10,
+    height: 250,
+  },
+  iconStyle: {
+    position: 'absolute',
+    top: '10%',
+    right: '10%',
+  },
+  iconSecondStyle: {
+    position: 'absolute',
+    top: '10%',
+    right: '10%',
+  },
   buttonContainerStyle: {
     position: 'absolute',
     top: 625,
