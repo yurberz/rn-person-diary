@@ -35,11 +35,23 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
     borderBottomWidth: 0,
   },
-  featuresBarStyles: {
-    marginTop: 100,
-    // backgroundColor: 'gray',
+  buttonContainerStyle: {
+    position: 'absolute',
+    top: 625,
+  },
+  headerStyle: {
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 5,
+    paddingHorizontal: 5,
+  },
+  leftSideStyle: {
+    flex: 1,
+  },
+  dateTextStyle: {
+    fontSize: 12,
+    fontWeight: '500',
   },
 });
 

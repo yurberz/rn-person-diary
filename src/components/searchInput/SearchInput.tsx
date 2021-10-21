@@ -26,9 +26,9 @@ const SearchInput: React.FC<ISearchInputProps> = ({
           value={value}
           onChangeText={onChange}
         />
+        <View style={styles.appendContainerStyle}>{appendComponent}</View>
       </View>
-
-      <View style={styles.appendContainerStyle}>{appendComponent}</View>
+      {/* <View style={styles.appendContainerStyle}>{appendComponent}</View> */}
     </View>
   );
 };

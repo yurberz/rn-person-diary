@@ -1,10 +1,11 @@
 import {StackScreenProps} from '@react-navigation/stack';
 import {DrawerContentComponentProps} from '@react-navigation/drawer';
+import { INoteProps } from './interfaces';
 
 export type HomeStackParamList = {
   DefaultHomeScreen: undefined;
   AddScreen: undefined;
-  NoteScreen: undefined;
+  NoteScreen: {note: INoteProps};
 };
 
 export type HomeStackProps = StackScreenProps<

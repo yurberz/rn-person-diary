@@ -10,17 +10,21 @@ interface NoteCellProps {
 }
 
 const NoteCell: React.FC<NoteCellProps> = (props) => {
+  const titleMaxLimit = 12;
+  const descriptionMaxLimit = 25;
+  const description = props.note.description;
+  const title = props.note.title;
 
     return (
       <View>
         <TouchableOpacity style={styles.viewContainer} onPress={props.onPress}>
-          <Text style={styles.containerTitle}>
-            {props.note.title}
+          <Text style={styles.containerTitle} numberOfLines={1}>
+          {((title).length > titleMaxLimit) ? (((title).substring(0,titleMaxLimit-3)) + '...') : title}
           </Text>
-          <Text style={styles.containerDescription}>
-            {props.note.description}
+          <Text style={styles.containerDescription} numberOfLines={1}>
+            {((description).length > descriptionMaxLimit) ? (((description).substring(0,descriptionMaxLimit-3)) + '...') : description}
           </Text>
-          <Ionicons name={'caret-forward'} size={20} color={'gray'} style={styles.icon}/>
+          <Ionicons name={'caret-forward'} size={20} color={'black'} style={styles.icon}/>
           </TouchableOpacity>
       </View>
     );
