@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
   },
   emptyContainer: {
     flex: 1,
+    marginTop: 50,
     justifyContent: 'center',
     alignItems: 'center',
   },

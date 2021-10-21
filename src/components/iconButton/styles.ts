@@ -1,7 +1,9 @@
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
-  iconButtonStyle: {},
+  iconButtonStyle: {
+    marginRight: 5,
+  },
 });
 
 export default styles;

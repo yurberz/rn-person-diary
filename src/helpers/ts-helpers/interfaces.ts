@@ -18,6 +18,10 @@ export interface IChooseImageProps {
   closeSheet(): void;
 }
 
+export interface IImagesContainer {
+  images: string[];
+  isEditable: boolean;
+}
 export interface IImageCellProps {
   image: string;
   iconButtonProps: IIconButtonProps;
@@ -53,7 +57,7 @@ export interface IInputProps {
   onSubmitEditing?(): void;
   value: string;
   onChange(value: string): void;
-  isEditable?: boolean;
+  isEditable: boolean;
   numberOfLines?: number;
 }
 
@@ -82,6 +86,18 @@ export interface IFilterButtonStyle {
   buttonStyle: ViewStyle;
   selectedButtonStyle(value: boolean): ViewStyle;
   textStyle(value: boolean): ViewStyle;
+}
+
+export interface IInputStyle {
+  defaultInputStyle: ViewStyle;
+  selectedInputStyle(value: boolean): ViewStyle;
+}
+
+export interface IImagesContainerStyle {
+  containerStyle: ViewStyle;
+  contentContainerStyle: ViewStyle;
+  imageStyle: ViewStyle;
+  selectedContainerStyle(value: boolean): ViewStyle;
 }
 
 export interface ICustomButtonsProps {

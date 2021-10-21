@@ -3,7 +3,6 @@ import {ISwitcherStyle} from '../../helpers/ts-helpers/interfaces';
 
 const styles = StyleSheet.create<ISwitcherStyle>({
   switcherStyle: {
-    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },

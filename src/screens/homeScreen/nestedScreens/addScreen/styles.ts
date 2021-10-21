@@ -73,9 +73,8 @@ const styles = StyleSheet.create({
     right: '10%',
   },
   buttonContainerStyle: {
-    justifyContent: 'space-around',
-    marginHorizontal: 70,
-    marginTop: 10,
+    position: 'absolute',
+    top: 625,
   },
 });
 

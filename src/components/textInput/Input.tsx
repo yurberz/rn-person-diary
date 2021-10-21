@@ -1,5 +1,5 @@
-import React, {ForwardedRef, forwardRef, LegacyRef} from 'react';
-import {Text, View, TextInput} from 'react-native';
+import React, {forwardRef} from 'react';
+import {View, TextInput} from 'react-native';
 import {IInputProps} from '../../helpers/ts-helpers/interfaces';
 import styles from './styles';
 
@@ -12,7 +12,7 @@ const Input = forwardRef<TextInput, IInputProps>(
       maxLength,
       multiline = false,
       blurOnSubmit = false,
-      autoCapitalize = 'none',
+      autoCapitalize = 'sentences',
       autoFocus = false,
       returnKeyType,
       onSubmitEditing,
@@ -23,10 +23,11 @@ const Input = forwardRef<TextInput, IInputProps>(
     },
     ref,
   ) => {
+    const isInEditMode = isEditable;
     return (
       <View style={inputContainerStyle}>
         <TextInput
-          style={[styles.defaultInputStyle, inputStyle]}
+          style={[styles.defaultInputStyle, inputStyle, styles.selectedInputStyle(isEditable)]}
           placeholder={placeholder}
           maxLength={maxLength}
           multiline={multiline}

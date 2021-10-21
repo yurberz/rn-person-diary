@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     height: 50,
     paddingLeft: 20,
-    paddingRight: 20,
+    paddingRight: 10,
     alignItems: 'center',
     borderBottomWidth: 1,
     borderColor: 'gray',
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     flex: 1,
-    marginLeft: 'auto',
+    textAlign: 'right',
   },
   containerImage: {
     width: 47,
@@ -23,13 +23,16 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   containerTitle: {
+    // flex: 2,
+    width: 120,
     color: 'black',
     fontSize: 17,
     fontWeight: '700',
   },
   containerDescription: {
+    flex: 3,
     color: 'gray',
-    fontSize: 12,
+    fontSize: 14,
     marginHorizontal: 10,
   },
 });
