@@ -135,16 +135,6 @@ const AddScreen = ({navigation}: HomeStackProps) => {
           <View style={styles.leftSideStyle}>
             <Text style={styles.dateTextStyle}>{formattedDateTime}</Text>
           </View>
-
-          <View style={styles.rightSideStyle}>
-            <BlockButtons
-              buttonsContainerStyle={styles.headerButtonsContainerStyle}
-              calendarButton={() => setIsDateModal(true)}
-              imageButton={() => sheetRef.current!.open()}
-              recordButton={() => {}}
-              iconeSize={20}
-            />
-          </View>
         </View>
 
         <Input
@@ -157,6 +147,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
           onSubmitEditing={() => refSecondInput.current!.focus()}
           value={title}
           onChange={value => setTitle(value)}
+          isEditable={true}
         />
         <Input
           inputContainerStyle={styles.secondInputContainerStyle}
@@ -168,6 +159,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
           ref={refSecondInput}
           value={description}
           onChange={value => setDescription(value)}
+          isEditable={true}
         />
         <Input
           inputContainerStyle={styles.thirdInputContainerStyle}
@@ -178,9 +170,10 @@ const AddScreen = ({navigation}: HomeStackProps) => {
           returnKeyType="done"
           value={tags}
           onChange={onChange}
+          isEditable={true}
         />
 
-        {images.length > 0 ? <ImagesContainer images={images} /> : null}
+        {images.length > 0 ? <ImagesContainer images={images} isEditable={true}/> : null}
 
         <BlockButtons
           buttonsContainerStyle={styles.buttonContainerStyle}
