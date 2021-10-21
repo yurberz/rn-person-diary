@@ -141,7 +141,6 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
           </View>
         </View>
         <Input
-          // disabled={true}
           inputContainerStyle={styles.firstInputContainerStyle}
           inputStyle={styles.firstInputStyles}
           placeholder="Title*"
