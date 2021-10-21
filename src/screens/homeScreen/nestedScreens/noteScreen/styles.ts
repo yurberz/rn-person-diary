@@ -7,6 +7,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#ffffff',
   },
+  iconStyle: {
+    position: 'absolute',
+    top: '10%',
+    right: '10%',
+  },
   firstInputContainerStyle: {},
   secondInputContainerStyle: {},
   thirdInputContainerStyle: {},

@@ -5,6 +5,7 @@ import {
   TAutoCapitalize,
   TFilterButton,
   TCalendarMode,
+  TImageModel,
 } from './types';
 
 export interface IDiaryState {
@@ -12,14 +13,24 @@ export interface IDiaryState {
 }
 
 export interface IChooseImageProps {
-  stateImages: string[];
+  stateImages: TImageModel[];
   onFileSelected(value: any): void;
   closeSheet(): void;
 }
 
-export interface IImagesContainer {
-  images: string[];
-  isEditable: boolean;
+export interface IImageCellProps {
+  image: string;
+  iconButtonProps: IIconButtonProps;
+}
+
+export interface IImagesBlockProps {
+  images: TImageModel[];
+  onPress(id: string, url: string): void;
+  iconName: string;
+  iconSize: number;
+  iconColor: string;
+  iconStyle: object;
+  editable: boolean;
 }
 
 export interface INoteProps {
@@ -79,10 +90,10 @@ export interface IInputStyle {
   selectedInputStyle(value: boolean): ViewStyle;
 }
 
-export interface IImagesContainerStyle {
-  containerStyle: ViewStyle;
-  contentContainerStyle: ViewStyle;
-  imageStyle: ViewStyle;
+export interface IImagesBlockStyle {
+  columnWrapperStyle:ViewStyle,
+  flatListStyle:ViewStyle,
+  imageStyle:ViewStyle,
   selectedContainerStyle(value: boolean): ViewStyle;
 }
 
@@ -108,6 +119,7 @@ export interface IIconButtonProps {
   iconName: string;
   iconSize: number;
   iconColor: string;
+  buttonStyle?: object;
 }
 
 export interface IDatePickerProps {
