@@ -13,8 +13,8 @@ import CustomSwitcher from '../../../../components/customSwitcher/CustomSwitcher
 const DefaultHomeScreen = ({navigation: {navigate}}: HomeStackProps) => {
   const entries = useAppSelector(diary);
   const [searchInput, setSearchInput] = useState('');
-  const filtredEntries = useSearch(entries, searchInput);
-  const [inDateSort, setInDateSort] = useState(false);
+  const [isSortedByDate, setIsSortedByDate] = useState(false);
+  const filtredEntries = useSearch(entries, searchInput, isSortedByDate);
 
   const renderItem = ({item}: ListRenderItemInfo<INoteProps>) => {
     return <NoteCell note={item} onPress={() => navigate('NoteScreen', {note: item})} />;
@@ -41,8 +41,8 @@ const DefaultHomeScreen = ({navigation: {navigate}}: HomeStackProps) => {
       appendComponent={
         <CustomSwitcher 
         label="sort by date"
-        onPress={() => setInDateSort(!inDateSort)}
-        isSelected={inDateSort}
+        onPress={() => setIsSortedByDate(!isSortedByDate)}
+        isSelected={isSortedByDate}
         iconSize={40}
         />
       }

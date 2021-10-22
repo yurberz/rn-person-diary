@@ -11,16 +11,16 @@ interface NoteCellProps {
 
 const NoteCell: React.FC<NoteCellProps> = (props) => {
   const titleMaxLimit = 12;
-  const descriptionMaxLimit = 25;
+  const descriptionMaxLimit = 45;
   const description = props.note.description;
   const title = props.note.title;
 
     return (
       <View>
         <TouchableOpacity style={styles.viewContainer} onPress={props.onPress}>
-          <Text style={styles.containerTitle} numberOfLines={1}>
+          {title.length > 0 ? (<Text style={styles.containerTitle} numberOfLines={1}>
           {((title).length > titleMaxLimit) ? (((title).substring(0,titleMaxLimit-3)) + '...') : title}
-          </Text>
+          </Text>) : null}
           <Text style={styles.containerDescription} numberOfLines={1}>
             {((description).length > descriptionMaxLimit) ? (((description).substring(0,descriptionMaxLimit-3)) + '...') : description}
           </Text>
