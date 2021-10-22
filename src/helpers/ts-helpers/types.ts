@@ -16,13 +16,23 @@ export type HomeStackProps = StackScreenProps<
   'DefaultHomeScreen'
 >;
 
-export type SearchStackParamList = {
-  DefaultSearchScreen: undefined;
+export type FullImageProps = StackScreenProps<
+  HomeStackParamList,
+  'FullImageScreen'
+>;
+
+export type ImageGalleryStackParamList = {
+  DefaultImageGalleryScreen: {
+    image: string;
+  };
+  FullImageScreen: {
+    image: string;
+  };
 };
 
-export type SearchStackProps = StackScreenProps<
-  SearchStackParamList,
-  'DefaultSearchScreen'
+export type ImageGalleryStackProps = StackScreenProps<
+  ImageGalleryStackParamList,
+  'DefaultImageGalleryScreen'
 >;
 
 export type SettingsStackParamList = {
@@ -36,7 +46,7 @@ export type SettingsStackProps = StackScreenProps<
 
 export type DrawerParamList = {
   HomeScreen: undefined;
-  SearchScreen: undefined;
+  ImageGalleryScreen: undefined;
   SettingsScreen: undefined;
 };
 
@@ -45,10 +55,10 @@ export type DrawerContentProps = DrawerContentComponentProps;
 export type TEntryModel = {
   id: string;
   date: string;
-  title?: string;
-  description?: string;
-  tags?: string[];
-  images?: TImageModel[];
+  title: string;
+  description: string;
+  tags: string[];
+  images: TImageModel[];
   audio?: string;
 };
 

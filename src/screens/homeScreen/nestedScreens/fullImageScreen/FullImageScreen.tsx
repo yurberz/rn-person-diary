@@ -1,19 +1,11 @@
 import React from 'react';
-import {
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-  View,
-  Image,
-} from 'react-native';
-import {HomeStackProps} from '../../../../helpers/ts-helpers/types';
-
-const {width, height} = Dimensions.get('screen');
+import {StyleSheet, TouchableOpacity, View, Image} from 'react-native';
+import {FullImageProps} from '../../../../helpers/ts-helpers/types';
 
 const FullImageScreen = ({
   navigation: {goBack},
   route: {params},
-}: HomeStackProps) => {
+}: FullImageProps) => {
   const {image} = params;
 
   return (

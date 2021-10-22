@@ -144,3 +144,8 @@ export interface IBlockButtonsProps {
   recordButton(): void;
   iconeSize: number;
 }
+
+export interface ISectionImageData {
+  key: string;
+  list: TImageModel[];
+}
