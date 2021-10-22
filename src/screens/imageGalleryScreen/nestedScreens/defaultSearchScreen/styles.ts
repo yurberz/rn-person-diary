@@ -6,9 +6,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   imageStyle: {
-    width: 150,
-    height: 150,
-    margin: 10,
+    width: 80,
+    height: 80,
+    margin: 7,
     borderRadius: 7,
   },
 });

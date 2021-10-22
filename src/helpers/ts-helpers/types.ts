@@ -54,10 +54,10 @@ export type DrawerContentProps = DrawerContentComponentProps;
 export type TEntryModel = {
   id: string;
   date: string;
-  title?: string;
-  description?: string;
-  tags?: string[];
-  images?: TImageModel[];
+  title: string;
+  description: string;
+  tags: string[];
+  images: TImageModel[];
   audio?: string;
 };
 
