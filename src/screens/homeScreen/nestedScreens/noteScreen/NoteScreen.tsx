@@ -82,7 +82,10 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
               iconColor="rgb(255,69,68)"
             />
             <IconButton
-              onPress={() => editModeOn()}
+              onPress={() => {
+                editModeOn();
+                setDate(new Date());
+              }}
               iconName="pencil-sharp"
               iconSize={30}
               iconColor="black"

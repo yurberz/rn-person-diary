@@ -1,7 +1,8 @@
 import {useMemo} from 'react';
 import {TEntryModel} from '../helpers/ts-helpers/types';
 
-const useSearch = (entries: TEntryModel[], query: string): TEntryModel[] => {
+const useSearch = (entries: TEntryModel[], query: string, sorted: boolean): TEntryModel[] => {
+
     const filteredEntries = useMemo(() => {
 
       return entries.filter(entry => {
@@ -19,9 +20,16 @@ const useSearch = (entries: TEntryModel[], query: string): TEntryModel[] => {
         }
       });
     }, [query, entries]);
-
-
-  return filteredEntries;
+    if (sorted) {
+      const sortedEntriesByDate = filteredEntries.sort((a,b) => {
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      })
+      return sortedEntriesByDate;
+    } else {
+      return filteredEntries.sort((a,b) => {
+        return a.title.localeCompare(b.title);
+      });
+    }
 };
 
 export default useSearch;
