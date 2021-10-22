@@ -4,10 +4,11 @@ import {
   Platform,
   KeyboardAvoidingView,
   TextInput,
-  Button,
-  ScrollView,
+  Text,
+  LayoutAnimation,
 } from 'react-native';
-import {HomeStackProps} from '../../../../helpers/ts-helpers/types';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import {HomeStackProps, TImageModel} from '../../../../helpers/ts-helpers/types';
 import {useAppDispatch} from '../../../../hooks/reduxHooks';
 import {
   updateEntry,
@@ -17,16 +18,21 @@ import Input from '../../../../components/textInput/Input';
 import DatePickerModal from '../../../../components/datePickerModal/DatePickerModal';
 import IconButton from '../../../../components/iconButton/IconButton';
 import addHashtag from '../../../../helpers/function-helpers/addHashtag';
+import dateFormat from '../../../../helpers/function-helpers/dateFormat';
+import ChooseImage from '../../../../components/chooseImage/ChooseImage';
+import ButtonsBlock from '../../../../components/buttonsBlock/ButtonsBlock';
+import ImagesBlock from '../../../../components/imagesBlock/ImagesBlock';
 import moment from 'moment';
 import styles from './styles';
 
 const NoteScreen = ({navigation, route}: HomeStackProps) => {
-  const entry = route.params.note;
+  const {note} = route.params;
 
-  const [title, setTitle] = useState(entry.title);
-  const [description, setDescription] = useState(entry.description);
-  const [tags, setTags] = useState(entry.tags.join(' '));
-  const [date, setDate] = useState(moment(entry.date).toDate());
+  const [title, setTitle] = useState(note.title);
+  const [description, setDescription] = useState(note.description);
+  const [tags, setTags] = useState(note.tags.join(' '));
+  const [date, setDate] = useState(moment(note.date).toDate());
+  const [images, setImages] = useState<TImageModel[]>(note.images);
   const [isDateModal, setIsDateModal] = useState(false);
   const [isInEditMode, setIsInEditMode] = useState(false);
   const dispatch = useAppDispatch();
@@ -36,7 +42,7 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
   const handleSubmit = () => {
     dispatch(
       updateEntry({
-        id: entry.id,
+        id: note.id,
         date,
         title,
         description,
@@ -46,7 +52,7 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
   };
 
   const removeEntry = () => {
-    dispatch(deleteEntry(entry.id));
+    dispatch(deleteEntry(note.id));
     navigation.navigate('DefaultHomeScreen');
   };
 
@@ -64,6 +70,7 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
+        right: 15,
       },
       headerRight: () => {
         return !isInEditMode ? (
@@ -96,8 +103,9 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
     });
   }, [navigation, isInEditMode, removeEntry]);
 
-  const refFirstInput = useRef<TextInput>();
-  const refSecondInput = useRef<TextInput>();
+  const refFirstInput = useRef<TextInput>(null);
+  const refSecondInput = useRef<TextInput>(null);
+  const sheetRef = useRef<RBSheet>(null);
 
   const onChange = (value: string) => {
     const hashTagValue = addHashtag(value);
@@ -105,88 +113,108 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
     setTags(hashTagValue);
   };
 
+  const onFileSelected = (images: TImageModel[]) => {
+    setImages(images);
+  };
+
+  const removeImage = (id: string) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+
+    setImages(prev => prev.filter(image => image.id !== id));
+  };
+
+  const showImage = (_: any, url: string) => {
+    navigation.navigate('FullImageScreen', {
+      image: url,
+    });
+  };
+
+  const formattedDateTime = dateFormat(date);
+
   return (
-    <ScrollView>
-      <View style={styles.containerStyle}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          {isInEditMode ? (
-            <DatePickerModal
-              open={isDateModal}
-              date={date}
-              onDateChange={setDate}
-              onConfirm={date => {
-                setIsDateModal(false);
-                setDate(date);
-              }}
-              onCancel={() => setIsDateModal(false)}
-              iconProps={{
-                onPress: () => setIsDateModal(true),
-                iconName: 'ios-calendar',
-                iconSize: 20,
-                iconColor: 'rgb(28, 28, 30)',
-              }}
-            />
-          ) : (
-            <DatePickerModal date={date} />
-          )}
-          <Input
-            disabled={true}
-            inputContainerStyle={styles.firstInputContainerStyle}
-            inputStyle={styles.firstInputStyles}
-            placeholder="Title*"
-            maxLength={200}
-            returnKeyType="next"
-            ref={refFirstInput}
-            onSubmitEditing={() => refSecondInput.current?.focus()}
-            value={title}
-            onChange={value => setTitle(value)}
-            isEditable={isInEditMode}
+    <View style={styles.containerStyle}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <View style={styles.headerStyle}>
+          <View style={styles.leftSideStyle}>
+            <Text style={styles.dateTextStyle}>{formattedDateTime}</Text>
+          </View>
+        </View>
+        <Input
+          inputContainerStyle={styles.firstInputContainerStyle}
+          inputStyle={styles.firstInputStyles}
+          placeholder="Title*"
+          maxLength={200}
+          returnKeyType="next"
+          ref={refFirstInput}
+          onSubmitEditing={() => refSecondInput.current?.focus()}
+          value={title}
+          onChange={value => setTitle(value)}
+          isEditable={isInEditMode}
+        />
+        <Input
+          inputContainerStyle={styles.secondInputContainerStyle}
+          inputStyle={styles.secondInputStyles}
+          placeholder="Description*"
+          maxLength={2000}
+          multiline={true}
+          returnKeyType="done"
+          ref={refSecondInput}
+          value={description}
+          onChange={value => setDescription(value)}
+          isEditable={isInEditMode}
+          numberOfLines={20}
+        />
+        <Input
+          inputContainerStyle={styles.thirdInputContainerStyle}
+          inputStyle={styles.thirdInputStyles}
+          autoCapitalize={'none'}
+          placeholder="tags"
+          maxLength={200}
+          blurOnSubmit={true}
+          returnKeyType="done"
+          value={tags}
+          onChange={onChange}
+          isEditable={isInEditMode}
+        />
+        {images.length > 0 ? (
+          <ImagesBlock
+            images={images}
+            onPress={isInEditMode ?  removeImage : showImage}
+            iconName={isInEditMode ? "ios-close-outline" : "ios-expand"}
+            iconSize={30}
+            iconColor="white"
+            iconStyle={styles.iconStyle}
+            editable={isInEditMode}
           />
-          <Input
-            inputContainerStyle={styles.secondInputContainerStyle}
-            inputStyle={styles.secondInputStyles}
-            placeholder="Description*"
-            maxLength={2000}
-            multiline={true}
-            returnKeyType="done"
-            ref={refSecondInput}
-            value={description}
-            onChange={value => setDescription(value)}
-            isEditable={isInEditMode}
-            numberOfLines={20}
+        ) : null}
+        <DatePickerModal
+          open={isDateModal}
+          date={date}
+          onDateChange={setDate}
+          onConfirm={date => {
+            setIsDateModal(false);
+            setDate(date);
+          }}
+          onCancel={() => setIsDateModal(false)}
+        />
+        <ChooseImage
+          stateImages={images}
+          onFileSelected={onFileSelected}
+          closeSheet={() => sheetRef.current!.close()}
+          ref={sheetRef}
+        />
+        {isInEditMode && (
+          <ButtonsBlock
+            buttonsContainerStyle={styles.buttonContainerStyle}
+            calendarButton={() => setIsDateModal(true)}
+            imageButton={() => sheetRef.current!.open()}
+            recordButton={() => {}}
+            iconeSize={30}
           />
-          <Input
-            inputContainerStyle={styles.thirdInputContainerStyle}
-            inputStyle={styles.thirdInputStyles}
-            placeholder="tags"
-            maxLength={200}
-            blurOnSubmit={true}
-            returnKeyType="done"
-            value={tags}
-            onChange={onChange}
-            isEditable={isInEditMode}
-          />
-          {/* <Button title={'test'} onPress={() => console.log(isInEditMode)} /> */}
-          {isInEditMode && (
-            <View style={styles.featuresBarStyles}>
-              <IconButton
-                onPress={() => setIsDateModal(true)}
-                iconName="ios-calendar"
-                iconSize={30}
-                iconColor="rgb(28, 28, 30)"
-              />
-              <IconButton
-                onPress={() => console.log('a')}
-                iconName="images"
-                iconSize={30}
-                iconColor="rgb(28, 28, 30)"
-              />
-            </View>
-          )}
-        </KeyboardAvoidingView>
-      </View>
-    </ScrollView>
+        )}
+      </KeyboardAvoidingView>
+    </View>
   );
 };
 

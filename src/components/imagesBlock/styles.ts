@@ -1,12 +1,17 @@
 import {StyleSheet} from 'react-native';
+import { IImagesBlockStyle } from '../../helpers/ts-helpers/interfaces';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<IImagesBlockStyle>({
   columnWrapperStyle: {
     paddingHorizontal: 5,
   },
+  selectedContainerStyle: (isInEditMode: boolean) => ({
+        backgroundColor: isInEditMode ? 'rgba(236, 240, 241, 0.5)' : 'white',
+      }),
   flatListStyle: {
-    marginTop: 10,
-    height: 250,
+    height: 170,
+    borderRadius: 10,
+    marginVertical: 10,
   },
   imageStyle: {
     width: 150,

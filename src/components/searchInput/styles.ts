@@ -2,14 +2,18 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   searchWrapperStyle: {
-    marginVertical: 30,
+    marginTop: 0,
+    paddingHorizontal: 50,
     width: '100%',
+    backgroundColor: 'white',
+    borderBottomLeftRadius: 30,
   },
   prependContainerStyle: {},
   searchInputContainerStyle: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 5,
+    left: 30,
   },
   searchInputStyle: {
     flex: 1,
@@ -19,9 +23,8 @@ const styles = StyleSheet.create({
     borderBottomColor: '#000000',
   },
   appendContainerStyle: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 20,
+    left: 20,
+    marginTop: 0,
   },
 });
 
