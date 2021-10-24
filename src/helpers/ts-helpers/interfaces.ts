@@ -10,6 +10,8 @@ import {
 
 export interface IDiaryState {
   entries: TEntryModel[];
+  isSecurity: boolean;
+  isPinLockScreen: boolean;
 }
 
 export interface IChooseImageProps {
@@ -95,9 +97,9 @@ export interface IInputStyle {
 }
 
 export interface IImagesBlockStyle {
-  columnWrapperStyle:ViewStyle,
-  flatListStyle:ViewStyle,
-  imageStyle:ViewStyle,
+  columnWrapperStyle: ViewStyle;
+  flatListStyle: ViewStyle;
+  imageStyle: ViewStyle;
   selectedContainerStyle(value: boolean): ViewStyle;
 }
 

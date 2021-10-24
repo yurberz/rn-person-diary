@@ -4,6 +4,8 @@ import {IDiaryState} from '../../helpers/ts-helpers/interfaces';
 
 const initialState: IDiaryState = {
   entries: [],
+  isSecurity: false,
+  isPinLockScreen: false,
 };
 
 export const diarySlice = createSlice({
@@ -11,6 +13,7 @@ export const diarySlice = createSlice({
   initialState,
   reducers: {
     addEntry: (state, {payload}) => ({
+      ...state,
       entries: [
         ...state.entries,
         {
@@ -20,6 +23,7 @@ export const diarySlice = createSlice({
       ],
     }),
     updateEntry: (state, {payload}) => ({
+      ...state,
       entries: [
         ...state.entries.map(entry => {
           entry.id === payload.id ? (entry = {...entry, ...payload}) : entry;
@@ -29,10 +33,25 @@ export const diarySlice = createSlice({
       ],
     }),
     deleteEntry: (state, {payload}) => ({
+      ...state,
       entries: [...state.entries.filter(entry => entry.id !== payload)],
+    }),
+    toggleOnOffSecurity: state => ({
+      ...state,
+      isSecurity: !state.isSecurity,
+    }),
+    showPinLockScreen: state => ({
+      ...state,
+      isPinLockScreen: !state.isPinLockScreen,
     }),
   },
 });
 
 export default diarySlice.reducer;
-export const {addEntry, updateEntry, deleteEntry} = diarySlice.actions;
+export const {
+  addEntry,
+  updateEntry,
+  deleteEntry,
+  toggleOnOffSecurity,
+  showPinLockScreen,
+} = diarySlice.actions;
