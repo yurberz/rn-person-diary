@@ -9,7 +9,7 @@ import IconButton from '../../components/iconButton/IconButton';
 import DefaultHomeScreen from './nestedScreens/defaultHomeScreen/DefaultHomeScreen';
 import AddScreen from './nestedScreens/addScreen/AddScreen';
 import NoteScreen from './nestedScreens/noteScreen/NoteScreen';
-import FullImageScreen from './nestedScreens/fullImageScreen/FullImageScreen';
+import FullImageScreen from '../fullImageScreen/FullImageScreen';
 
 const HomeStack = createStackNavigator<HomeStackParamList>();
 

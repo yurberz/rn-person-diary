@@ -1,6 +1,7 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View, Image} from 'react-native';
-import {FullImageProps} from '../../../../helpers/ts-helpers/types';
+import {TouchableOpacity, View, Image} from 'react-native';
+import {FullImageProps} from '../../helpers/ts-helpers/types';
+import styles from './styles';
 
 const FullImageScreen = ({
   navigation: {goBack},
@@ -29,10 +30,3 @@ const FullImageScreen = ({
 };
 
 export default FullImageScreen;
-
-const styles = StyleSheet.create({
-  imageStyle: {
-    flex: 0.5,
-    borderRadius: 7,
-  },
-});

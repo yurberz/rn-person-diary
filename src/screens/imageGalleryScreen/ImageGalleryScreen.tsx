@@ -7,7 +7,7 @@ import {
 } from '../../helpers/ts-helpers/types';
 import IconButton from '../../components/iconButton/IconButton';
 import DefaultSearchScreen from './nestedScreens/defaultSearchScreen/DefaultImageGalleryScreen';
-import FullImageScreen from '../homeScreen/nestedScreens/fullImageScreen/FullImageScreen';
+import FullImageScreen from '../fullImageScreen/FullImageScreen';
 
 const ImageGalleryStack = createStackNavigator<ImageGalleryStackParamList>();
 
