@@ -40,6 +40,7 @@ const PersonalDiary: React.FC = () => {
     }
 
     dispatch(showPinLockScreen());
+    setPINCodeStatus('choose');
   };
 
   return (
