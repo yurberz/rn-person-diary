@@ -1,6 +1,6 @@
 import {StackScreenProps} from '@react-navigation/stack';
 import {DrawerContentComponentProps} from '@react-navigation/drawer';
-import { INoteProps } from './interfaces';
+import {INoteProps} from './interfaces';
 
 export type HomeStackParamList = {
   DefaultHomeScreen: undefined;
@@ -75,3 +75,5 @@ export type TImageModel = {
   id: string;
   url: string;
 };
+
+export type TPINCodeStatus = 'choose' | 'enter' | 'locked';
