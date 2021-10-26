@@ -7,6 +7,7 @@ import {useAppDispatch, useAppSelector} from '../hooks/reduxHooks';
 import {showPinLockScreen} from '../redux/reducers/diaryReducer';
 import TestScreen from '../screens/TestScreen';
 import DrawerNavigation from '../navigation/DrawerNavigation';
+import AudioRecorderScreen from '../screens/audioRecorderScreen/AudioRecorderScreen';
 
 const PersonalDiary: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -45,7 +46,7 @@ const PersonalDiary: React.FC = () => {
 
   return (
     <>
-      {isPinLockScreen ? (
+      {/* {isPinLockScreen ? (
         <PINCode
           status={PINCodeStatus}
           touchIDDisabled={true}
@@ -55,8 +56,9 @@ const PersonalDiary: React.FC = () => {
         <NavigationContainer>
           <DrawerNavigation />
         </NavigationContainer>
-      )}
+      )} */}
       {/* <TestScreen /> */}
+      <AudioRecorderScreen />
     </>
   );
 };

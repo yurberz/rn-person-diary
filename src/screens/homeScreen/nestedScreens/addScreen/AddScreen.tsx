@@ -35,8 +35,9 @@ if (
 }
 
 const AddScreen = ({navigation}: HomeStackProps) => {
-  const dispatch = useAppDispatch();
+  const dispatchAction = useAppDispatch();
   const isFocused = useIsFocused();
+  const {navigate, setOptions, addListener, dispatch} = navigation;
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -52,7 +53,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
     isAddAction = true;
 
     if (title || description) {
-      dispatch(
+      dispatchAction(
         addEntry({
           date,
           title,
@@ -63,11 +64,11 @@ const AddScreen = ({navigation}: HomeStackProps) => {
       );
     }
 
-    navigation.navigate('DefaultHomeScreen');
+    navigate('DefaultHomeScreen');
   };
 
   useEffect(() => {
-    navigation.setOptions({
+    setOptions({
       headerRight: () => (
         <IconButton
           onPress={handleSubmit}
@@ -84,6 +85,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
     setDescription('');
     setTags('');
     setDate(new Date());
+    setImages([]);
     isAddAction = false;
   }, [isFocused]);
 
@@ -93,7 +95,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
 
   useEffect(
     () =>
-      navigation.addListener(
+      addListener(
         'beforeRemove',
         (evt: {preventDefault: () => void; data: {action: any}}) => {
           if (!hasUnsavedChanges() || isAddAction) {
@@ -114,7 +116,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
               {
                 text: 'Discard',
                 style: 'destructive',
-                onPress: () => navigation.dispatch(evt.data.action),
+                onPress: () => dispatch(evt.data.action),
               },
             ],
           );
@@ -146,7 +148,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
   };
 
   const showImage = (_: any, url: string) => {
-    navigation.navigate('FullImageScreen', {
+    navigate('FullImageScreen', {
       image: url,
     });
   };
@@ -214,7 +216,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
           buttonsContainerStyle={styles.buttonContainerStyle}
           calendarButton={() => setIsDateModal(true)}
           imageButton={() => sheetRef.current!.open()}
-          recordButton={() => {}}
+          recordButton={() => navigation.navigate('AudioRecorderScreen')}
           iconeSize={30}
         />
 

@@ -20,10 +20,6 @@ export interface IChooseImageProps {
   closeSheet(): void;
 }
 
-export interface IImagesContainer {
-  images: string[];
-  isEditable: boolean;
-}
 export interface IImageCellProps {
   image: string;
   iconButtonProps: IIconButtonProps;

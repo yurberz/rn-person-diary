@@ -9,6 +9,7 @@ export type HomeStackParamList = {
   FullImageScreen: {
     image: string;
   };
+  AudioRecorderScreen: undefined;
 };
 
 export type HomeStackProps = StackScreenProps<

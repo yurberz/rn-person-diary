@@ -10,6 +10,7 @@ import DefaultHomeScreen from './nestedScreens/defaultHomeScreen/DefaultHomeScre
 import AddScreen from './nestedScreens/addScreen/AddScreen';
 import NoteScreen from './nestedScreens/noteScreen/NoteScreen';
 import FullImageScreen from '../fullImageScreen/FullImageScreen';
+import AudioRecorderScreen from '../audioRecorderScreen/AudioRecorderScreen';
 
 const HomeStack = createStackNavigator<HomeStackParamList>();
 
@@ -85,6 +86,14 @@ const HomeScreen = ({
       <HomeStack.Screen
         name="FullImageScreen"
         component={FullImageScreen}
+        options={{
+          headerShown: false,
+          presentation: 'transparentModal',
+        }}
+      />
+      <HomeStack.Screen
+        name="AudioRecorderScreen"
+        component={AudioRecorderScreen}
         options={{
           headerShown: false,
           presentation: 'transparentModal',
