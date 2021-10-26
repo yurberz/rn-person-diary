@@ -8,15 +8,10 @@ import {
   Alert,
   LayoutAnimation,
   UIManager,
-  Pressable,
-  Animated,
-  Button,
 } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {useIsFocused} from '@react-navigation/core';
-import {Audio} from 'expo-av';
-import {CountdownCircleTimer} from 'react-native-countdown-circle-timer';
-import LinearGradient from 'react-native-linear-gradient';
+import {Audio, AVPlaybackStatus} from 'expo-av';
 import {
   AddScreenProps,
   TImageModel,
@@ -45,20 +40,15 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
   const isFocused = useIsFocused();
   const {navigate, setOptions, addListener, dispatch} = navigation;
 
-  const [constTime, setConstTime] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [sound, setSound] = useState<Audio.Sound>();
-
-  useEffect(() => {
-    setConstTime(route.params?.data?.time);
-  }, [route.params?.data?.time, isFocused]);
-
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState('');
   const [date, setDate] = useState(new Date());
   const [images, setImages] = useState<TImageModel[]>([]);
+  const [recording, setRecording] = useState('');
+  const [sound, setSound] = useState<Audio.Sound>();
   const [isDateModal, setIsDateModal] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   let isAddAction: boolean = false;
 
   const tagsArr = tags.split(' ');
@@ -74,6 +64,7 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
           description,
           tags: tags.length > 2 ? tagsArr : [],
           images,
+          audio: recording,
         }),
       );
     }
@@ -95,13 +86,25 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
   }, [navigation, handleSubmit]);
 
   useEffect(() => {
-    setTitle('');
-    setDescription('');
-    setTags('');
-    setDate(new Date());
-    setImages([]);
-    isAddAction = false;
-  }, [isFocused]);
+    setRecording(route.params?.uri);
+  }, [route.params?.uri]);
+
+  // useEffect(() => {
+  //   return sound
+  //     ? () => {
+  //         sound.unloadAsync();
+  //       }
+  //     : undefined;
+  // }, [sound]);
+
+  // useEffect(() => {
+  //   setTitle('');
+  //   setDescription('');
+  //   setTags('');
+  //   setDate(new Date());
+  //   setImages([]);
+  //   isAddAction = false;
+  // }, [isFocused]);
 
   const hasUnsavedChanges = () => {
     return title !== '' || description !== '';
@@ -139,13 +142,11 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
     [navigation, hasUnsavedChanges],
   );
 
-  const refFirstInput = useRef<TextInput>(null);
   const refSecondInput = useRef<TextInput>(null);
   const sheetRef = useRef<RBSheet>(null);
 
   const onChange = (value: string) => {
     const hashTagValue = addHashtag(value);
-
     setTags(hashTagValue);
   };
 
@@ -153,27 +154,27 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
     setImages(images);
   };
 
-  const formattedDateTime = dateFormat(date);
-
   const removeImage = (id: string) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-
     setImages(prev => prev.filter(image => image.id !== id));
   };
 
-  const playAudio = async () => {
-    console.log('Loading Sound');
+  const playSound = async () => {
+    const onPlaybackStatusUpdate = (playbackStatus: AVPlaybackStatus) => {
+      playbackStatus.isPlaying ? setIsPlaying(true) : setIsPlaying(false);
+    };
+
     const {sound} = await Audio.Sound.createAsync(
-      {uri: route?.params?.data?.uri},
-      {shouldPlay: false},
+      {uri: recording},
+      {},
+      onPlaybackStatusUpdate,
     );
 
     setSound(sound);
-    setIsPlaying(true);
-
-    console.log('Playing Sound');
     await sound.playAsync();
   };
+
+  const formattedDateTime = dateFormat(date);
 
   return (
     <View style={styles.containerStyle}>
@@ -191,7 +192,6 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
           placeholder="Title*"
           maxLength={200}
           returnKeyType="next"
-          ref={refFirstInput}
           onSubmitEditing={() => refSecondInput.current!.focus()}
           value={title}
           onChange={value => setTitle(value)}
@@ -221,34 +221,30 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
           isEditable={true}
         />
 
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
-          <CountdownCircleTimer
-            key={isPlaying}
-            isPlaying={isPlaying}
-            duration={constTime}
-            colors={[
-              ['#F91561', 0.5],
-              ['#F9195F', 0.3],
-              ['#FADD0B', 0.2],
-            ]}
-            onComplete={() => setIsPlaying(false)}
-            size={100}>
-            {({remainingTime, elapsedTime}) => (
-              <Pressable onPress={playAudio}>
-                <LinearGradient
-                  colors={['#F9195F', '#FADD0B']}
-                  style={styles.linearGradient}>
-                  <Animated.Text style={styles.textStyle}>
-                    {remainingTime}
-                  </Animated.Text>
-                  <Text style={styles.secsTextStyle}>secs left</Text>
-                </LinearGradient>
-              </Pressable>
-            )}
-          </CountdownCircleTimer>
-        </View>
+        {recording ? (
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: 50,
+            }}>
+            <IconButton
+              onPress={playSound}
+              iconName={
+                isPlaying ? 'ios-play-circle' : 'ios-play-circle-outline'
+              }
+              iconSize={40}
+              iconColor={isPlaying ? 'rgb(0,122,255)' : 'rgb(28, 28, 30)'}
+            />
 
-        <Button title="PLAY" onPress={playAudio} />
+            <IconButton
+              onPress={() => setRecording('')}
+              iconName="ios-close-outline"
+              iconSize={15}
+              iconColor="rgb(28, 28, 30)"
+            />
+          </View>
+        ) : null}
 
         {images.length > 0 ? (
           <ImagesBlock
@@ -266,7 +262,7 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
           buttonsContainerStyle={styles.buttonContainerStyle}
           calendarButton={() => setIsDateModal(true)}
           imageButton={() => sheetRef.current!.open()}
-          recordButton={() => navigation.navigate('AudioRecorderScreen')}
+          recordButton={() => navigate('AudioRecorderScreen')}
           iconeSize={30}
         />
 

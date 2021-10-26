@@ -5,11 +5,9 @@ import {INoteProps} from './interfaces';
 export type HomeStackParamList = {
   DefaultHomeScreen: undefined;
   AddScreen: {
-    data: {
-      uri: string;
-      time: number;
-    };
+    uri: string;
   };
+
   NoteScreen: {note: INoteProps};
   FullImageScreen: {
     image: string;
@@ -67,7 +65,7 @@ export type TEntryModel = {
   description: string;
   tags: string[];
   images: TImageModel[];
-  audio?: string;
+  audio: string;
 };
 
 export type TAutoCapitalize = 'none' | 'sentences' | 'words' | 'characters';
