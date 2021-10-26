@@ -11,8 +11,9 @@ import {
 } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {useIsFocused} from '@react-navigation/core';
+import {Audio, AVPlaybackStatus} from 'expo-av';
 import {
-  HomeStackProps,
+  AddScreenProps,
   TImageModel,
 } from '../../../../helpers/ts-helpers/types';
 import addHashtag from '../../../../helpers/function-helpers/addHashtag';
@@ -34,16 +35,20 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-const AddScreen = ({navigation}: HomeStackProps) => {
-  const dispatch = useAppDispatch();
+const AddScreen = ({navigation, route}: AddScreenProps) => {
+  const dispatchAction = useAppDispatch();
   const isFocused = useIsFocused();
+  const {navigate, setOptions, addListener, dispatch} = navigation;
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState('');
   const [date, setDate] = useState(new Date());
   const [images, setImages] = useState<TImageModel[]>([]);
+  const [recording, setRecording] = useState('');
+  const [sound, setSound] = useState<Audio.Sound>();
   const [isDateModal, setIsDateModal] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   let isAddAction: boolean = false;
 
   const tagsArr = tags.split(' ');
@@ -52,22 +57,23 @@ const AddScreen = ({navigation}: HomeStackProps) => {
     isAddAction = true;
 
     if (title || description) {
-      dispatch(
+      dispatchAction(
         addEntry({
           date,
           title,
           description,
           tags: tags.length > 2 ? tagsArr : [],
           images,
+          audio: recording,
         }),
       );
     }
 
-    navigation.navigate('DefaultHomeScreen');
+    navigate('DefaultHomeScreen');
   };
 
   useEffect(() => {
-    navigation.setOptions({
+    setOptions({
       headerRight: () => (
         <IconButton
           onPress={handleSubmit}
@@ -80,12 +86,25 @@ const AddScreen = ({navigation}: HomeStackProps) => {
   }, [navigation, handleSubmit]);
 
   useEffect(() => {
-    setTitle('');
-    setDescription('');
-    setTags('');
-    setDate(new Date());
-    isAddAction = false;
-  }, [isFocused]);
+    setRecording(route.params?.uri);
+  }, [route.params?.uri]);
+
+  // useEffect(() => {
+  //   return sound
+  //     ? () => {
+  //         sound.unloadAsync();
+  //       }
+  //     : undefined;
+  // }, [sound]);
+
+  // useEffect(() => {
+  //   setTitle('');
+  //   setDescription('');
+  //   setTags('');
+  //   setDate(new Date());
+  //   setImages([]);
+  //   isAddAction = false;
+  // }, [isFocused]);
 
   const hasUnsavedChanges = () => {
     return title !== '' || description !== '';
@@ -93,7 +112,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
 
   useEffect(
     () =>
-      navigation.addListener(
+      addListener(
         'beforeRemove',
         (evt: {preventDefault: () => void; data: {action: any}}) => {
           if (!hasUnsavedChanges() || isAddAction) {
@@ -114,7 +133,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
               {
                 text: 'Discard',
                 style: 'destructive',
-                onPress: () => navigation.dispatch(evt.data.action),
+                onPress: () => dispatch(evt.data.action),
               },
             ],
           );
@@ -123,13 +142,11 @@ const AddScreen = ({navigation}: HomeStackProps) => {
     [navigation, hasUnsavedChanges],
   );
 
-  const refFirstInput = useRef<TextInput>(null);
   const refSecondInput = useRef<TextInput>(null);
   const sheetRef = useRef<RBSheet>(null);
 
   const onChange = (value: string) => {
     const hashTagValue = addHashtag(value);
-
     setTags(hashTagValue);
   };
 
@@ -137,21 +154,27 @@ const AddScreen = ({navigation}: HomeStackProps) => {
     setImages(images);
   };
 
-  const formattedDateTime = dateFormat(date);
-
   const removeImage = (id: string) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-
     setImages(prev => prev.filter(image => image.id !== id));
   };
 
-  const showImage = (_: any, url: string) => {
-    navigation.navigate('FullImageScreen', {
-      image: url,
-    });
+  const playSound = async () => {
+    const onPlaybackStatusUpdate = (playbackStatus: AVPlaybackStatus) => {
+      playbackStatus.isPlaying ? setIsPlaying(true) : setIsPlaying(false);
+    };
+
+    const {sound} = await Audio.Sound.createAsync(
+      {uri: recording},
+      {},
+      onPlaybackStatusUpdate,
+    );
+
+    setSound(sound);
+    await sound.playAsync();
   };
 
-  // update
+  const formattedDateTime = dateFormat(date);
 
   return (
     <View style={styles.containerStyle}>
@@ -169,7 +192,6 @@ const AddScreen = ({navigation}: HomeStackProps) => {
           placeholder="Title*"
           maxLength={200}
           returnKeyType="next"
-          ref={refFirstInput}
           onSubmitEditing={() => refSecondInput.current!.focus()}
           value={title}
           onChange={value => setTitle(value)}
@@ -198,6 +220,32 @@ const AddScreen = ({navigation}: HomeStackProps) => {
           onChange={onChange}
           isEditable={true}
         />
+
+        {recording ? (
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: 50,
+            }}>
+            <IconButton
+              onPress={playSound}
+              iconName={
+                isPlaying ? 'ios-play-circle' : 'ios-play-circle-outline'
+              }
+              iconSize={40}
+              iconColor={isPlaying ? 'rgb(0,122,255)' : 'rgb(28, 28, 30)'}
+            />
+
+            <IconButton
+              onPress={() => setRecording('')}
+              iconName="ios-close-outline"
+              iconSize={15}
+              iconColor="rgb(28, 28, 30)"
+            />
+          </View>
+        ) : null}
+
         {images.length > 0 ? (
           <ImagesBlock
             images={images}
@@ -214,7 +262,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
           buttonsContainerStyle={styles.buttonContainerStyle}
           calendarButton={() => setIsDateModal(true)}
           imageButton={() => sheetRef.current!.open()}
-          recordButton={() => {}}
+          recordButton={() => navigate('AudioRecorderScreen')}
           iconeSize={30}
         />
 

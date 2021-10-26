@@ -10,17 +10,9 @@ const FullImageScreen = ({
   const {image} = params;
 
   return (
-    <View
-      style={{
-        backgroundColor: 'rgba(0, 0, 0, 0.3)',
-        flex: 1,
-        paddingHorizontal: 10,
-      }}>
+    <View style={styles.containerStyle}>
       <TouchableOpacity
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-        }}
+        style={styles.imageContainerStyle}
         activeOpacity={0.8}
         onPress={() => goBack()}>
         <Image source={{uri: image}} style={styles.imageStyle} />

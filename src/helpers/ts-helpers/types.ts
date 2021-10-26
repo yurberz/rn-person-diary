@@ -4,17 +4,23 @@ import {INoteProps} from './interfaces';
 
 export type HomeStackParamList = {
   DefaultHomeScreen: undefined;
-  AddScreen: undefined;
+  AddScreen: {
+    uri: string;
+  };
+
   NoteScreen: {note: INoteProps};
   FullImageScreen: {
     image: string;
   };
+  AudioRecorderScreen: undefined;
 };
 
 export type HomeStackProps = StackScreenProps<
   HomeStackParamList,
   'DefaultHomeScreen'
 >;
+
+export type AddScreenProps = StackScreenProps<HomeStackParamList, 'AddScreen'>;
 
 export type FullImageProps = StackScreenProps<
   HomeStackParamList,
@@ -59,7 +65,7 @@ export type TEntryModel = {
   description: string;
   tags: string[];
   images: TImageModel[];
-  audio?: string;
+  audio: string;
 };
 
 export type TAutoCapitalize = 'none' | 'sentences' | 'words' | 'characters';

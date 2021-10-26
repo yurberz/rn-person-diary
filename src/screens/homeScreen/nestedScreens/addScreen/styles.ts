@@ -76,6 +76,22 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 625,
   },
+  linearGradient: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 90,
+    height: 90,
+    borderRadius: 90 / 2,
+  },
+  textStyle: {
+    fontSize: 20,
+    color: '#ffffff',
+  },
+  secsTextStyle: {
+    fontSize: 9,
+    color: '#ffffff',
+    opacity: 0.7,
+  },
 });
 
 export default styles;
