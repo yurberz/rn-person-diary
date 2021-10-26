@@ -4,7 +4,12 @@ import {INoteProps} from './interfaces';
 
 export type HomeStackParamList = {
   DefaultHomeScreen: undefined;
-  AddScreen: undefined;
+  AddScreen: {
+    data: {
+      uri: string;
+      time: number;
+    };
+  };
   NoteScreen: {note: INoteProps};
   FullImageScreen: {
     image: string;
@@ -16,6 +21,8 @@ export type HomeStackProps = StackScreenProps<
   HomeStackParamList,
   'DefaultHomeScreen'
 >;
+
+export type AddScreenProps = StackScreenProps<HomeStackParamList, 'AddScreen'>;
 
 export type FullImageProps = StackScreenProps<
   HomeStackParamList,

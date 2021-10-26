@@ -8,11 +8,17 @@ import {
   Alert,
   LayoutAnimation,
   UIManager,
+  Pressable,
+  Animated,
+  Button,
 } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {useIsFocused} from '@react-navigation/core';
+import {Audio} from 'expo-av';
+import {CountdownCircleTimer} from 'react-native-countdown-circle-timer';
+import LinearGradient from 'react-native-linear-gradient';
 import {
-  HomeStackProps,
+  AddScreenProps,
   TImageModel,
 } from '../../../../helpers/ts-helpers/types';
 import addHashtag from '../../../../helpers/function-helpers/addHashtag';
@@ -34,10 +40,18 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-const AddScreen = ({navigation}: HomeStackProps) => {
+const AddScreen = ({navigation, route}: AddScreenProps) => {
   const dispatchAction = useAppDispatch();
   const isFocused = useIsFocused();
   const {navigate, setOptions, addListener, dispatch} = navigation;
+
+  const [constTime, setConstTime] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [sound, setSound] = useState<Audio.Sound>();
+
+  useEffect(() => {
+    setConstTime(route.params?.data?.time);
+  }, [route.params?.data?.time, isFocused]);
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -147,13 +161,19 @@ const AddScreen = ({navigation}: HomeStackProps) => {
     setImages(prev => prev.filter(image => image.id !== id));
   };
 
-  const showImage = (_: any, url: string) => {
-    navigate('FullImageScreen', {
-      image: url,
-    });
-  };
+  const playAudio = async () => {
+    console.log('Loading Sound');
+    const {sound} = await Audio.Sound.createAsync(
+      {uri: route?.params?.data?.uri},
+      {shouldPlay: false},
+    );
 
-  // update
+    setSound(sound);
+    setIsPlaying(true);
+
+    console.log('Playing Sound');
+    await sound.playAsync();
+  };
 
   return (
     <View style={styles.containerStyle}>
@@ -200,6 +220,36 @@ const AddScreen = ({navigation}: HomeStackProps) => {
           onChange={onChange}
           isEditable={true}
         />
+
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <CountdownCircleTimer
+            key={isPlaying}
+            isPlaying={isPlaying}
+            duration={constTime}
+            colors={[
+              ['#F91561', 0.5],
+              ['#F9195F', 0.3],
+              ['#FADD0B', 0.2],
+            ]}
+            onComplete={() => setIsPlaying(false)}
+            size={100}>
+            {({remainingTime, elapsedTime}) => (
+              <Pressable onPress={playAudio}>
+                <LinearGradient
+                  colors={['#F9195F', '#FADD0B']}
+                  style={styles.linearGradient}>
+                  <Animated.Text style={styles.textStyle}>
+                    {remainingTime}
+                  </Animated.Text>
+                  <Text style={styles.secsTextStyle}>secs left</Text>
+                </LinearGradient>
+              </Pressable>
+            )}
+          </CountdownCircleTimer>
+        </View>
+
+        <Button title="PLAY" onPress={playAudio} />
+
         {images.length > 0 ? (
           <ImagesBlock
             images={images}

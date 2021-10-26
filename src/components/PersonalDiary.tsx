@@ -46,7 +46,7 @@ const PersonalDiary: React.FC = () => {
 
   return (
     <>
-      {/* {isPinLockScreen ? (
+      {isPinLockScreen ? (
         <PINCode
           status={PINCodeStatus}
           touchIDDisabled={true}
@@ -56,9 +56,9 @@ const PersonalDiary: React.FC = () => {
         <NavigationContainer>
           <DrawerNavigation />
         </NavigationContainer>
-      )} */}
+      )}
       {/* <TestScreen /> */}
-      <AudioRecorderScreen />
+      {/* <AudioRecorderScreen /> */}
     </>
   );
 };

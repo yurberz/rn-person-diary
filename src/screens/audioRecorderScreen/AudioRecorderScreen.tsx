@@ -1,17 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import {View, Animated, Pressable, Text} from 'react-native';
 import {Audio} from 'expo-av';
-import {Recording} from 'expo-av/build/Audio';
 import {CountdownCircleTimer} from 'react-native-countdown-circle-timer';
 import LinearGradient from 'react-native-linear-gradient';
 import {HomeStackProps} from '../../helpers/ts-helpers/types';
 import styles from './styles';
 
-const AudioRecorderScreen = (/*{navigation: {goBack}}: HomeStackProps*/) => {
-  const [recording, setRecording] = useState<Recording>();
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [constTime, setConstTime] = useState(20);
-  console.log('STATE RECORDING: ', JSON.stringify(recording, null, 2));
+const AudioRecorderScreen = ({navigation: {navigate}}: HomeStackProps) => {
+  const [recording, setRecording] = useState<any>();
+  const [isRecording, setIsRecording] = useState(false);
+  const [constTime, setConstTime] = useState(5);
+  const [recordedTime, setRecordedTime] = useState(0);
+  const [remainingTime, setRemainingTime] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -23,51 +23,87 @@ const AudioRecorderScreen = (/*{navigation: {goBack}}: HomeStackProps*/) => {
     })();
   }, []);
 
-  const onLonePress = async () => {
+  const onLongPress = async () => {
     try {
-      console.log('Starting recording..');
+      console.log('Starting recording...');
 
       const {recording} = await Audio.Recording.createAsync(
         Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY,
       );
 
       setRecording(recording);
-      setIsPlaying(true);
+      setIsRecording(true);
       console.log('Recording started');
     } catch (err) {
       console.error('Failed to start recording', err);
     }
   };
 
-  const onPressOut = () => {
-    stopRecording();
-  };
-
-  const stopRecording = async () => {
-    console.log('Stopping recording..');
+  const onPressOut = async () => {
+    console.log('Stopping recording...');
 
     setRecording(undefined);
-    setIsPlaying(false);
+    setIsRecording(false);
 
     await recording.stopAndUnloadAsync();
-    const uri = recording.getURI();
-    console.log('Recording stopped and stored at', uri);
+    const uri: any = recording.getURI();
+    console.log('Recording stopped');
+
+    // navigate('AddScreen', {data: {uri: uri, time: recordedTime}});
+    navigate({
+      name: 'AddScreen',
+      params: {
+        data: {
+          uri: uri,
+          time: recordedTime,
+        },
+      },
+    });
   };
+
+  if (
+    (!isRecording && remainingTime !== 5 && !!recording) ||
+    remainingTime === 0
+  ) {
+    if (!!recording) {
+      onPressOut();
+    }
+  }
+
+  // const checkTime = (remainingTime: number, elapsedTime: number) => {
+  //   setRecordedTime(elapsedTime);
+
+  //   if (
+  //     (!isRecording && remainingTime !== 5 && !!recording) ||
+  //     remainingTime === 0
+  //   ) {
+  //     if (!!recording) {
+  //       onPressOut();
+  //     }
+  //   }
+  // };
 
   return (
     <View style={styles.container}>
       <CountdownCircleTimer
-        isPlaying={isPlaying}
+        isPlaying={isRecording}
         duration={constTime}
         colors={[
-          ['#004777', 0.4],
-          ['#F7B801', 0.4],
-          ['#A30000', 0.2],
+          ['#007940', 0.6],
+          ['#D12229', 0.4],
         ]}>
-        {({remainingTime, animatedColor}) => (
-          <Pressable onLongPress={onLonePress} onPressOut={onPressOut}>
+        {({remainingTime, elapsedTime}) => (
+          <Pressable onLongPress={onLongPress} onPressOut={onPressOut}>
+            {setRemainingTime(remainingTime)}
             <LinearGradient
-              colors={['#F7B801', '#A30000']}
+              colors={[
+                '#D12229',
+                '#F68A1E',
+                '#FDE01A',
+                '#007940',
+                '#24408E',
+                '#732982',
+              ]}
               style={styles.linearGradient}>
               <Animated.Text style={styles.textStyle}>
                 {remainingTime}
