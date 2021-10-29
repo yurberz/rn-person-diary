@@ -26,6 +26,8 @@ import DatePickerModal from '../../../../components/datePickerModal/DatePickerMo
 import ChooseImage from '../../../../components/chooseImage/ChooseImage';
 import ButtonsBlock from '../../../../components/buttonsBlock/ButtonsBlock';
 import ImagesBlock from '../../../../components/imagesBlock/ImagesBlock';
+import { IMarkerProps } from '../../../../helpers/ts-helpers/interfaces';
+import GeoTagBlock from '../../../../components/geoTagBlock/GeoTagBlock';
 import AudioPlayer from '../../../../components/audioPlayer/AudioPlayer';
 import styles from './styles';
 
@@ -37,8 +39,9 @@ if (
 }
 
 const AddScreen = ({navigation, route}: AddScreenProps) => {
+  // const isFocused = useIsFocused();
+
   const dispatchAction = useAppDispatch();
-  const isFocused = useIsFocused();
   const {navigate, setOptions, addListener, dispatch} = navigation;
 
   const [title, setTitle] = useState('');
@@ -49,6 +52,7 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
   const [recording, setRecording] = useState('');
   const [sound, setSound] = useState<Audio.Sound>();
   const [isDateModal, setIsDateModal] = useState(false);
+  const [geoTag, setGeoTag] = useState<IMarkerProps>();
   const [isPlaying, setIsPlaying] = useState(false);
   let isAddAction: boolean = false;
 
@@ -65,6 +69,7 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
           description,
           tags: tags.length > 2 ? tagsArr : [],
           images,
+          marker: geoTag,
           audio: recording,
         }),
       );
@@ -86,18 +91,25 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
     });
   }, [navigation, handleSubmit]);
 
-  useEffect(() => {
-    setRecording(route.params?.uri);
-  }, [route.params?.uri]);
-
   // useEffect(() => {
   //   setTitle('');
   //   setDescription('');
   //   setTags('');
   //   setDate(new Date());
-  //   setImages([]);
   //   isAddAction = false;
   // }, [isFocused]);
+
+  useEffect(() => {
+    if (route.params?.marker !== undefined) {
+      setGeoTag(route.params?.marker)
+    }
+  }, [route.params?.marker]);
+
+  useEffect(() => {
+    if (route.params?.uri !== undefined && route.params?.uri !== '') {
+      setRecording(route.params?.uri);
+    }
+  }, [route.params?.uri]);
 
   const hasUnsavedChanges = () => {
     return title !== '' || description !== '';
@@ -167,6 +179,14 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
     await sound.playAsync();
   };
 
+  const showMap = () => {
+    navigation.navigate('GeoTagScreen', {noteTitle: title, prevScreen: 'AddScreen'});
+  };
+
+  const removeGeoTag = () => {
+    setGeoTag(undefined)
+  };
+
   const formattedDateTime = dateFormat(date);
 
   return (
@@ -187,7 +207,7 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
           returnKeyType="next"
           onSubmitEditing={() => refSecondInput.current!.focus()}
           value={title}
-          onChange={value => setTitle(value)}
+          onChange={(value: string) => setTitle(value)}
           isEditable={true}
         />
         <Input
@@ -213,15 +233,20 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
           onChange={onChange}
           isEditable={true}
         />
-
         {recording ? (
-          <AudioPlayer
-            isPlaying={isPlaying}
-            playSound={playSound}
-            setRecording={setRecording}
-          />
-        ) : null}
-
+            <AudioPlayer
+              isPlaying={isPlaying}
+              playSound={playSound}
+              setRecording={setRecording}
+            />
+          ) : null}
+        {geoTag && (
+        <GeoTagBlock
+        isEditable={true}
+        marker={geoTag}
+        onPress={removeGeoTag}
+        />
+        )}
         {images.length > 0 ? (
           <ImagesBlock
             images={images}
@@ -233,11 +258,12 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
             editable={true}
           />
         ) : null}
-
+        
         <ButtonsBlock
           buttonsContainerStyle={styles.buttonContainerStyle}
           calendarButton={() => setIsDateModal(true)}
           imageButton={() => sheetRef.current!.open()}
+          geoTagButton={() => showMap()}
           recordButton={() =>
             navigate('AudioRecorderScreen', {prevScreen: 'AddScreen'})
           }

@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from '../screens/homeScreen/HomeScreen';
-import SettingsScreen from '../screens/settingsScreen/SettingsScreen';
+import SettingsScreen from '../screens/mapScreen/MapScreen';
 import AddScreen from '../screens/homeScreen/nestedScreens/addScreen/AddScreen';
 import SearchScreen from '../screens/imageGalleryScreen/ImageGalleryScreen';
 import NoteScreen from '../screens/homeScreen/nestedScreens/noteScreen/NoteScreen';

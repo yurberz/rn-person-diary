@@ -9,7 +9,9 @@ const ButtonsBlock: React.FC<IBlockButtonsProps> = ({
   calendarButton,
   imageButton,
   recordButton,
+  geoTagButton,
   iconeSize,
+  isEditable,
 }) => {
   return (
     <View style={[styles.defaultButtonContainerStyle, buttonsContainerStyle]}>
@@ -32,6 +34,14 @@ const ButtonsBlock: React.FC<IBlockButtonsProps> = ({
         iconName="ios-recording-outline"
         iconColor="rgb(28, 28, 30)"
         iconSize={iconeSize}
+      />
+
+      <IconButton
+        onPress={geoTagButton}
+        iconName="navigate"
+        iconColor={isEditable ? 'gray' : "rgb(28, 28, 30)"}
+        iconSize={iconeSize}
+        isDisabled={isEditable}
       />
     </View>
   );

@@ -29,6 +29,8 @@ import ButtonsBlock from '../../../../components/buttonsBlock/ButtonsBlock';
 import ImagesBlock from '../../../../components/imagesBlock/ImagesBlock';
 import moment from 'moment';
 import styles from './styles';
+import { IMarkerProps } from '../../../../helpers/ts-helpers/interfaces';
+import GeoTagBlock from '../../../../components/geoTagBlock/GeoTagBlock';
 import AudioPlayer from '../../../../components/audioPlayer/AudioPlayer';
 
 const NoteScreen = ({navigation, route}: NoteScreenProps) => {
@@ -44,6 +46,7 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
   const [images, setImages] = useState<TImageModel[]>(entry?.images);
   const [recording, setRecording] = useState(entry?.audio);
   const [sound, setSound] = useState<Audio.Sound>();
+  const [geoTag, setGeoTag] = useState<IMarkerProps | undefined>(entry?.marker);
   const [isDateModal, setIsDateModal] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isInEditMode, setIsInEditMode] = useState(false);
@@ -60,6 +63,7 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
         description,
         tags: tags.length > 2 ? tagsArr : [],
         images,
+        marker: geoTag,
         audio: recording,
       }),
     );
@@ -165,6 +169,14 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
   const refSecondInput = useRef<TextInput>(null);
   const sheetRef = useRef<RBSheet>(null);
 
+  // const openMap = () => {
+  //   navigation.navigate('GeoTagScreen', {noteTitle: title, prevScreen: 'NoteScreen'})
+  // };
+
+  const removeGeoTag = () => {
+    setGeoTag(undefined)
+  };
+ 
   const formattedDateTime = dateFormat(date);
 
   return (
@@ -212,16 +224,20 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
           onChange={onChange}
           isEditable={isInEditMode}
         />
-
-        {recording ? (
-          <AudioPlayer
-            isPlaying={isPlaying}
-            playSound={playSound}
-            setRecording={setRecording}
-            isEditable={isInEditMode}
-          />
-        ) : null}
-
+          {recording ? (
+            <AudioPlayer
+              isPlaying={isPlaying}
+              playSound={playSound}
+              setRecording={setRecording}
+              isEditable={isInEditMode}
+            />
+          ) : null}
+        {geoTag && (
+          <GeoTagBlock
+          isEditable={isInEditMode}
+          marker={geoTag}
+          onPress={removeGeoTag}
+          />)}
         {images.length > 0 ? (
           <ImagesBlock
             images={images}
@@ -254,12 +270,14 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
             buttonsContainerStyle={styles.buttonContainerStyle}
             calendarButton={() => setIsDateModal(true)}
             imageButton={() => sheetRef.current!.open()}
+            geoTagButton={() => console.log('')}
             recordButton={() =>
               navigate('AudioRecorderScreen', {
                 prevScreen: 'NoteScreen',
               })
             }
             iconeSize={30}
+            isEditable={isInEditMode}
           />
         )}
       </KeyboardAvoidingView>

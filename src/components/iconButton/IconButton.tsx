@@ -10,12 +10,15 @@ const IconButton: React.FC<IIconButtonProps> = ({
   iconSize,
   iconColor,
   buttonStyle,
+  isDisabled = false,
 }) => {
   return (
     <TouchableOpacity
       style={[styles.iconButtonStyle, buttonStyle]}
       activeOpacity={0.8}
-      onPress={onPress}>
+      onPress={onPress}
+      disabled={isDisabled}
+      >
       <Ionicons name={iconName} size={iconSize} color={iconColor} />
     </TouchableOpacity>
   );

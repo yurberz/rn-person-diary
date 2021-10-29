@@ -1,19 +1,16 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {DrawerActions} from '@react-navigation/native';
-import {
-  SettingsStackParamList,
-  SettingsStackProps,
-} from '../../helpers/ts-helpers/types';
+import {MapStackParamList, MapStackProps} from '../../helpers/ts-helpers/types';
 import IconButton from '../../components/iconButton/IconButton';
-import DefaultSettingsScreen from './nestedScreens/defaultSettingsScreen/DefaultSettingsScreen';
+import DefaultMapScreen from './nestedScreens/DefaultMapScreen';
 
-const SettingsStack = createStackNavigator<SettingsStackParamList>();
+const MapStack = createStackNavigator<MapStackParamList>();
 
-const SettingsScreen = ({navigation: {dispatch}}: SettingsStackProps) => {
+const MapScreen = ({navigation: {dispatch}}: MapStackProps) => {
   return (
-    <SettingsStack.Navigator
-      initialRouteName="DefaultSettingsScreen"
+    <MapStack.Navigator
+      initialRouteName="DefaultMapScreen"
       screenOptions={{
         headerShadowVisible: false,
         headerTitleAlign: 'center',
@@ -24,11 +21,11 @@ const SettingsScreen = ({navigation: {dispatch}}: SettingsStackProps) => {
           paddingEnd: 10,
         },
       }}>
-      <SettingsStack.Screen
-        name="DefaultSettingsScreen"
-        component={DefaultSettingsScreen}
+      <MapStack.Screen
+        name="DefaultMapScreen"
+        component={DefaultMapScreen}
         options={{
-          title: 'Settings',
+          title: 'All markers',
           headerLeft: () => (
             <IconButton
               onPress={() => dispatch(DrawerActions.openDrawer())}
@@ -39,8 +36,8 @@ const SettingsScreen = ({navigation: {dispatch}}: SettingsStackProps) => {
           ),
         }}
       />
-    </SettingsStack.Navigator>
+    </MapStack.Navigator>
   );
 };
 
-export default SettingsScreen;
+export default MapScreen;
