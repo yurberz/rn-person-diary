@@ -147,3 +147,18 @@ export interface ISectionImageData {
   key: string;
   list: TImageModel[];
 }
+
+export interface IAudioRecorderProps {
+  isRecording: boolean;
+  duration: number;
+  setRemainingTime(value: number): void;
+  onLongPress(): void;
+  onPressOut(): void;
+}
+
+export interface IAudioPlayerProps {
+  isPlaying: boolean;
+  playSound(): void;
+  setRecording(value: string): void;
+  isEditable?: boolean;
+}

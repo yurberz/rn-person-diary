@@ -7,12 +7,16 @@ export type HomeStackParamList = {
   AddScreen: {
     uri: string;
   };
-
-  NoteScreen: {note: INoteProps};
+  NoteScreen: {
+    entryId: string;
+    uri: string | undefined;
+  };
   FullImageScreen: {
     image: string;
   };
-  AudioRecorderScreen: undefined;
+  AudioRecorderScreen: {
+    prevScreen: string;
+  };
 };
 
 export type HomeStackProps = StackScreenProps<
@@ -21,6 +25,16 @@ export type HomeStackProps = StackScreenProps<
 >;
 
 export type AddScreenProps = StackScreenProps<HomeStackParamList, 'AddScreen'>;
+
+export type NoteScreenProps = StackScreenProps<
+  HomeStackParamList,
+  'NoteScreen'
+>;
+
+export type AudioRecorderScreenProps = StackScreenProps<
+  HomeStackParamList,
+  'AudioRecorderScreen'
+>;
 
 export type FullImageProps = StackScreenProps<
   HomeStackParamList,

@@ -25,8 +25,9 @@ import Input from '../../../../components/textInput/Input';
 import DatePickerModal from '../../../../components/datePickerModal/DatePickerModal';
 import ChooseImage from '../../../../components/chooseImage/ChooseImage';
 import ButtonsBlock from '../../../../components/buttonsBlock/ButtonsBlock';
-import styles from './styles';
 import ImagesBlock from '../../../../components/imagesBlock/ImagesBlock';
+import AudioPlayer from '../../../../components/audioPlayer/AudioPlayer';
+import styles from './styles';
 
 if (
   Platform.OS === 'android' &&
@@ -88,14 +89,6 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
   useEffect(() => {
     setRecording(route.params?.uri);
   }, [route.params?.uri]);
-
-  // useEffect(() => {
-  //   return sound
-  //     ? () => {
-  //         sound.unloadAsync();
-  //       }
-  //     : undefined;
-  // }, [sound]);
 
   // useEffect(() => {
   //   setTitle('');
@@ -222,28 +215,11 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
         />
 
         {recording ? (
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: 50,
-            }}>
-            <IconButton
-              onPress={playSound}
-              iconName={
-                isPlaying ? 'ios-play-circle' : 'ios-play-circle-outline'
-              }
-              iconSize={40}
-              iconColor={isPlaying ? 'rgb(0,122,255)' : 'rgb(28, 28, 30)'}
-            />
-
-            <IconButton
-              onPress={() => setRecording('')}
-              iconName="ios-close-outline"
-              iconSize={15}
-              iconColor="rgb(28, 28, 30)"
-            />
-          </View>
+          <AudioPlayer
+            isPlaying={isPlaying}
+            playSound={playSound}
+            setRecording={setRecording}
+          />
         ) : null}
 
         {images.length > 0 ? (
@@ -262,7 +238,9 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
           buttonsContainerStyle={styles.buttonContainerStyle}
           calendarButton={() => setIsDateModal(true)}
           imageButton={() => sheetRef.current!.open()}
-          recordButton={() => navigate('AudioRecorderScreen')}
+          recordButton={() =>
+            navigate('AudioRecorderScreen', {prevScreen: 'AddScreen'})
+          }
           iconeSize={30}
         />
 

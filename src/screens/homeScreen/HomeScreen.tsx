@@ -45,7 +45,7 @@ const HomeScreen = ({
           ),
           headerRight: () => (
             <IconButton
-              onPress={() => navigate('AddScreen')}
+              onPress={() => navigate('AddScreen', {uri: ''})}
               iconName="create-outline"
               iconSize={30}
               iconColor="rgb(48, 2, 30)"
