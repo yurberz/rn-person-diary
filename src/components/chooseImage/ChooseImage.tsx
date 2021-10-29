@@ -62,7 +62,7 @@ const ChooseImage = forwardRef<BottomSheet, IChooseImageProps>(
     return (
       <BottomSheet
         ref={ref}
-        height={280}
+        height={250}
         openDuration={250}
         closeDuration={250}
         animationType="fade"

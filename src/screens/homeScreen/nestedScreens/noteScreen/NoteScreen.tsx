@@ -8,8 +8,13 @@ import {
   LayoutAnimation,
 } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {HomeStackProps, TImageModel} from '../../../../helpers/ts-helpers/types';
-import {useAppDispatch} from '../../../../hooks/reduxHooks';
+import {Audio, AVPlaybackStatus} from 'expo-av';
+import {
+  NoteScreenProps,
+  TEntryModel,
+  TImageModel,
+} from '../../../../helpers/ts-helpers/types';
+import {useAppDispatch, useAppSelector} from '../../../../hooks/reduxHooks';
 import {
   updateEntry,
   deleteEntry,
@@ -24,16 +29,23 @@ import ButtonsBlock from '../../../../components/buttonsBlock/ButtonsBlock';
 import ImagesBlock from '../../../../components/imagesBlock/ImagesBlock';
 import moment from 'moment';
 import styles from './styles';
+import AudioPlayer from '../../../../components/audioPlayer/AudioPlayer';
 
-const NoteScreen = ({navigation, route}: HomeStackProps) => {
-  const {note} = route.params;
-
-  const [title, setTitle] = useState(note.title);
-  const [description, setDescription] = useState(note.description);
-  const [tags, setTags] = useState(note.tags.join(' '));
-  const [date, setDate] = useState(moment(note.date).toDate());
-  const [images, setImages] = useState<TImageModel[]>(note.images);
+const NoteScreen = ({navigation, route}: NoteScreenProps) => {
+  const {entryId} = route.params;
+  const {navigate, setOptions} = navigation;
+  const {entries} = useAppSelector(state => state.personalDiary);
+  const entry: TEntryModel = entries.find(entry => entry.id === entryId);
+  const [id, setId] = useState(entry?.id);
+  const [title, setTitle] = useState(entry?.title);
+  const [description, setDescription] = useState(entry?.description);
+  const [tags, setTags] = useState(entry?.tags.join(' '));
+  const [date, setDate] = useState(moment(entry?.date).toDate());
+  const [images, setImages] = useState<TImageModel[]>(entry?.images);
+  const [recording, setRecording] = useState(entry?.audio);
+  const [sound, setSound] = useState<Audio.Sound>();
   const [isDateModal, setIsDateModal] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [isInEditMode, setIsInEditMode] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -42,30 +54,24 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
   const handleSubmit = () => {
     dispatch(
       updateEntry({
-        id: note.id,
+        id,
         date,
         title,
         description,
         tags: tags.length > 2 ? tagsArr : [],
+        images,
+        audio: recording,
       }),
     );
   };
 
   const removeEntry = () => {
-    dispatch(deleteEntry(note.id));
-    navigation.navigate('DefaultHomeScreen');
-  };
-
-  const editModeOn = () => {
-    setIsInEditMode(true);
-  };
-
-  const editModeOff = () => {
-    setIsInEditMode(false);
+    dispatch(deleteEntry(id));
+    navigate('DefaultHomeScreen');
   };
 
   useEffect(() => {
-    navigation.setOptions({
+    setOptions({
       headerRightContainerStyle: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -104,11 +110,36 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
         );
       },
     });
-  }, [navigation, isInEditMode, removeEntry]);
+  }, [navigation, isInEditMode, removeEntry, handleSubmit]);
 
-  const refFirstInput = useRef<TextInput>(null);
-  const refSecondInput = useRef<TextInput>(null);
-  const sheetRef = useRef<RBSheet>(null);
+  useEffect(() => {
+    if (route.params?.uri !== undefined) {
+      setRecording(route.params?.uri);
+    }
+  }, [route.params?.uri]);
+
+  const playSound = async () => {
+    const onPlaybackStatusUpdate = (playbackStatus: AVPlaybackStatus) => {
+      playbackStatus.isPlaying ? setIsPlaying(true) : setIsPlaying(false);
+    };
+
+    const {sound} = await Audio.Sound.createAsync(
+      {uri: recording},
+      {},
+      onPlaybackStatusUpdate,
+    );
+
+    setSound(sound);
+    await sound.playAsync();
+  };
+
+  const editModeOn = () => {
+    setIsInEditMode(true);
+  };
+
+  const editModeOff = () => {
+    setIsInEditMode(false);
+  };
 
   const onChange = (value: string) => {
     const hashTagValue = addHashtag(value);
@@ -120,17 +151,19 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
     setImages(images);
   };
 
+  const showImage = (_: any, url: string) => {
+    navigate('FullImageScreen', {
+      image: url,
+    });
+  };
   const removeImage = (id: string) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
 
     setImages(prev => prev.filter(image => image.id !== id));
   };
 
-  const showImage = (_: any, url: string) => {
-    navigation.navigate('FullImageScreen', {
-      image: url,
-    });
-  };
+  const refSecondInput = useRef<TextInput>(null);
+  const sheetRef = useRef<RBSheet>(null);
 
   const formattedDateTime = dateFormat(date);
 
@@ -149,7 +182,6 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
           placeholder="Title*"
           maxLength={200}
           returnKeyType="next"
-          ref={refFirstInput}
           onSubmitEditing={() => refSecondInput.current?.focus()}
           value={title}
           onChange={value => setTitle(value)}
@@ -180,11 +212,21 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
           onChange={onChange}
           isEditable={isInEditMode}
         />
+
+        {recording ? (
+          <AudioPlayer
+            isPlaying={isPlaying}
+            playSound={playSound}
+            setRecording={setRecording}
+            isEditable={isInEditMode}
+          />
+        ) : null}
+
         {images.length > 0 ? (
           <ImagesBlock
             images={images}
-            onPress={isInEditMode ?  removeImage : showImage}
-            iconName={isInEditMode ? "ios-close-outline" : "ios-expand"}
+            onPress={isInEditMode ? removeImage : showImage}
+            iconName={isInEditMode ? 'ios-close-outline' : 'ios-expand'}
             iconSize={30}
             iconColor="white"
             iconStyle={styles.iconStyle}
@@ -212,7 +254,11 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
             buttonsContainerStyle={styles.buttonContainerStyle}
             calendarButton={() => setIsDateModal(true)}
             imageButton={() => sheetRef.current!.open()}
-            recordButton={() => {}}
+            recordButton={() =>
+              navigate('AudioRecorderScreen', {
+                prevScreen: 'NoteScreen',
+              })
+            }
             iconeSize={30}
           />
         )}

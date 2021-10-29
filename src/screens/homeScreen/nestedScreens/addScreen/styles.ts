@@ -49,10 +49,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
     color: 'rgb(10, 122, 255)',
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    borderBottomLeftRadius: 10,
+    borderRadius: 10,
     borderBottomWidth: 0,
   },
   columnWrapperStyle: {
@@ -67,30 +64,9 @@ const styles = StyleSheet.create({
     top: '10%',
     right: '10%',
   },
-  iconSecondStyle: {
-    position: 'absolute',
-    top: '10%',
-    right: '10%',
-  },
   buttonContainerStyle: {
     position: 'absolute',
     top: 625,
-  },
-  linearGradient: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 90,
-    height: 90,
-    borderRadius: 90 / 2,
-  },
-  textStyle: {
-    fontSize: 20,
-    color: '#ffffff',
-  },
-  secsTextStyle: {
-    fontSize: 9,
-    color: '#ffffff',
-    opacity: 0.7,
   },
 });
 

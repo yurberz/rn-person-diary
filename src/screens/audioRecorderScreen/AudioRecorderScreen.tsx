@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {View, Animated, Pressable, Text} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {Audio} from 'expo-av';
-import {CountdownCircleTimer} from 'react-native-countdown-circle-timer';
-import LinearGradient from 'react-native-linear-gradient';
-import {HomeStackProps} from '../../helpers/ts-helpers/types';
+import {AudioRecorderScreenProps} from '../../helpers/ts-helpers/types';
 import styles from './styles';
+import AudioRecorder from '../../components/audioRecorder/AudioRecorder';
 
-const AudioRecorderScreen = ({navigation: {navigate}}: HomeStackProps) => {
+const AudioRecorderScreen = ({navigation, route}: AudioRecorderScreenProps) => {
+  const {navigate, goBack} = navigation;
+  const {prevScreen} = route.params;
   const [recording, setRecording] = useState<any>();
   const [isRecording, setIsRecording] = useState(false);
   const [remainingTime, setRemainingTime] = useState(0);
@@ -41,16 +42,17 @@ const AudioRecorderScreen = ({navigation: {navigate}}: HomeStackProps) => {
     await recording.stopAndUnloadAsync();
     const uri: any = recording.getURI();
 
-    navigate({
-      name: 'AddScreen',
-      params: {
-        uri: uri,
-      },
+    navigate(routeName(), {
+      uri: uri,
     });
   };
 
+  const routeName = () => {
+    return prevScreen === 'AddScreen' ? 'AddScreen' : 'NoteScreen';
+  };
+
   if (
-    (!isRecording && remainingTime !== 5 && !!recording) ||
+    (!isRecording && remainingTime !== 60 && !!recording) ||
     remainingTime === 0
   ) {
     if (!!recording) {
@@ -59,41 +61,18 @@ const AudioRecorderScreen = ({navigation: {navigate}}: HomeStackProps) => {
   }
 
   return (
-    <View style={styles.container}>
-      <CountdownCircleTimer
-        isPlaying={isRecording}
-        duration={5}
-        colors={[
-          ['#007940', 0.6],
-          ['#D12229', 0.4],
-        ]}>
-        {({remainingTime}) => {
-          useEffect(() => {
-            setRemainingTime(remainingTime);
-          }, [remainingTime]);
-
-          return (
-            <Pressable onLongPress={onLongPress} onPressOut={onPressOut}>
-              <LinearGradient
-                colors={[
-                  '#D12229',
-                  '#F68A1E',
-                  '#FDE01A',
-                  '#007940',
-                  '#24408E',
-                  '#732982',
-                ]}
-                style={styles.linearGradient}>
-                <Animated.Text style={styles.textStyle}>
-                  {remainingTime}
-                </Animated.Text>
-                <Text style={styles.secsTextStyle}>secs left</Text>
-              </LinearGradient>
-            </Pressable>
-          );
-        }}
-      </CountdownCircleTimer>
-    </View>
+    <TouchableOpacity
+      activeOpacity={1}
+      onPress={() => goBack()}
+      style={styles.container}>
+      <AudioRecorder
+        isRecording={isRecording}
+        duration={60}
+        setRemainingTime={setRemainingTime}
+        onLongPress={onLongPress}
+        onPressOut={onPressOut}
+      />
+    </TouchableOpacity>
   );
 };
 
