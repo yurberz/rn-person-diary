@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {useIsFocused} from '@react-navigation/core';
+import {Audio, AVPlaybackStatus} from 'expo-av';
 import {
   AddScreenProps,
-  HomeStackProps,
   TImageModel,
 } from '../../../../helpers/ts-helpers/types';
 import addHashtag from '../../../../helpers/function-helpers/addHashtag';
@@ -25,10 +25,11 @@ import Input from '../../../../components/textInput/Input';
 import DatePickerModal from '../../../../components/datePickerModal/DatePickerModal';
 import ChooseImage from '../../../../components/chooseImage/ChooseImage';
 import ButtonsBlock from '../../../../components/buttonsBlock/ButtonsBlock';
-import styles from './styles';
 import ImagesBlock from '../../../../components/imagesBlock/ImagesBlock';
 import { IMarkerProps } from '../../../../helpers/ts-helpers/interfaces';
 import GeoTagBlock from '../../../../components/geoTagBlock/GeoTagBlock';
+import AudioPlayer from '../../../../components/audioPlayer/AudioPlayer';
+import styles from './styles';
 
 if (
   Platform.OS === 'android' &&
@@ -38,16 +39,21 @@ if (
 }
 
 const AddScreen = ({navigation, route}: AddScreenProps) => {
-  const dispatch = useAppDispatch();
   // const isFocused = useIsFocused();
+
+  const dispatchAction = useAppDispatch();
+  const {navigate, setOptions, addListener, dispatch} = navigation;
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState('');
   const [date, setDate] = useState(new Date());
   const [images, setImages] = useState<TImageModel[]>([]);
+  const [recording, setRecording] = useState('');
+  const [sound, setSound] = useState<Audio.Sound>();
   const [isDateModal, setIsDateModal] = useState(false);
   const [geoTag, setGeoTag] = useState<IMarkerProps>();
+  const [isPlaying, setIsPlaying] = useState(false);
   let isAddAction: boolean = false;
 
   const tagsArr = tags.split(' ');
@@ -56,7 +62,7 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
     isAddAction = true;
 
     if (title || description) {
-      dispatch(
+      dispatchAction(
         addEntry({
           date,
           title,
@@ -64,15 +70,16 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
           tags: tags.length > 2 ? tagsArr : [],
           images,
           marker: geoTag,
+          audio: recording,
         }),
       );
     }
 
-    navigation.navigate('DefaultHomeScreen');
+    navigate('DefaultHomeScreen');
   };
 
   useEffect(() => {
-    navigation.setOptions({
+    setOptions({
       headerRight: () => (
         <IconButton
           onPress={handleSubmit}
@@ -96,13 +103,17 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
     setGeoTag(route.params?.marker)
   }, [route.params?.marker]);
 
+useEffect(() => {
+    setRecording(route.params?.uri);
+  }, [route.params?.uri]);
+
   const hasUnsavedChanges = () => {
     return title !== '' || description !== '';
   };
 
   useEffect(
     () =>
-      navigation.addListener(
+      addListener(
         'beforeRemove',
         (evt: {preventDefault: () => void; data: {action: any}}) => {
           if (!hasUnsavedChanges() || isAddAction) {
@@ -123,7 +134,7 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
               {
                 text: 'Discard',
                 style: 'destructive',
-                onPress: () => navigation.dispatch(evt.data.action),
+                onPress: () => dispatch(evt.data.action),
               },
             ],
           );
@@ -132,13 +143,11 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
     [navigation, hasUnsavedChanges],
   );
 
-  const refFirstInput = useRef<TextInput>(null);
   const refSecondInput = useRef<TextInput>(null);
   const sheetRef = useRef<RBSheet>(null);
 
   const onChange = (value: string) => {
     const hashTagValue = addHashtag(value);
-
     setTags(hashTagValue);
   };
 
@@ -146,18 +155,24 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
     setImages(images);
   };
 
-  const formattedDateTime = dateFormat(date);
-
   const removeImage = (id: string) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-
     setImages(prev => prev.filter(image => image.id !== id));
   };
 
-  const showImage = (_: any, url: string) => {
-    navigation.navigate('FullImageScreen', {
-      image: url,
-    });
+  const playSound = async () => {
+    const onPlaybackStatusUpdate = (playbackStatus: AVPlaybackStatus) => {
+      playbackStatus.isPlaying ? setIsPlaying(true) : setIsPlaying(false);
+    };
+
+    const {sound} = await Audio.Sound.createAsync(
+      {uri: recording},
+      {},
+      onPlaybackStatusUpdate,
+    );
+
+    setSound(sound);
+    await sound.playAsync();
   };
 
   const showMap = () => {
@@ -167,6 +182,8 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
   const removeGeoTag = () => {
     setGeoTag(undefined)
   };
+
+  const formattedDateTime = dateFormat(date);
 
   return (
     <View style={styles.containerStyle}>
@@ -184,7 +201,6 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
           placeholder="Title*"
           maxLength={200}
           returnKeyType="next"
-          ref={refFirstInput}
           onSubmitEditing={() => refSecondInput.current!.focus()}
           value={title}
           onChange={value => setTitle(value)}
@@ -213,6 +229,13 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
           onChange={onChange}
           isEditable={true}
         />
+        {recording ? (
+            <AudioPlayer
+              isPlaying={isPlaying}
+              playSound={playSound}
+              setRecording={setRecording}
+            />
+          ) : null}
         {geoTag && (
         <GeoTagBlock
         isEditable={true}
@@ -237,7 +260,9 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
           calendarButton={() => setIsDateModal(true)}
           imageButton={() => sheetRef.current!.open()}
           geoTagButton={() => showMap()}
-          recordButton={() => {}}
+          recordButton={() =>
+            navigate('AudioRecorderScreen', {prevScreen: 'AddScreen'})
+          }
           iconeSize={30}
         />
 

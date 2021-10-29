@@ -49,10 +49,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
     color: 'rgb(10, 122, 255)',
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    borderBottomLeftRadius: 10,
+    borderRadius: 10,
     borderBottomWidth: 0,
   },
   columnWrapperStyle: {
@@ -63,11 +60,6 @@ const styles = StyleSheet.create({
     height: 250,
   },
   iconStyle: {
-    position: 'absolute',
-    top: '10%',
-    right: '10%',
-  },
-  iconSecondStyle: {
     position: 'absolute',
     top: '10%',
     right: '10%',

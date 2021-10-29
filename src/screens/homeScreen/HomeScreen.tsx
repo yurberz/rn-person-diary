@@ -11,6 +11,7 @@ import AddScreen from './nestedScreens/addScreen/AddScreen';
 import NoteScreen from './nestedScreens/noteScreen/NoteScreen';
 import FullImageScreen from '../fullImageScreen/FullImageScreen';
 import GeoTagScreen from '../geoTagScreen/GeoTagScreen';
+import AudioRecorderScreen from '../audioRecorderScreen/AudioRecorderScreen';
 
 const HomeStack = createStackNavigator<HomeStackParamList>();
 
@@ -45,7 +46,7 @@ const HomeScreen = ({
           ),
           headerRight: () => (
             <IconButton
-              onPress={() => navigate('AddScreen')}
+              onPress={() => navigate('AddScreen', {uri: '', marker: undefined})}
               iconName="create-outline"
               iconSize={30}
               iconColor="rgb(48, 2, 30)"
@@ -96,6 +97,14 @@ const HomeScreen = ({
         component={GeoTagScreen}
         options={{
           headerShown: false,
+        }}
+        />
+      <HomeStack.Screen
+        name="AudioRecorderScreen"
+        component={AudioRecorderScreen}
+        options={{
+          headerShown: false,
+          presentation: 'transparentModal',
         }}
       />
     </HomeStack.Navigator>

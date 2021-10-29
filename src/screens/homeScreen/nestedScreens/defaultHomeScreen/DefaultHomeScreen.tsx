@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {View, Text, FlatList, ListRenderItemInfo} from 'react-native';
 import {INoteProps} from '../../../../helpers/ts-helpers/interfaces';
 import {HomeStackProps} from '../../../../helpers/ts-helpers/types';
@@ -12,12 +12,23 @@ import CustomSwitcher from '../../../../components/customSwitcher/CustomSwitcher
 
 const DefaultHomeScreen = ({navigation: {navigate}}: HomeStackProps) => {
   const entries = useAppSelector(diary);
+
   const [searchInput, setSearchInput] = useState('');
   const [isSortedByDate, setIsSortedByDate] = useState(false);
   const filtredEntries = useSearch(entries, searchInput, isSortedByDate);
 
   const renderItem = ({item}: ListRenderItemInfo<INoteProps>) => {
-    return <NoteCell note={item} onPress={() => navigate('NoteScreen', {note: item})} />;
+    return (
+      <NoteCell
+        note={item}
+        onPress={() =>
+          navigate('NoteScreen', {
+            entryId: item.id,
+            uri: undefined,
+          })
+        }
+      />
+    );
   };
 
   const ItemSeparatorComponent = () => {
@@ -35,17 +46,17 @@ const DefaultHomeScreen = ({navigation: {navigate}}: HomeStackProps) => {
   return (
     <View style={styles.viewContainer}>
       <SearchInput
-      placeholder='Search for entries'
-      value={searchInput}
-      onChange={value => setSearchInput(value)}
-      appendComponent={
-        <CustomSwitcher 
-        label="sort by date"
-        onPress={() => setIsSortedByDate(!isSortedByDate)}
-        isSelected={isSortedByDate}
-        iconSize={40}
-        />
-      }
+        placeholder="Search for entries"
+        value={searchInput}
+        onChange={value => setSearchInput(value)}
+        appendComponent={
+          <CustomSwitcher
+            label="sort by date"
+            onPress={() => setIsSortedByDate(!isSortedByDate)}
+            isSelected={isSortedByDate}
+            iconSize={40}
+          />
+        }
       />
       <FlatList
         keyExtractor={(_, index) => String(index)}

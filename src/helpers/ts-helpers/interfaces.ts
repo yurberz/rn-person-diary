@@ -20,10 +20,6 @@ export interface IChooseImageProps {
   closeSheet(): void;
 }
 
-export interface IImagesContainer {
-  images: string[];
-  isEditable: boolean;
-}
 export interface IImageCellProps {
   image: string;
   iconButtonProps: IIconButtonProps;
@@ -173,4 +169,19 @@ export interface IBlockButtonsProps {
 export interface ISectionImageData {
   key: string;
   list: TImageModel[];
+}
+
+export interface IAudioRecorderProps {
+  isRecording: boolean;
+  duration: number;
+  setRemainingTime(value: number): void;
+  onLongPress(): void;
+  onPressOut(): void;
+}
+
+export interface IAudioPlayerProps {
+  isPlaying: boolean;
+  playSound(): void;
+  setRecording(value: string): void;
+  isEditable?: boolean;
 }

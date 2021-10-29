@@ -4,10 +4,25 @@ import {IMarkerProps, INoteProps} from './interfaces';
 
 export type HomeStackParamList = {
   DefaultHomeScreen: undefined;
-  AddScreen: {marker: IMarkerProps};
-  NoteScreen: {note: INoteProps, marker: IMarkerProps};
-  FullImageScreen: {image: string};
-  GeoTagScreen: {noteTitle: string, prevScreen: string};
+  AddScreen: {
+    uri: string;
+    marker: IMarkerProps | undefined;
+  };
+  NoteScreen: {
+    entryId: string;
+    uri: string | undefined;
+    marker: IMarkerProps
+  };
+  FullImageScreen: {
+    image: string;
+  };
+  AudioRecorderScreen: {
+    prevScreen: string;
+  };
+  GeoTagScreen: {
+    noteTitle: string,
+    prevScreen: string
+  };
 };
 
 export type HomeStackProps = StackScreenProps<
@@ -15,14 +30,16 @@ export type HomeStackProps = StackScreenProps<
   'DefaultHomeScreen'
 >;
 
+export type AddScreenProps = StackScreenProps<HomeStackParamList, 'AddScreen'>;
+
 export type NoteScreenProps = StackScreenProps<
   HomeStackParamList,
   'NoteScreen'
 >;
 
-export type AddScreenProps = StackScreenProps<
+export type AudioRecorderScreenProps = StackScreenProps<
   HomeStackParamList,
-  'AddScreen'
+  'AudioRecorderScreen'
 >;
 
 export type FullImageProps = StackScreenProps<
