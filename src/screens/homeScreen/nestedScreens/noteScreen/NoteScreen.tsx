@@ -8,7 +8,7 @@ import {
   LayoutAnimation,
 } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {HomeStackProps, TImageModel} from '../../../../helpers/ts-helpers/types';
+import { NoteScreenProps, TImageModel} from '../../../../helpers/ts-helpers/types';
 import {useAppDispatch} from '../../../../hooks/reduxHooks';
 import {
   updateEntry,
@@ -24,15 +24,18 @@ import ButtonsBlock from '../../../../components/buttonsBlock/ButtonsBlock';
 import ImagesBlock from '../../../../components/imagesBlock/ImagesBlock';
 import moment from 'moment';
 import styles from './styles';
+import { IMarkerProps } from '../../../../helpers/ts-helpers/interfaces';
+import GeoTagBlock from '../../../../components/geoTagBlock/GeoTagBlock';
 
-const NoteScreen = ({navigation, route}: HomeStackProps) => {
-  const {note} = route.params;
-
-  const [title, setTitle] = useState(note.title);
-  const [description, setDescription] = useState(note.description);
-  const [tags, setTags] = useState(note.tags.join(' '));
-  const [date, setDate] = useState(moment(note.date).toDate());
-  const [images, setImages] = useState<TImageModel[]>(note.images);
+const NoteScreen = ({navigation, route}: NoteScreenProps) => {
+  const {note} = route?.params;
+  
+  const [title, setTitle] = useState(note?.title);
+  const [description, setDescription] = useState(note?.description);
+  const [tags, setTags] = useState(note?.tags.join(' '));
+  const [date, setDate] = useState(moment(note?.date).toDate());
+  const [images, setImages] = useState<TImageModel[]>(note?.images);
+  const [geoTag, setGeoTag] = useState<IMarkerProps | undefined>(note?.marker);
   const [isDateModal, setIsDateModal] = useState(false);
   const [isInEditMode, setIsInEditMode] = useState(false);
   const dispatch = useAppDispatch();
@@ -42,17 +45,19 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
   const handleSubmit = () => {
     dispatch(
       updateEntry({
-        id: note.id,
+        id: note?.id,
         date,
         title,
         description,
         tags: tags.length > 2 ? tagsArr : [],
+        images,
+        marker: geoTag,
       }),
     );
   };
 
   const removeEntry = () => {
-    dispatch(deleteEntry(note.id));
+    dispatch(deleteEntry(note?.id));
     navigation.navigate('DefaultHomeScreen');
   };
 
@@ -132,6 +137,14 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
     });
   };
 
+  // const openMap = () => {
+  //   navigation.navigate('GeoTagScreen', {noteTitle: title, prevScreen: 'NoteScreen'})
+  // };
+
+  const removeGeoTag = () => {
+    setGeoTag(undefined)
+  };
+ 
   const formattedDateTime = dateFormat(date);
 
   return (
@@ -180,6 +193,12 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
           onChange={onChange}
           isEditable={isInEditMode}
         />
+        {geoTag && (
+          <GeoTagBlock
+          isEditable={isInEditMode}
+          marker={geoTag}
+          onPress={removeGeoTag}
+          />)}
         {images.length > 0 ? (
           <ImagesBlock
             images={images}
@@ -212,8 +231,10 @@ const NoteScreen = ({navigation, route}: HomeStackProps) => {
             buttonsContainerStyle={styles.buttonContainerStyle}
             calendarButton={() => setIsDateModal(true)}
             imageButton={() => sheetRef.current!.open()}
-            recordButton={() => {}}
+            recordButton={() => console.log('')}
+            geoTagButton={() => console.log('')}
             iconeSize={30}
+            isEditable={isInEditMode}
           />
         )}
       </KeyboardAvoidingView>

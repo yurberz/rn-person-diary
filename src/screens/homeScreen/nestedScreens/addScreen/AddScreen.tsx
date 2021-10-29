@@ -12,6 +12,7 @@ import {
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {useIsFocused} from '@react-navigation/core';
 import {
+  AddScreenProps,
   HomeStackProps,
   TImageModel,
 } from '../../../../helpers/ts-helpers/types';
@@ -26,6 +27,8 @@ import ChooseImage from '../../../../components/chooseImage/ChooseImage';
 import ButtonsBlock from '../../../../components/buttonsBlock/ButtonsBlock';
 import styles from './styles';
 import ImagesBlock from '../../../../components/imagesBlock/ImagesBlock';
+import { IMarkerProps } from '../../../../helpers/ts-helpers/interfaces';
+import GeoTagBlock from '../../../../components/geoTagBlock/GeoTagBlock';
 
 if (
   Platform.OS === 'android' &&
@@ -34,9 +37,9 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-const AddScreen = ({navigation}: HomeStackProps) => {
+const AddScreen = ({navigation, route}: AddScreenProps) => {
   const dispatch = useAppDispatch();
-  const isFocused = useIsFocused();
+  // const isFocused = useIsFocused();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -44,6 +47,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
   const [date, setDate] = useState(new Date());
   const [images, setImages] = useState<TImageModel[]>([]);
   const [isDateModal, setIsDateModal] = useState(false);
+  const [geoTag, setGeoTag] = useState<IMarkerProps>();
   let isAddAction: boolean = false;
 
   const tagsArr = tags.split(' ');
@@ -59,6 +63,7 @@ const AddScreen = ({navigation}: HomeStackProps) => {
           description,
           tags: tags.length > 2 ? tagsArr : [],
           images,
+          marker: geoTag,
         }),
       );
     }
@@ -79,13 +84,17 @@ const AddScreen = ({navigation}: HomeStackProps) => {
     });
   }, [navigation, handleSubmit]);
 
+  // useEffect(() => {
+  //   setTitle('');
+  //   setDescription('');
+  //   setTags('');
+  //   setDate(new Date());
+  //   isAddAction = false;
+  // }, [isFocused]);
+
   useEffect(() => {
-    setTitle('');
-    setDescription('');
-    setTags('');
-    setDate(new Date());
-    isAddAction = false;
-  }, [isFocused]);
+    setGeoTag(route.params?.marker)
+  }, [route.params?.marker]);
 
   const hasUnsavedChanges = () => {
     return title !== '' || description !== '';
@@ -151,7 +160,13 @@ const AddScreen = ({navigation}: HomeStackProps) => {
     });
   };
 
-  // update
+  const showMap = () => {
+    navigation.navigate('GeoTagScreen', {noteTitle: title, prevScreen: 'AddScreen'});
+  };
+
+  const removeGeoTag = () => {
+    setGeoTag(undefined)
+  };
 
   return (
     <View style={styles.containerStyle}>
@@ -198,6 +213,13 @@ const AddScreen = ({navigation}: HomeStackProps) => {
           onChange={onChange}
           isEditable={true}
         />
+        {geoTag && (
+        <GeoTagBlock
+        isEditable={true}
+        marker={geoTag}
+        onPress={removeGeoTag}
+        />
+        )}
         {images.length > 0 ? (
           <ImagesBlock
             images={images}
@@ -209,11 +231,12 @@ const AddScreen = ({navigation}: HomeStackProps) => {
             editable={true}
           />
         ) : null}
-
+        
         <ButtonsBlock
           buttonsContainerStyle={styles.buttonContainerStyle}
           calendarButton={() => setIsDateModal(true)}
           imageButton={() => sheetRef.current!.open()}
+          geoTagButton={() => showMap()}
           recordButton={() => {}}
           iconeSize={30}
         />

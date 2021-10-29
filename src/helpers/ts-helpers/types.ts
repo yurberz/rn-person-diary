@@ -1,19 +1,28 @@
 import {StackScreenProps} from '@react-navigation/stack';
 import {DrawerContentComponentProps} from '@react-navigation/drawer';
-import {INoteProps} from './interfaces';
+import {IMarkerProps, INoteProps} from './interfaces';
 
 export type HomeStackParamList = {
   DefaultHomeScreen: undefined;
-  AddScreen: undefined;
-  NoteScreen: {note: INoteProps};
-  FullImageScreen: {
-    image: string;
-  };
+  AddScreen: {marker: IMarkerProps};
+  NoteScreen: {note: INoteProps, marker: IMarkerProps};
+  FullImageScreen: {image: string};
+  GeoTagScreen: {noteTitle: string, prevScreen: string};
 };
 
 export type HomeStackProps = StackScreenProps<
   HomeStackParamList,
   'DefaultHomeScreen'
+>;
+
+export type NoteScreenProps = StackScreenProps<
+  HomeStackParamList,
+  'NoteScreen'
+>;
+
+export type AddScreenProps = StackScreenProps<
+  HomeStackParamList,
+  'AddScreen'
 >;
 
 export type FullImageProps = StackScreenProps<
@@ -35,6 +44,17 @@ export type ImageGalleryStackProps = StackScreenProps<
   'DefaultImageGalleryScreen'
 >;
 
+export type MapStackParamList = {
+  DefaultMapScreen: {
+    image: string;
+  };
+};
+
+export type MapStackProps = StackScreenProps<
+  MapStackParamList,
+  'DefaultMapScreen'
+>;
+
 export type SettingsStackParamList = {
   DefaultSettingsScreen: undefined;
 };
@@ -47,7 +67,7 @@ export type SettingsStackProps = StackScreenProps<
 export type DrawerParamList = {
   HomeScreen: undefined;
   ImageGalleryScreen: undefined;
-  SettingsScreen: undefined;
+  MapScreen: undefined;
 };
 
 export type DrawerContentProps = DrawerContentComponentProps;
@@ -59,7 +79,8 @@ export type TEntryModel = {
   description: string;
   tags: string[];
   images: TImageModel[];
-  audio?: string;
+  audio: string;
+  marker: IMarkerProps;
 };
 
 export type TAutoCapitalize = 'none' | 'sentences' | 'words' | 'characters';

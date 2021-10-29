@@ -23,7 +23,7 @@ const Input = forwardRef<TextInput, IInputProps>(
     },
     ref,
   ) => {
-    const isInEditMode = isEditable;
+    // const isInEditMode = isEditable;
     return (
       <View style={inputContainerStyle}>
         <TextInput

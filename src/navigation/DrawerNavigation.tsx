@@ -3,7 +3,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {DrawerParamList} from '../helpers/ts-helpers/types';
 import HomeScreen from '../screens/homeScreen/HomeScreen';
 import ImageGalleryScreen from '../screens/imageGalleryScreen/ImageGalleryScreen';
-import SettingsScreen from '../screens/settingsScreen/SettingsScreen';
+import MapScreen from '../screens/mapScreen/MapScreen';
 import CustomDrawer from '../components/customDrawer/CustomDrawer';
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -32,10 +32,10 @@ const DrawerNavigation = () => {
         }}
       />
       <Drawer.Screen
-        name="SettingsScreen"
-        component={SettingsScreen}
+        name="MapScreen"
+        component={MapScreen}
         options={{
-          title: 'Settings',
+          title: 'Geotags',
         }}
       />
     </Drawer.Navigator>

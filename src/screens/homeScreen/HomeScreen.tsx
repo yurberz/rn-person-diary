@@ -10,6 +10,7 @@ import DefaultHomeScreen from './nestedScreens/defaultHomeScreen/DefaultHomeScre
 import AddScreen from './nestedScreens/addScreen/AddScreen';
 import NoteScreen from './nestedScreens/noteScreen/NoteScreen';
 import FullImageScreen from '../fullImageScreen/FullImageScreen';
+import GeoTagScreen from '../geoTagScreen/GeoTagScreen';
 
 const HomeStack = createStackNavigator<HomeStackParamList>();
 
@@ -88,6 +89,13 @@ const HomeScreen = ({
         options={{
           headerShown: false,
           presentation: 'transparentModal',
+        }}
+      />
+      <HomeStack.Screen
+        name="GeoTagScreen"
+        component={GeoTagScreen}
+        options={{
+          headerShown: false,
         }}
       />
     </HomeStack.Navigator>

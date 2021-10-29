@@ -70,10 +70,10 @@ const CustomDrawer = ({navigation: {navigate}}: DrawerContentProps) => {
           />
           <DrawerItem
             icon={() => (
-              <Ionicons name="cog-outline" size={30} color="rgb(0,122,255)" />
+              <Ionicons name="map-sharp" size={30} color="rgb(0,122,255)" />
             )}
-            label="Settings"
-            onPress={() => navigate('SettingsScreen')}
+            label="Map"
+            onPress={() => navigate('MapScreen')}
           />
         </Drawer.Section>
 

@@ -39,12 +39,19 @@ export interface IImagesBlockProps {
   editable: boolean;
 }
 
+export interface IMarkerProps {
+  latitude: number,
+  longitude: number,
+}
+
 export interface INoteProps {
   id: string;
-  title?: string;
-  description?: string;
-  date?: string;
-  image?: string;
+  title: string;
+  description: string;
+  date: string;
+  tags: string[];
+  images: TImageModel[];
+  marker: IMarkerProps;
 }
 
 export interface IInputProps {
@@ -62,6 +69,12 @@ export interface IInputProps {
   onChange(value: string): void;
   isEditable: boolean;
   numberOfLines?: number;
+}
+
+export interface IGeoTagBlockProps {
+  isEditable: boolean;
+  marker: IMarkerProps;
+  onPress(): void;
 }
 
 export interface ISearchInputProps {
@@ -96,6 +109,13 @@ export interface IInputStyle {
   selectedInputStyle(value: boolean): ViewStyle;
 }
 
+export interface IGeoTagBlockStyle {
+  defaultInputStyle: ViewStyle;
+  selectedInputStyle(value: boolean): ViewStyle;
+  textStyle: ViewStyle;
+  iconStyle: ViewStyle;
+}
+
 export interface IImagesBlockStyle {
   columnWrapperStyle: ViewStyle;
   flatListStyle: ViewStyle;
@@ -126,6 +146,7 @@ export interface IIconButtonProps {
   iconSize: number;
   iconColor: string;
   buttonStyle?: object;
+  isDisabled?: boolean;
 }
 
 export interface IDatePickerProps {
@@ -144,7 +165,9 @@ export interface IBlockButtonsProps {
   calendarButton(): void;
   imageButton(): void;
   recordButton(): void;
+  geoTagButton(): void;
   iconeSize: number;
+  isEditable?: boolean;
 }
 
 export interface ISectionImageData {
