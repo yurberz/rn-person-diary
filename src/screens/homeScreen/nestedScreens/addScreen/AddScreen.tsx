@@ -100,11 +100,15 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
   // }, [isFocused]);
 
   useEffect(() => {
-    setGeoTag(route.params?.marker)
+    if (route.params?.marker !== undefined) {
+      setGeoTag(route.params?.marker)
+    }
   }, [route.params?.marker]);
 
-useEffect(() => {
-    setRecording(route.params?.uri);
+  useEffect(() => {
+    if (route.params?.uri !== undefined && route.params?.uri !== '') {
+      setRecording(route.params?.uri);
+    }
   }, [route.params?.uri]);
 
   const hasUnsavedChanges = () => {
@@ -203,7 +207,7 @@ useEffect(() => {
           returnKeyType="next"
           onSubmitEditing={() => refSecondInput.current!.focus()}
           value={title}
-          onChange={value => setTitle(value)}
+          onChange={(value: string) => setTitle(value)}
           isEditable={true}
         />
         <Input

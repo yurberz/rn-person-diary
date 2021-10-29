@@ -32,6 +32,8 @@ export type HomeStackProps = StackScreenProps<
 
 export type AddScreenProps = StackScreenProps<HomeStackParamList, 'AddScreen'>;
 
+export type GeoTagScreenProps = StackScreenProps<HomeStackParamList, 'GeoTagScreen'>;
+
 export type NoteScreenProps = StackScreenProps<
   HomeStackParamList,
   'NoteScreen'

@@ -3,13 +3,13 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {DrawerActions} from '@react-navigation/native';
 import {MapStackParamList, MapStackProps} from '../../helpers/ts-helpers/types';
 import IconButton from '../../components/iconButton/IconButton';
-import DefaultMapScreen from './nestedScreens/defaultSettingsScreen/DefaultMapScreen';
+import DefaultMapScreen from './nestedScreens/DefaultMapScreen';
 
-const MapStackStack = createStackNavigator<MapStackParamList>();
+const MapStack = createStackNavigator<MapStackParamList>();
 
 const MapScreen = ({navigation: {dispatch}}: MapStackProps) => {
   return (
-    <MapStackStack.Navigator
+    <MapStack.Navigator
       initialRouteName="DefaultMapScreen"
       screenOptions={{
         headerShadowVisible: false,
@@ -21,7 +21,7 @@ const MapScreen = ({navigation: {dispatch}}: MapStackProps) => {
           paddingEnd: 10,
         },
       }}>
-      <MapStackStack.Screen
+      <MapStack.Screen
         name="DefaultMapScreen"
         component={DefaultMapScreen}
         options={{
@@ -36,7 +36,7 @@ const MapScreen = ({navigation: {dispatch}}: MapStackProps) => {
           ),
         }}
       />
-    </MapStackStack.Navigator>
+    </MapStack.Navigator>
   );
 };
 

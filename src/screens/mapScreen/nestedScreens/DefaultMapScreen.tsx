@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {View,StyleSheet, Dimensions, Text} from 'react-native';
-import {MapStackProps} from '../../../../helpers/ts-helpers/types';
+import {MapStackProps} from '../../../helpers/ts-helpers/types';
 import MapView, {PROVIDER_GOOGLE, Marker, Callout} from 'react-native-maps';
-import {useAppSelector} from '../../../../hooks/reduxHooks';
+import {useAppSelector} from '../../../hooks/reduxHooks';
 import Geolocation from '@react-native-community/geolocation';
-import mapStyle from '../../../geoTagScreen/mapStyle.json'
-import { IMarkerProps } from '../../../../helpers/ts-helpers/interfaces';
+import mapStyle from '../../geoTagScreen/mapStyle.json'
+import { IMarkerProps } from '../../../helpers/ts-helpers/interfaces';
 // import styles from './styles';
 
 const DefaultMapScreen = ({navigation: {navigate}}: MapStackProps) => {
@@ -67,7 +67,7 @@ const DefaultMapScreen = ({navigation: {navigate}}: MapStackProps) => {
         {geolocation.marker.map((geoTag, i) => (
           <Marker key={i} coordinate={geoTag}>
             <Callout>
-              <Text>{title}</Text>
+              <Text>adfsdfs</Text>
             </Callout>
           </Marker>
           )

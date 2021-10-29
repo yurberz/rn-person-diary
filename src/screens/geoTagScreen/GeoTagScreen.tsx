@@ -4,8 +4,9 @@ import IconButton from '../../components/iconButton/IconButton';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import mapStyle from './mapStyle.json';
+import { GeoTagScreenProps } from '../../helpers/ts-helpers/types';
 
-const GeoTagScreen = ({navigation: {goBack, navigate}, route: {params}}) => {
+const GeoTagScreen = ({navigation: {goBack, navigate}, route: {params}}: GeoTagScreenProps) => {
   const {noteTitle} = params;
   const {width, height} = Dimensions.get('window');
   const [geolocation, setGeolocation] = useState({
@@ -88,7 +89,7 @@ const GeoTagScreen = ({navigation: {goBack, navigate}, route: {params}}) => {
       <Button
         title={'Submit'}
         onPress={() => {
-            navigate('AddScreen', {marker: geolocation.marker})
+            navigate('AddScreen', {marker: geolocation.marker, uri: ''})
         }}
       />
       </View>
