@@ -5,17 +5,22 @@ import PINCode, {hasUserSetPinCode} from '@haskkor/react-native-pincode';
 import {TPINCodeStatus} from '../helpers/ts-helpers/types';
 import {useAppDispatch, useAppSelector} from '../hooks/reduxHooks';
 import {showPinLockScreen} from '../redux/reducers/diaryReducer';
-import TestScreen from '../screens/TestScreen';
+import Preloader from './preloader/Preloader';
 import DrawerNavigation from '../navigation/DrawerNavigation';
-import AudioRecorderScreen from '../screens/audioRecorderScreen/AudioRecorderScreen';
 
 const PersonalDiary: React.FC = () => {
   const dispatch = useAppDispatch();
   const {isPinLockScreen} = useAppSelector(state => state.personalDiary);
   const [PINCodeStatus, setPINCodeStatus] = useState<TPINCodeStatus>('choose');
+  const [isPreloader, setIsPreloader] = useState(false);
 
   useEffect(() => {
     showEnterPinLock();
+    setIsPreloader(true);
+
+    setTimeout(() => {
+      setIsPreloader(false);
+    }, 750);
   }, []);
 
   const showEnterPinLock = async () => {
@@ -46,19 +51,23 @@ const PersonalDiary: React.FC = () => {
 
   return (
     <>
-      {isPinLockScreen ? (
-        <PINCode
-          status={PINCodeStatus}
-          touchIDDisabled={true}
-          finishProcess={finishProcess}
-        />
+      {isPreloader ? (
+        <Preloader />
       ) : (
-        <NavigationContainer>
-          <DrawerNavigation />
-        </NavigationContainer>
+        <>
+          {isPinLockScreen ? (
+            <PINCode
+              status={PINCodeStatus}
+              touchIDDisabled={true}
+              finishProcess={finishProcess}
+            />
+          ) : (
+            <NavigationContainer>
+              <DrawerNavigation />
+            </NavigationContainer>
+          )}
+        </>
       )}
-      {/* <TestScreen /> */}
-      {/* <AudioRecorderScreen /> */}
     </>
   );
 };

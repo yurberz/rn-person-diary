@@ -6,6 +6,7 @@ import {
   TextInput,
   Text,
   LayoutAnimation,
+  ScrollView,
 } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {Audio, AVPlaybackStatus} from 'expo-av';
@@ -29,7 +30,7 @@ import ButtonsBlock from '../../../../components/buttonsBlock/ButtonsBlock';
 import ImagesBlock from '../../../../components/imagesBlock/ImagesBlock';
 import moment from 'moment';
 import styles from './styles';
-import { IMarkerProps } from '../../../../helpers/ts-helpers/interfaces';
+import {IMarkerProps} from '../../../../helpers/ts-helpers/interfaces';
 import GeoTagBlock from '../../../../components/geoTagBlock/GeoTagBlock';
 import AudioPlayer from '../../../../components/audioPlayer/AudioPlayer';
 
@@ -169,14 +170,10 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
   const refSecondInput = useRef<TextInput>(null);
   const sheetRef = useRef<RBSheet>(null);
 
-  // const openMap = () => {
-  //   navigation.navigate('GeoTagScreen', {noteTitle: title, prevScreen: 'NoteScreen'})
-  // };
-
   const removeGeoTag = () => {
-    setGeoTag(undefined)
+    setGeoTag(undefined);
   };
- 
+
   const formattedDateTime = dateFormat(date);
 
   return (
@@ -199,19 +196,44 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
           onChange={value => setTitle(value)}
           isEditable={isInEditMode}
         />
-        <Input
-          inputContainerStyle={styles.secondInputContainerStyle}
-          inputStyle={styles.secondInputStyles}
-          placeholder="Description*"
-          maxLength={2000}
-          multiline={true}
-          returnKeyType="done"
-          ref={refSecondInput}
-          value={description}
-          onChange={value => setDescription(value)}
-          isEditable={isInEditMode}
-          numberOfLines={20}
-        />
+        {Platform.OS === 'ios' && (
+          <Input
+            inputContainerStyle={styles.secondInputContainerStyle}
+            inputStyle={styles.secondInputStyles}
+            placeholder="Description*"
+            maxLength={2000}
+            multiline={true}
+            returnKeyType="done"
+            ref={refSecondInput}
+            value={description}
+            onChange={value => setDescription(value)}
+            isEditable={isInEditMode}
+            numberOfLines={20}
+          />
+        )}
+
+        {Platform.OS === 'android' && isInEditMode ? (
+          <Input
+            inputContainerStyle={styles.secondInputContainerStyle}
+            inputStyle={styles.secondInputStyles}
+            placeholder="Description*"
+            maxLength={2000}
+            multiline={true}
+            returnKeyType="done"
+            ref={refSecondInput}
+            value={description}
+            onChange={value => setDescription(value)}
+            isEditable={true}
+            numberOfLines={20}
+          />
+        ) : null}
+
+        {Platform.OS === 'android' && !isInEditMode ? (
+          <ScrollView style={{height: 200}}>
+            <Text>{description}</Text>
+          </ScrollView>
+        ) : null}
+
         <Input
           inputContainerStyle={styles.thirdInputContainerStyle}
           inputStyle={styles.thirdInputStyles}
@@ -224,20 +246,21 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
           onChange={onChange}
           isEditable={isInEditMode}
         />
-          {recording ? (
-            <AudioPlayer
-              isPlaying={isPlaying}
-              playSound={playSound}
-              setRecording={setRecording}
-              isEditable={isInEditMode}
-            />
-          ) : null}
+        {recording ? (
+          <AudioPlayer
+            isPlaying={isPlaying}
+            playSound={playSound}
+            setRecording={setRecording}
+            isEditable={isInEditMode}
+          />
+        ) : null}
         {geoTag && (
           <GeoTagBlock
-          isEditable={isInEditMode}
-          marker={geoTag}
-          onPress={removeGeoTag}
-          />)}
+            isEditable={isInEditMode}
+            marker={geoTag}
+            onPress={removeGeoTag}
+          />
+        )}
         {images.length > 0 ? (
           <ImagesBlock
             images={images}

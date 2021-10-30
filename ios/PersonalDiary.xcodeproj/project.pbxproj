@@ -167,7 +167,6 @@
 				6C97AB639B58BBB4B15BBE30 /* Pods-PersonalDiary-PersonalDiaryTests.debug.xcconfig */,
 				1D0AE47A65C8663E3B452821 /* Pods-PersonalDiary-PersonalDiaryTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -464,6 +463,7 @@
 			baseConfigurationReference = 6C97AB639B58BBB4B15BBE30 /* Pods-PersonalDiary-PersonalDiaryTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = V4577Y7N37;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -492,6 +492,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = V4577Y7N37;
 				INFOPLIST_FILE = PersonalDiaryTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -517,6 +518,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V4577Y7N37;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = PersonalDiary/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -543,6 +545,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V4577Y7N37;
 				INFOPLIST_FILE = PersonalDiary/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

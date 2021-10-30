@@ -1,6 +1,6 @@
 import {StackScreenProps} from '@react-navigation/stack';
 import {DrawerContentComponentProps} from '@react-navigation/drawer';
-import {IMarkerProps, INoteProps} from './interfaces';
+import {IMarkerProps} from './interfaces';
 
 export type HomeStackParamList = {
   DefaultHomeScreen: undefined;
@@ -11,7 +11,7 @@ export type HomeStackParamList = {
   NoteScreen: {
     entryId: string;
     uri: string | undefined;
-    marker: IMarkerProps
+    marker: IMarkerProps;
   };
   FullImageScreen: {
     image: string;
@@ -20,8 +20,8 @@ export type HomeStackParamList = {
     prevScreen: string;
   };
   GeoTagScreen: {
-    noteTitle: string,
-    prevScreen: string
+    noteTitle: string;
+    prevScreen: string;
   };
 };
 
@@ -32,7 +32,10 @@ export type HomeStackProps = StackScreenProps<
 
 export type AddScreenProps = StackScreenProps<HomeStackParamList, 'AddScreen'>;
 
-export type GeoTagScreenProps = StackScreenProps<HomeStackParamList, 'GeoTagScreen'>;
+export type GeoTagScreenProps = StackScreenProps<
+  HomeStackParamList,
+  'GeoTagScreen'
+>;
 
 export type NoteScreenProps = StackScreenProps<
   HomeStackParamList,
