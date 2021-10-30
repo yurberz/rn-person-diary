@@ -1,4 +1,6 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
+
+const {width, height} = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
   containerStyle: {
@@ -42,7 +44,7 @@ const styles = StyleSheet.create({
   },
   buttonContainerStyle: {
     position: 'absolute',
-    top: 625,
+    top: height > 830 ? 700 : 620,
   },
   headerStyle: {
     flexDirection: 'row',

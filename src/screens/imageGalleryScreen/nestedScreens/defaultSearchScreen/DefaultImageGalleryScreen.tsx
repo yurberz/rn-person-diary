@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   View,
@@ -24,25 +23,35 @@ const DefaultImageGalleryScreen = ({
   navigation: {navigate},
 }: ImageGalleryStackProps) => {
   const {entries} = useAppSelector(state => state.personalDiary);
-  const sectionListData = entries.map((entry, index) => ({
-    title: entry.date,
-    key: entry.id,
-    data: [
-      {
-        key: String(index),
-        list: entry.images,
-      },
-    ],
-  }));
+  const sectionListData = entries.map((entry, index) => {
+    const formattedDate = dateFormat(entry.date);
+
+    const title = entry.images.length > 0 ? formattedDate : null;
+
+    return {
+      title,
+      key: entry.id,
+      data: [
+        {
+          key: String(index),
+          list: entry.images,
+        },
+      ],
+    };
+  });
+
+  const showImage = (url: string) => {
+    navigate('FullImageScreen', {
+      image: url,
+    });
+  };
 
   const renderHeader = ({
     section: {title},
   }: {
     section: SectionListData<ISectionImageData>;
   }) => {
-    const formattedDate = dateFormat(title);
-
-    return <Text>{formattedDate}</Text>;
+    return <Text style={styles.headerTitleStyle}>{title}</Text>;
   };
 
   const renderSection = ({
@@ -50,6 +59,7 @@ const DefaultImageGalleryScreen = ({
   }: SectionListRenderItemInfo<ISectionImageData>) => {
     return (
       <FlatList
+        style={styles.imagesContainerStyle}
         data={item.list}
         numColumns={4}
         renderItem={renderListItem}
@@ -66,10 +76,12 @@ const DefaultImageGalleryScreen = ({
     );
   };
 
-  const showImage = (url: string) => {
-    navigate('FullImageScreen', {
-      image: url,
-    });
+  const ListEmptyComponent = () => {
+    return (
+      <View style={styles.emptyContainerStyle}>
+        <Text style={styles.emptyTextStyle}>No images yet</Text>
+      </View>
+    );
   };
 
   return (
@@ -78,6 +90,7 @@ const DefaultImageGalleryScreen = ({
         renderSectionHeader={renderHeader}
         sections={sectionListData}
         renderItem={renderSection}
+        ListEmptyComponent={ListEmptyComponent}
         keyExtractor={item => item.key}
       />
     </View>

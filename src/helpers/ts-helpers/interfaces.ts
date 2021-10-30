@@ -1,5 +1,5 @@
 import {Dispatch, SetStateAction} from 'react';
-import {ReturnKeyType, ViewStyle} from 'react-native';
+import {ImageStyle, ReturnKeyType, ViewStyle} from 'react-native';
 import {
   TEntryModel,
   TAutoCapitalize,
@@ -20,11 +20,6 @@ export interface IChooseImageProps {
   closeSheet(): void;
 }
 
-export interface IImageCellProps {
-  image: string;
-  iconButtonProps: IIconButtonProps;
-}
-
 export interface IImagesBlockProps {
   images: TImageModel[];
   onPress(id: string, url: string): void;
@@ -36,8 +31,8 @@ export interface IImagesBlockProps {
 }
 
 export interface IMarkerProps {
-  latitude: number,
-  longitude: number,
+  latitude: number;
+  longitude: number;
 }
 
 export interface INoteProps {
@@ -115,7 +110,7 @@ export interface IGeoTagBlockStyle {
 export interface IImagesBlockStyle {
   columnWrapperStyle: ViewStyle;
   flatListStyle: ViewStyle;
-  imageStyle: ViewStyle;
+  imageStyle: ImageStyle;
   selectedContainerStyle(value: boolean): ViewStyle;
 }
 
