@@ -1,31 +1,30 @@
 import {StyleSheet} from 'react-native';
+import {COLORS, SIZES} from '../../constants/theme';
 
 export const styles = StyleSheet.create({
   optionsContainerStyle: {},
   optionPickerStyle: {
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
     width: '100%',
     height: 57,
     marginVertical: 4,
-    borderRadius: 12,
-    backgroundColor: '#ffffff',
+    borderRadius: SIZES.radius,
+    backgroundColor: COLORS.whiteColor,
   },
   textStyle: {
     fontSize: 20,
     fontWeight: '600',
-    color: 'rgb(0,122,255)',
+    color: COLORS.blueColor,
   },
 });
 
 export const sheetStyles = StyleSheet.create({
   wrapper: {
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    backgroundColor: COLORS.transparentPrimary,
   },
   container: {
-    paddingHorizontal: 10,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    paddingHorizontal: SIZES.padding10,
     backgroundColor: 'rgba(0, 0, 0, 0)',
   },
 });

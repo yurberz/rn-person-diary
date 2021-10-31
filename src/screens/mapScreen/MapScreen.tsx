@@ -4,6 +4,7 @@ import {DrawerActions} from '@react-navigation/native';
 import {MapStackParamList, MapStackProps} from '../../helpers/ts-helpers/types';
 import IconButton from '../../components/iconButton/IconButton';
 import DefaultMapScreen from './nestedScreens/DefaultMapScreen';
+import {COLORS, FONTS, SIZES} from '../../constants/theme';
 
 const MapStack = createStackNavigator<MapStackParamList>();
 
@@ -14,24 +15,27 @@ const MapScreen = ({navigation: {dispatch}}: MapStackProps) => {
       screenOptions={{
         headerShadowVisible: false,
         headerTitleAlign: 'center',
+        headerTitleStyle: {
+          ...FONTS.h1,
+        },
         headerLeftContainerStyle: {
-          paddingStart: 10,
+          paddingStart: SIZES.padding10,
         },
         headerRightContainerStyle: {
-          paddingEnd: 10,
+          paddingEnd: SIZES.padding10,
         },
       }}>
       <MapStack.Screen
         name="DefaultMapScreen"
         component={DefaultMapScreen}
         options={{
-          title: 'All markers',
+          title: 'Map',
           headerLeft: () => (
             <IconButton
               onPress={() => dispatch(DrawerActions.openDrawer())}
               iconName="ios-menu-outline"
               iconSize={30}
-              iconColor="rgb(0,122,255)"
+              iconColor={COLORS.blueColor}
             />
           ),
         }}

@@ -1,14 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, Dimensions, Button} from 'react-native';
-import IconButton from '../../components/iconButton/IconButton';
+import {StyleSheet, View, Button} from 'react-native';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+import {GeoTagScreenProps} from '../../helpers/ts-helpers/types';
+import IconButton from '../../components/iconButton/IconButton';
+import {COLORS, SIZES} from '../../constants/theme';
 import mapStyle from './mapStyle.json';
-import { GeoTagScreenProps } from '../../helpers/ts-helpers/types';
 
-const GeoTagScreen = ({navigation: {goBack, navigate}, route: {params}}: GeoTagScreenProps) => {
+const GeoTagScreen = ({
+  navigation: {goBack, navigate},
+  route: {params},
+}: GeoTagScreenProps) => {
   const {noteTitle} = params;
-  const {width, height} = Dimensions.get('window');
   const [geolocation, setGeolocation] = useState({
     region: {
       latitude: 0,
@@ -24,7 +27,8 @@ const GeoTagScreen = ({navigation: {goBack, navigate}, route: {params}}: GeoTagS
 
   useEffect(() => {
     Geolocation.getCurrentPosition(position => {
-      const aspectRatio = width / height;
+      const aspectRatio = SIZES.width / SIZES.height;
+
       setGeolocation({
         region: {
           latitude: position.coords.latitude,
@@ -48,8 +52,8 @@ const GeoTagScreen = ({navigation: {goBack, navigate}, route: {params}}: GeoTagS
         style={styles.map}
         region={geolocation.region}
         loadingEnabled
-          loadingIndicatorColor="#666666"
-          loadingBackgroundColor="#eeeeee"
+        loadingIndicatorColor="#666666"
+        loadingBackgroundColor="#eeeeee"
         onPress={e =>
           setGeolocation({
             region: {...geolocation.region},
@@ -58,8 +62,7 @@ const GeoTagScreen = ({navigation: {goBack, navigate}, route: {params}}: GeoTagS
               longitude: e.nativeEvent.coordinate.longitude,
             },
           })
-        }
-        >
+        }>
         {geolocation.marker ? (
           <Marker
             coordinate={geolocation.marker}
@@ -77,21 +80,23 @@ const GeoTagScreen = ({navigation: {goBack, navigate}, route: {params}}: GeoTagS
           />
         ) : null}
       </MapView>
+
       <View style={styles.icons}>
         <IconButton
           onPress={() => goBack()}
           iconName="close"
-          iconColor="white"
+          iconColor={COLORS.whiteColor}
           iconSize={40}
         />
       </View>
+
       <View style={styles.buttonContainer}>
-      <Button
-        title={'Submit'}
-        onPress={() => {
-            navigate('AddScreen', {marker: geolocation.marker, uri: ''})
-        }}
-      />
+        <Button
+          title={'Submit'}
+          onPress={() => {
+            navigate('AddScreen', {marker: geolocation.marker, uri: ''});
+          }}
+        />
       </View>
     </View>
   );
@@ -101,7 +106,7 @@ const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     height: '100%',
-    width: Dimensions.get('window').width,
+    width: SIZES.width,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
@@ -114,11 +119,11 @@ const styles = StyleSheet.create({
     height: 20,
   },
   buttonContainer: {
-      width: 200,
-      borderRadius: 40,
-      overflow: 'hidden',
-      marginBottom: 20,
-  }
+    width: 200,
+    borderRadius: 40,
+    overflow: 'hidden',
+    marginBottom: SIZES.padding20,
+  },
 });
 
 export default GeoTagScreen;

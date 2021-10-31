@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {Audio, AVPlaybackStatus} from 'expo-av';
+import moment from 'moment';
 import {
   NoteScreenProps,
   TEntryModel,
@@ -28,15 +29,16 @@ import dateFormat from '../../../../helpers/function-helpers/dateFormat';
 import ChooseImage from '../../../../components/chooseImage/ChooseImage';
 import ButtonsBlock from '../../../../components/buttonsBlock/ButtonsBlock';
 import ImagesBlock from '../../../../components/imagesBlock/ImagesBlock';
-import moment from 'moment';
-import styles from './styles';
 import {IMarkerProps} from '../../../../helpers/ts-helpers/interfaces';
 import GeoTagBlock from '../../../../components/geoTagBlock/GeoTagBlock';
 import AudioPlayer from '../../../../components/audioPlayer/AudioPlayer';
+import {COLORS} from '../../../../constants/theme';
+import styles from './styles';
 
 const NoteScreen = ({navigation, route}: NoteScreenProps) => {
-  const {entryId} = route.params;
+  const dispatchAction = useAppDispatch();
   const {navigate, setOptions} = navigation;
+  const {entryId} = route.params;
   const {entries} = useAppSelector(state => state.personalDiary);
   const entry: TEntryModel = entries.find(entry => entry.id === entryId);
   const [id, setId] = useState(entry?.id);
@@ -51,12 +53,11 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
   const [isDateModal, setIsDateModal] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isInEditMode, setIsInEditMode] = useState(false);
-  const dispatch = useAppDispatch();
 
   const tagsArr = tags.split(' ');
 
   const handleSubmit = () => {
-    dispatch(
+    dispatchAction(
       updateEntry({
         id,
         date,
@@ -71,7 +72,7 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
   };
 
   const removeEntry = () => {
-    dispatch(deleteEntry(id));
+    dispatchAction(deleteEntry(id));
     navigate('DefaultHomeScreen');
   };
 
@@ -79,9 +80,9 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
     setOptions({
       headerRightContainerStyle: {
         flexDirection: 'row',
-        alignItems: 'center',
         justifyContent: 'flex-end',
-        right: 15,
+        alignItems: 'center',
+        paddingEnd: 10,
       },
       headerRight: () => {
         return !isInEditMode ? (
@@ -90,7 +91,7 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
               onPress={removeEntry}
               iconName="trash-sharp"
               iconSize={30}
-              iconColor="rgb(255,69,68)"
+              iconColor={COLORS.redColor}
             />
             <IconButton
               onPress={() => {
@@ -99,7 +100,7 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
               }}
               iconName="pencil-sharp"
               iconSize={30}
-              iconColor="black"
+              iconColor={COLORS.blackColor}
             />
           </>
         ) : (
@@ -110,7 +111,7 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
             }}
             iconName="checkmark-sharp"
             iconSize={30}
-            iconColor="rgb(48, 209, 88)"
+            iconColor={COLORS.greenColor}
           />
         );
       },
@@ -185,6 +186,7 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
             <Text style={styles.dateTextStyle}>{formattedDateTime}</Text>
           </View>
         </View>
+
         <Input
           inputContainerStyle={styles.firstInputContainerStyle}
           inputStyle={styles.firstInputStyles}
@@ -211,7 +213,6 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
             numberOfLines={20}
           />
         )}
-
         {Platform.OS === 'android' && isInEditMode ? (
           <Input
             inputContainerStyle={styles.secondInputContainerStyle}
@@ -227,13 +228,11 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
             numberOfLines={20}
           />
         ) : null}
-
         {Platform.OS === 'android' && !isInEditMode ? (
-          <ScrollView style={{height: 200}}>
-            <Text>{description}</Text>
+          <ScrollView style={styles.androidContainerStyle}>
+            <Text style={styles.androidTextStyle}>{description}</Text>
           </ScrollView>
         ) : null}
-
         <Input
           inputContainerStyle={styles.thirdInputContainerStyle}
           inputStyle={styles.thirdInputStyles}
@@ -246,6 +245,7 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
           onChange={onChange}
           isEditable={isInEditMode}
         />
+
         {recording ? (
           <AudioPlayer
             isPlaying={isPlaying}
@@ -254,6 +254,7 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
             isEditable={isInEditMode}
           />
         ) : null}
+
         {geoTag && (
           <GeoTagBlock
             isEditable={isInEditMode}
@@ -261,6 +262,7 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
             onPress={removeGeoTag}
           />
         )}
+
         {images.length > 0 ? (
           <ImagesBlock
             images={images}
@@ -272,6 +274,23 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
             editable={isInEditMode}
           />
         ) : null}
+
+        {isInEditMode && (
+          <ButtonsBlock
+            buttonsContainerStyle={styles.buttonContainerStyle}
+            calendarButton={() => setIsDateModal(true)}
+            imageButton={() => sheetRef.current!.open()}
+            geoTagButton={() => {}}
+            recordButton={() =>
+              navigate('AudioRecorderScreen', {
+                prevScreen: 'NoteScreen',
+              })
+            }
+            iconeSize={30}
+            isEditable={isInEditMode}
+          />
+        )}
+
         <DatePickerModal
           open={isDateModal}
           date={date}
@@ -282,27 +301,13 @@ const NoteScreen = ({navigation, route}: NoteScreenProps) => {
           }}
           onCancel={() => setIsDateModal(false)}
         />
+
         <ChooseImage
           stateImages={images}
           onFileSelected={onFileSelected}
           closeSheet={() => sheetRef.current!.close()}
           ref={sheetRef}
         />
-        {isInEditMode && (
-          <ButtonsBlock
-            buttonsContainerStyle={styles.buttonContainerStyle}
-            calendarButton={() => setIsDateModal(true)}
-            imageButton={() => sheetRef.current!.open()}
-            geoTagButton={() => console.log('')}
-            recordButton={() =>
-              navigate('AudioRecorderScreen', {
-                prevScreen: 'NoteScreen',
-              })
-            }
-            iconeSize={30}
-            isEditable={isInEditMode}
-          />
-        )}
       </KeyboardAvoidingView>
     </View>
   );

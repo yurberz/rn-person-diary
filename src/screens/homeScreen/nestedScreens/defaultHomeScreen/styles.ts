@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {COLORS, FONTS} from '../../../../constants/theme';
 
 const styles = StyleSheet.create({
   viewContainer: {
@@ -12,13 +13,13 @@ const styles = StyleSheet.create({
   },
   emptyContainer: {
     flex: 1,
-    marginTop: 50,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 50,
   },
   emptyText: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    ...FONTS.h2,
+    color: COLORS.blackColor,
   },
 });
 

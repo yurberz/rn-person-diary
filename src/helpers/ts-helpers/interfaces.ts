@@ -41,6 +41,7 @@ export interface INoteProps {
   description: string;
   date: string;
   tags: string[];
+  audio: string;
   images: TImageModel[];
   marker: IMarkerProps;
 }
@@ -101,10 +102,11 @@ export interface IInputStyle {
 }
 
 export interface IGeoTagBlockStyle {
-  defaultInputStyle: ViewStyle;
-  selectedInputStyle(value: boolean): ViewStyle;
+  defaultContainerStyle: ViewStyle;
+  selectedContainerStyle(value: boolean): ViewStyle;
   textStyle: ViewStyle;
   iconStyle: ViewStyle;
+  leftSideContainerStyle: ViewStyle;
 }
 
 export interface IImagesBlockStyle {
@@ -179,4 +181,9 @@ export interface IAudioPlayerProps {
   playSound(): void;
   setRecording(value: string): void;
   isEditable?: boolean;
+}
+
+export interface INoteCellProps {
+  note: TEntryModel;
+  onPress(): void;
 }

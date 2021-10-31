@@ -11,7 +11,7 @@ export type HomeStackParamList = {
   NoteScreen: {
     entryId: string;
     uri: string | undefined;
-    marker: IMarkerProps;
+    marker: IMarkerProps | undefined;
   };
   FullImageScreen: {
     image: string;

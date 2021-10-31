@@ -1,23 +1,24 @@
 import {StyleSheet} from 'react-native';
-import { IImagesBlockStyle } from '../../helpers/ts-helpers/interfaces';
+import {IImagesBlockStyle} from '../../helpers/ts-helpers/interfaces';
+import {COLORS, SIZES} from '../../constants/theme';
 
 const styles = StyleSheet.create<IImagesBlockStyle>({
   columnWrapperStyle: {
     paddingHorizontal: 5,
   },
   selectedContainerStyle: (isInEditMode: boolean) => ({
-        backgroundColor: isInEditMode ? 'rgba(236, 240, 241, 0.5)' : 'white',
-      }),
+    backgroundColor: isInEditMode ? COLORS.greyBackground : COLORS.whiteColor,
+  }),
   flatListStyle: {
-    height: 170,
-    borderRadius: 10,
-    marginVertical: 10,
+    height: SIZES.height > 900 ? 190 : 170,
+    borderRadius: SIZES.radius,
+    marginVertical: SIZES.padding10,
   },
   imageStyle: {
-    width: 150,
-    height: 150,
-    margin: 10,
-    borderRadius: 7,
+    width: SIZES.height > 900 ? 170 : 150,
+    height: SIZES.height > 900 ? 170 : 150,
+    margin: SIZES.padding10,
+    borderRadius: SIZES.radius,
   },
 });
 

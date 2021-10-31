@@ -1,12 +1,12 @@
 import {StyleSheet} from 'react-native';
-
+import {COLORS} from '../../constants/theme';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
     paddingBottom: 60,
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    backgroundColor: COLORS.transparentBlack,
   },
 });
 
