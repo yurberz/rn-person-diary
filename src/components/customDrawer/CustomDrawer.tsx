@@ -8,11 +8,12 @@ import {
   resetPinCodeInternalStates,
 } from '@haskkor/react-native-pincode';
 import {DrawerContentProps} from '../../helpers/ts-helpers/types';
+import {useAppDispatch, useAppSelector} from '../../hooks/reduxHooks';
 import {
   showPinLockScreen,
   toggleOnOffSecurity,
 } from '../../redux/reducers/diaryReducer';
-import {useAppDispatch, useAppSelector} from '../../hooks/reduxHooks';
+import {COLORS} from '../../constants/theme';
 import styles from './styles';
 
 const CustomDrawer = ({navigation: {navigate}}: DrawerContentProps) => {
@@ -51,7 +52,7 @@ const CustomDrawer = ({navigation: {navigate}}: DrawerContentProps) => {
               <Ionicons
                 name="md-book-outline"
                 size={30}
-                color="rgb(0,122,255)"
+                color={COLORS.blueColor}
               />
             )}
             label="Diary"
@@ -62,7 +63,7 @@ const CustomDrawer = ({navigation: {navigate}}: DrawerContentProps) => {
               <Ionicons
                 name="ios-images-outline"
                 size={30}
-                color="rgb(0,122,255)"
+                color={COLORS.blueColor}
               />
             )}
             label="Images"
@@ -70,7 +71,7 @@ const CustomDrawer = ({navigation: {navigate}}: DrawerContentProps) => {
           />
           <DrawerItem
             icon={() => (
-              <Ionicons name="map-sharp" size={30} color="rgb(0,122,255)" />
+              <Ionicons name="map-sharp" size={30} color={COLORS.blueColor} />
             )}
             label="Map"
             onPress={() => navigate('MapScreen')}

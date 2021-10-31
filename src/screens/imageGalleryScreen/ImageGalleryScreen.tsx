@@ -6,8 +6,9 @@ import {
   ImageGalleryStackProps,
 } from '../../helpers/ts-helpers/types';
 import IconButton from '../../components/iconButton/IconButton';
-import DefaultSearchScreen from './nestedScreens/defaultSearchScreen/DefaultImageGalleryScreen';
+import DefaultSearchScreen from './nestedScreens/defaultImageGalleryScreen/DefaultImageGalleryScreen';
 import FullImageScreen from '../fullImageScreen/FullImageScreen';
+import {COLORS, FONTS, SIZES} from '../../constants/theme';
 
 const ImageGalleryStack = createStackNavigator<ImageGalleryStackParamList>();
 
@@ -20,11 +21,14 @@ const ImageGalleryScreen = ({
       screenOptions={{
         headerShadowVisible: false,
         headerTitleAlign: 'center',
+        headerTitleStyle: {
+          ...FONTS.h1,
+        },
         headerLeftContainerStyle: {
-          paddingStart: 10,
+          paddingStart: SIZES.padding10,
         },
         headerRightContainerStyle: {
-          paddingEnd: 10,
+          paddingEnd: SIZES.padding10,
         },
       }}>
       <ImageGalleryStack.Screen
@@ -37,7 +41,7 @@ const ImageGalleryScreen = ({
               onPress={() => dispatch(DrawerActions.openDrawer())}
               iconName="ios-menu-outline"
               iconSize={30}
-              iconColor="rgb(0,122,255)"
+              iconColor={COLORS.blueColor}
             />
           ),
         }}

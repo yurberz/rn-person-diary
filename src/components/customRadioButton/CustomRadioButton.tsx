@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ICustomButtonsProps} from '../../helpers/ts-helpers/interfaces';
+import {COLORS} from '../../constants/theme';
 import styles from './styles';
 
 const CustomRadioButton: React.FC<ICustomButtonsProps> = ({
@@ -18,7 +19,7 @@ const CustomRadioButton: React.FC<ICustomButtonsProps> = ({
         <Ionicons
           name={isSelected ? 'ios-radio-button-on' : 'ios-radio-button-off'}
           size={iconSize}
-          color={isSelected ? '#000000' : '#C7C7CD'}
+          color={isSelected ? COLORS.blackColor : COLORS.greyColor}
         />
       </TouchableOpacity>
     </View>

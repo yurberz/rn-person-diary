@@ -1,20 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Dimensions, Text} from 'react-native';
-import {MapStackProps} from '../../../helpers/ts-helpers/types';
+import {View, StyleSheet, Text} from 'react-native';
 import MapView, {PROVIDER_GOOGLE, Marker, Callout} from 'react-native-maps';
-import {useAppSelector} from '../../../hooks/reduxHooks';
 import Geolocation from '@react-native-community/geolocation';
-import mapStyle from '../../geoTagScreen/mapStyle.json';
+import {MapStackProps} from '../../../helpers/ts-helpers/types';
+import {useAppSelector} from '../../../hooks/reduxHooks';
 import {IMarkerProps} from '../../../helpers/ts-helpers/interfaces';
-// import styles from './styles';
+import mapStyle from '../../geoTagScreen/mapStyle.json';
+import {SIZES} from '../../../constants/theme';
 
 const DefaultMapScreen = ({navigation: {navigate}}: MapStackProps) => {
   const {entries} = useAppSelector(state => state.personalDiary);
   const markersArr: IMarkerProps[] = [];
-  console.log(markersArr);
 
   useEffect(() => {
     entries.map(entry => markersArr.push(entry.marker));
+
     setGeolocation({
       region: {
         latitude: markersArr[0].latitude,
@@ -26,8 +26,7 @@ const DefaultMapScreen = ({navigation: {navigate}}: MapStackProps) => {
     });
   }, [entries]);
 
-  const {width, height} = Dimensions.get('window');
-  const aspectRatio = width / height;
+  const aspectRatio = SIZES.width / SIZES.height;
   const [geolocation, setGeolocation] = useState({
     region: {
       latitude: 37.4220228,
@@ -81,7 +80,7 @@ const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     height: '100%',
-    width: Dimensions.get('window').width,
+    width: SIZES.width,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },

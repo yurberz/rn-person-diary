@@ -1,39 +1,39 @@
 import {StyleSheet} from 'react-native';
+import {COLORS, FONTS, SIZES} from '../../constants/theme';
 
 const styles = StyleSheet.create({
   viewContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    height: 50,
-    paddingLeft: 20,
-    paddingRight: 10,
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderColor: 'gray',
     margin: 1,
+    paddingLeft: SIZES.padding20,
+    paddingRight: SIZES.padding10,
+    height: 50,
+    borderBottomWidth: 1,
+    borderColor: COLORS.greyDarkColor,
   },
   icon: {
     flex: 1,
     textAlign: 'right',
   },
   containerImage: {
+    marginRight: SIZES.padding10,
     width: 47,
     height: 47,
-    borderRadius: 8,
-    marginRight: 10,
+    borderRadius: SIZES.radius,
   },
   containerTitle: {
     // flex: 2,
     width: 120,
-    color: 'black',
-    fontSize: 17,
-    fontWeight: '700',
+    ...FONTS.h3,
+    color: COLORS.blackColor,
   },
   containerDescription: {
     flex: 3,
-    color: 'gray',
-    fontSize: 14,
-    marginHorizontal: 10,
+    marginHorizontal: SIZES.padding10,
+    ...FONTS.text5,
+    color: COLORS.greyDarkColor,
   },
 });
 

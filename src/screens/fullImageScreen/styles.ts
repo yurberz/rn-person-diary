@@ -1,10 +1,11 @@
 import {StyleSheet} from 'react-native';
+import {COLORS, SIZES} from '../../constants/theme';
 
 const styles = StyleSheet.create({
   containerStyle: {
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
     flex: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: SIZES.padding10,
+    backgroundColor: COLORS.transparentPrimary,
   },
   imageContainerStyle: {
     flex: 1,
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
   },
   imageStyle: {
     flex: 0.5,
-    borderRadius: 7,
+    borderRadius: SIZES.radius,
   },
 });
 

@@ -23,7 +23,6 @@ const DatePickerModal: React.FC<IDatePickerProps> = ({
       mode={mode}
       minimumDate={minimumDate}
       maximumDate={maximumDate}
-      // timeZoneOffsetInMinutes={3 * 60}
     />
   );
 };

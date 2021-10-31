@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {ICustomButtonsProps} from '../../helpers/ts-helpers/interfaces';
+import {COLORS} from '../../constants/theme';
 import styles from './styles';
 
 const CustomSwitcher: React.FC<ICustomButtonsProps> = ({
@@ -18,7 +19,7 @@ const CustomSwitcher: React.FC<ICustomButtonsProps> = ({
         <MaterialCommunityIcons
           name={isSelected ? 'toggle-switch' : 'toggle-switch-off'}
           size={iconSize}
-          color={isSelected ? '#000000' : '#C7C7CD'}
+          color={isSelected ? COLORS.blackColor : COLORS.greyColor}
         />
       </TouchableOpacity>
     </View>

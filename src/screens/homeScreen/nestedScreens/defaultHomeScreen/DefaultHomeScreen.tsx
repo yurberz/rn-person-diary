@@ -5,16 +5,16 @@ import {HomeStackProps} from '../../../../helpers/ts-helpers/types';
 import {useAppSelector} from '../../../../hooks/reduxHooks';
 import {diary} from '../../../../redux/selectors/diarySelector';
 import NoteCell from '../../../../components/noteCell/NoteCell';
-import styles from './styles';
 import useSearch from '../../../../hooks/useSearch';
 import SearchInput from '../../../../components/searchInput/SearchInput';
 import CustomSwitcher from '../../../../components/customSwitcher/CustomSwitcher';
+import styles from './styles';
 
 const DefaultHomeScreen = ({navigation: {navigate}}: HomeStackProps) => {
   const entries = useAppSelector(diary);
-
   const [searchInput, setSearchInput] = useState('');
   const [isSortedByDate, setIsSortedByDate] = useState(false);
+
   const filtredEntries = useSearch(entries, searchInput, isSortedByDate);
 
   const renderItem = ({item}: ListRenderItemInfo<INoteProps>) => {
@@ -25,6 +25,7 @@ const DefaultHomeScreen = ({navigation: {navigate}}: HomeStackProps) => {
           navigate('NoteScreen', {
             entryId: item.id,
             uri: undefined,
+            marker: undefined,
           })
         }
       />

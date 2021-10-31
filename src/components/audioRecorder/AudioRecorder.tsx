@@ -3,6 +3,7 @@ import {Animated, Pressable, Text, View} from 'react-native';
 import {CountdownCircleTimer} from 'react-native-countdown-circle-timer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {IAudioRecorderProps} from '../../helpers/ts-helpers/interfaces';
+import {COLORS} from '../../constants/theme';
 import styles from './styles';
 
 const AudioRecorder: React.FC<IAudioRecorderProps> = ({
@@ -17,8 +18,8 @@ const AudioRecorder: React.FC<IAudioRecorderProps> = ({
       isPlaying={isRecording}
       duration={duration}
       colors={[
-        ['#008000', 0.8],
-        ['#FF0000', 0.2],
+        ['#30D131', 0.8],
+        ['#FF453A', 0.2],
       ]}
       size={120}
       strokeWidth={10}>
@@ -42,7 +43,7 @@ const AudioRecorder: React.FC<IAudioRecorderProps> = ({
                 <Ionicons
                   name="ios-mic-outline"
                   size={60}
-                  color={isRecording ? '#FF0000' : 'rgb(10, 132, 255)'}
+                  color={isRecording ? COLORS.redColor : COLORS.blueColor}
                 />
               </View>
             </Pressable>
