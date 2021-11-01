@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Alert} from 'react-native';
+import {Alert, StatusBar} from 'react-native';
 import {
   NavigationContainer,
   DefaultTheme as NavigationDefaultTheme,
@@ -86,6 +86,7 @@ const PersonalDiary: React.FC = () => {
 
   return (
     <>
+      <StatusBar barStyle={isDarkTheme ? 'light-content' : 'dark-content'} />
       {isPreloader ? (
         <Preloader />
       ) : (

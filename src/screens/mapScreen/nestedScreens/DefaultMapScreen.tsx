@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import MapView, {PROVIDER_GOOGLE, Marker, Callout} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
@@ -53,19 +53,20 @@ const DefaultMapScreen = ({navigation: {navigate}}: MapStackProps) => {
         loadingEnabled
         loadingIndicatorColor="#eeeeee"
         loadingBackgroundColor="#666666">
-        {geolocation.marker.map((geoTag, i) => {
-          const {title, latitude, longitude} = geoTag;
+        {geolocation.marker?.map((geoTag, i) => {
           return (
-            <Marker
-              key={i}
-              coordinate={{
-                latitude,
-                longitude,
-              }}>
-              <Callout>
-                <Text>{title}</Text>
-              </Callout>
-            </Marker>
+            <Fragment key={i + 1}>
+              <Marker
+                key={i}
+                coordinate={{
+                  latitude: geoTag?.latitude,
+                  longitude: geoTag?.longitude,
+                }}>
+                <Callout>
+                  <Text>{geoTag?.title}</Text>
+                </Callout>
+              </Marker>
+            </Fragment>
           );
         })}
       </MapView>
