@@ -6,6 +6,7 @@ const initialState: IDiaryState = {
   entries: [],
   isSecurity: false,
   isPinLockScreen: false,
+  isDarkTheme: false,
 };
 
 export const diarySlice = createSlice({
@@ -44,6 +45,10 @@ export const diarySlice = createSlice({
       ...state,
       isPinLockScreen: !state.isPinLockScreen,
     }),
+    toggleOnOffDarkTheme: state => ({
+      ...state,
+      isDarkTheme: !state.isDarkTheme,
+    }),
   },
 });
 
@@ -54,4 +59,5 @@ export const {
   deleteEntry,
   toggleOnOffSecurity,
   showPinLockScreen,
+  toggleOnOffDarkTheme,
 } = diarySlice.actions;
