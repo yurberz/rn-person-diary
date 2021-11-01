@@ -12,6 +12,7 @@ export interface IDiaryState {
   entries: TEntryModel[];
   isSecurity: boolean;
   isPinLockScreen: boolean;
+  isDarkTheme: boolean;
 }
 
 export interface IChooseImageProps {

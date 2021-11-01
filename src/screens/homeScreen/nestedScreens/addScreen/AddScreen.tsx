@@ -9,6 +9,7 @@ import {
   LayoutAnimation,
   UIManager,
 } from 'react-native';
+import {useTheme} from '@react-navigation/native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {Audio, AVPlaybackStatus} from 'expo-av';
 import {
@@ -52,6 +53,7 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
   const [geoTag, setGeoTag] = useState<IMarkerProps>();
   const [isPlaying, setIsPlaying] = useState(false);
   let isAddAction: boolean = false;
+  const {colors} = useTheme();
 
   const tagsArr = tags.split(' ');
 
@@ -182,12 +184,14 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
   const formattedDateTime = dateFormat(date);
 
   return (
-    <View style={styles.containerStyle}>
+    <View style={[styles.containerStyle, {backgroundColor: colors.background}]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View style={styles.headerStyle}>
           <View style={styles.leftSideStyle}>
-            <Text style={styles.dateTextStyle}>{formattedDateTime}</Text>
+            <Text style={[styles.dateTextStyle, {color: colors.text}]}>
+              {formattedDateTime}
+            </Text>
           </View>
         </View>
 

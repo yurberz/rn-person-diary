@@ -10,6 +10,7 @@ export const COLORS = {
   blueColor: 'rgb(10, 132, 255)',
   greyColor: 'rgb(174, 174, 178)',
   greyDarkColor: 'rgb(142,142,147)',
+  orangeColor: 'rgb(255, 159, 10)',
   greyBackground: 'rgba(236, 240, 241, 0.5)',
   transparentPrimary: 'rgba(0, 0, 0, 0.2)',
   transparentBlack: 'rgba(0, 0, 0, 0.8)',
@@ -89,7 +90,3 @@ export const FONTS = {
     fontSize: SIZES.text6,
   },
 };
-
-const appTheme = {COLORS, SIZES, FONTS};
-
-export default appTheme;
