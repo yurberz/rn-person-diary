@@ -25,6 +25,7 @@ const DefaultHomeScreen = ({navigation: {navigate}}: HomeStackProps) => {
           navigate('NoteScreen', {
             entryId: item.id,
             uri: undefined,
+            marker: undefined,
           })
         }
       />

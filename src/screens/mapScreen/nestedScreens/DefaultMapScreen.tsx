@@ -11,18 +11,21 @@ import {IMarkerProps} from '../../../helpers/ts-helpers/interfaces';
 const DefaultMapScreen = ({navigation: {navigate}}: MapStackProps) => {
   const {entries} = useAppSelector(state => state.personalDiary);
   const markersArr: IMarkerProps[] = [];
-  console.log(markersArr);
 
   useEffect(() => {
     entries.map(entry => markersArr.push(entry.marker));
-    setGeolocation({
-      region: {
-        latitude: markersArr[0].latitude,
-        longitude: markersArr[0].longitude,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005 * aspectRatio,
-      },
-      marker: markersArr,
+    Geolocation.getCurrentPosition(position => {
+      const aspectRatio = width / height;
+      setGeolocation({
+        region: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: 0.05,
+          longitudeDelta: 0.05 * aspectRatio,
+        },
+        marker: markersArr,
+      });
+      console.log(markersArr);
     });
   }, [entries]);
 
@@ -38,26 +41,13 @@ const DefaultMapScreen = ({navigation: {navigate}}: MapStackProps) => {
     marker: markersArr,
   });
 
-  // useEffect(() => {
-  //   Geolocation.getCurrentPosition(position => {
-  //     const aspectRatio = width / height;
-  //     setGeolocation({
-  //       region: {
-  //         latitude: position.coords.latitude,
-  //         longitude: position.coords.longitude,
-  //         latitudeDelta: 0.005,
-  //         longitudeDelta: 0.005 * aspectRatio,
-  //       },
-  //       marker: [...markersArr],
-  //     });
-  //   });
-  // }, []);
-
   return (
     <View style={styles.container}>
       <MapView
         provider={PROVIDER_GOOGLE}
         customMapStyle={mapStyle}
+        showsMyLocationButton={true}
+        toolbarEnabled={false}
         style={styles.map}
         region={geolocation.region}
         onPoiClick={e => console.log(e.nativeEvent.name)}
@@ -65,13 +55,19 @@ const DefaultMapScreen = ({navigation: {navigate}}: MapStackProps) => {
         loadingEnabled
         loadingIndicatorColor="#eeeeee"
         loadingBackgroundColor="#666666">
-        {geolocation.marker.map((geoTag, i) => (
-          <Marker key={i} coordinate={geoTag}>
-            <Callout>
-              <Text>adfsdfs</Text>
-            </Callout>
-          </Marker>
-        ))}
+        {geolocation.marker.map((geoTag, i) => {
+          const {title, latitude, longitude} = geoTag;
+          return (
+            <Marker key={i} coordinate={{
+              latitude,
+              longitude,
+            }}>
+              <Callout >
+                <Text>{title}</Text>
+              </Callout>
+            </Marker>
+          )
+        })}
       </MapView>
     </View>
   );

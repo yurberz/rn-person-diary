@@ -31,6 +31,7 @@ export interface IImagesBlockProps {
 }
 
 export interface IMarkerProps {
+  title: string;
   latitude: number;
   longitude: number;
 }
