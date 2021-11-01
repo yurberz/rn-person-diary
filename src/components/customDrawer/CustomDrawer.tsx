@@ -1,7 +1,13 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Alert, View} from 'react-native';
 import {DrawerItem} from '@react-navigation/drawer';
-import {Drawer, TouchableRipple, Switch, Text} from 'react-native-paper';
+import {
+  Drawer,
+  TouchableRipple,
+  Switch,
+  Text,
+  useTheme,
+} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
   deleteUserPinCode,
@@ -11,6 +17,7 @@ import {DrawerContentProps} from '../../helpers/ts-helpers/types';
 import {useAppDispatch, useAppSelector} from '../../hooks/reduxHooks';
 import {
   showPinLockScreen,
+  toggleOnOffDarkTheme,
   toggleOnOffSecurity,
 } from '../../redux/reducers/diaryReducer';
 import {COLORS} from '../../constants/theme';
@@ -19,10 +26,10 @@ import styles from './styles';
 const CustomDrawer = ({navigation: {navigate}}: DrawerContentProps) => {
   const dispatch = useAppDispatch();
   const {isSecurity} = useAppSelector(state => state.personalDiary);
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const paperTheme = useTheme();
 
   const toggleTheme = () => {
-    setIsDarkTheme(!isDarkTheme);
+    dispatch(toggleOnOffDarkTheme());
   };
   const toggleSecurity = () => {
     dispatch(toggleOnOffSecurity());
@@ -92,7 +99,7 @@ const CustomDrawer = ({navigation: {navigate}}: DrawerContentProps) => {
             <View style={styles.preferenceStyle}>
               <Text>Dark Theme</Text>
               <View pointerEvents="none">
-                <Switch value={isDarkTheme} />
+                <Switch value={paperTheme.dark} />
               </View>
             </View>
           </TouchableRipple>
