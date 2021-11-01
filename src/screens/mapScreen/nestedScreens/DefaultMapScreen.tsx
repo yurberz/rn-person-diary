@@ -1,21 +1,21 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Dimensions, Text} from 'react-native';
-import {MapStackProps} from '../../../helpers/ts-helpers/types';
+import {View, StyleSheet, Text} from 'react-native';
 import MapView, {PROVIDER_GOOGLE, Marker, Callout} from 'react-native-maps';
-import {useAppSelector} from '../../../hooks/reduxHooks';
 import Geolocation from '@react-native-community/geolocation';
-import mapStyle from '../../geoTagScreen/mapStyle.json';
+import {MapStackProps} from '../../../helpers/ts-helpers/types';
+import {useAppSelector} from '../../../hooks/reduxHooks';
 import {IMarkerProps} from '../../../helpers/ts-helpers/interfaces';
-// import styles from './styles';
+import mapStyle from '../../geoTagScreen/mapStyle.json';
+import {SIZES} from '../../../constants/theme';
 
 const DefaultMapScreen = ({navigation: {navigate}}: MapStackProps) => {
   const {entries} = useAppSelector(state => state.personalDiary);
   const markersArr: IMarkerProps[] = [];
+  const aspectRatio = SIZES.width / SIZES.height;
 
   useEffect(() => {
     entries.map(entry => markersArr.push(entry.marker));
     Geolocation.getCurrentPosition(position => {
-      const aspectRatio = width / height;
       setGeolocation({
         region: {
           latitude: position.coords.latitude,
@@ -29,14 +29,12 @@ const DefaultMapScreen = ({navigation: {navigate}}: MapStackProps) => {
     });
   }, [entries]);
 
-  const {width, height} = Dimensions.get('window');
-  const aspectRatio = width / height;
   const [geolocation, setGeolocation] = useState({
     region: {
       latitude: 37.4220228,
       longitude: -122.0841718,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0922 * aspectRatio,
+      latitudeDelta: 0.05,
+      longitudeDelta: 0.05 * aspectRatio,
     },
     marker: markersArr,
   });
@@ -58,15 +56,17 @@ const DefaultMapScreen = ({navigation: {navigate}}: MapStackProps) => {
         {geolocation.marker.map((geoTag, i) => {
           const {title, latitude, longitude} = geoTag;
           return (
-            <Marker key={i} coordinate={{
-              latitude,
-              longitude,
-            }}>
-              <Callout >
+            <Marker
+              key={i}
+              coordinate={{
+                latitude,
+                longitude,
+              }}>
+              <Callout>
                 <Text>{title}</Text>
               </Callout>
             </Marker>
-          )
+          );
         })}
       </MapView>
     </View>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     height: '100%',
-    width: Dimensions.get('window').width,
+    width: SIZES.width,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },

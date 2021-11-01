@@ -1,66 +1,51 @@
-import {StyleSheet, Dimensions} from 'react-native';
-
-const {width, height} = Dimensions.get('screen');
-console.log(height);
+import {StyleSheet} from 'react-native';
+import {COLORS, FONTS, SIZES} from '../../../../constants/theme';
 
 const styles = StyleSheet.create({
   containerStyle: {
     flex: 1,
     justifyContent: 'flex-start',
-    paddingHorizontal: 20,
-    backgroundColor: '#ffffff',
+    paddingHorizontal: SIZES.padding20,
+    backgroundColor: COLORS.whiteColor,
   },
   headerStyle: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingVertical: SIZES.padding10,
     paddingHorizontal: 5,
   },
   leftSideStyle: {
     flex: 1,
   },
   dateTextStyle: {
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  rightSideStyle: {
-    flex: 0.5,
-  },
-  headerButtonsContainerStyle: {
-    justifyContent: 'space-around',
+    ...FONTS.h5,
+    color: COLORS.blackColor,
   },
   firstInputContainerStyle: {},
   secondInputContainerStyle: {},
   thirdInputContainerStyle: {},
   firstInputStyles: {
-    fontSize: 16,
-    fontWeight: '700',
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
+    ...FONTS.h3,
+    borderTopRightRadius: SIZES.padding10,
+    borderTopLeftRadius: SIZES.padding10,
   },
   secondInputStyles: {
-    height: 200,
-    paddingVertical: 10,
+    paddingVertical: SIZES.padding10,
+    height: SIZES.height > 900 ? 300 : 200,
     textAlignVertical: 'top',
-    borderBottomRightRadius: 10,
-    borderBottomLeftRadius: 10,
+    ...FONTS.text4,
+    color: COLORS.blackColor,
+    borderBottomRightRadius: SIZES.radius,
+    borderBottomLeftRadius: SIZES.radius,
     borderBottomWidth: 0,
   },
   thirdInputStyles: {
-    marginTop: 10,
-    fontSize: 12,
-    fontWeight: '500',
-    color: 'rgb(10, 122, 255)',
-    borderRadius: 10,
+    marginTop: SIZES.padding10,
+    ...FONTS.h5,
+    color: COLORS.blueColor,
+    borderRadius: SIZES.padding10,
     borderBottomWidth: 0,
-  },
-  columnWrapperStyle: {
-    paddingHorizontal: 5,
-  },
-  flatListStyle: {
-    marginTop: 10,
-    height: 250,
   },
   iconStyle: {
     position: 'absolute',
@@ -69,7 +54,8 @@ const styles = StyleSheet.create({
   },
   buttonContainerStyle: {
     position: 'absolute',
-    top: height > 830 ? 700 : 620,
+    top: SIZES.height > 900 ? SIZES.height / 2 + 300 : SIZES.height / 2 + 245,
+    left: SIZES.height > 900 ? 20 : 5,
   },
 });
 

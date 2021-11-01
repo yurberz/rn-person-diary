@@ -1,64 +1,69 @@
-import {StyleSheet, Dimensions} from 'react-native';
-
-const {width, height} = Dimensions.get('screen');
+import {StyleSheet} from 'react-native';
+import {COLORS, FONTS, SIZES} from '../../../../constants/theme';
 
 const styles = StyleSheet.create({
   containerStyle: {
     flex: 1,
     justifyContent: 'flex-start',
-    paddingHorizontal: 20,
-    backgroundColor: '#ffffff',
-  },
-  iconStyle: {
-    position: 'absolute',
-    top: '10%',
-    right: '10%',
-  },
-  firstInputContainerStyle: {},
-  secondInputContainerStyle: {},
-  thirdInputContainerStyle: {},
-  firstInputStyles: {
-    fontSize: 16,
-    fontWeight: '700',
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
-  },
-  secondInputStyles: {
-    height: 200,
-    paddingVertical: 10,
-    textAlignVertical: 'top',
-    borderBottomRightRadius: 10,
-    borderBottomLeftRadius: 10,
-    borderBottomWidth: 0,
-  },
-  thirdInputStyles: {
-    marginTop: 10,
-    fontSize: 12,
-    fontWeight: '500',
-    color: 'rgb(10, 122, 255)',
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    borderBottomLeftRadius: 10,
-    borderBottomWidth: 0,
-  },
-  buttonContainerStyle: {
-    position: 'absolute',
-    top: height > 830 ? 700 : 620,
+    paddingHorizontal: SIZES.padding20,
+    backgroundColor: COLORS.whiteColor,
   },
   headerStyle: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingBottom: 5,
+    paddingVertical: SIZES.padding10,
     paddingHorizontal: 5,
   },
   leftSideStyle: {
     flex: 1,
   },
   dateTextStyle: {
-    fontSize: 12,
-    fontWeight: '500',
+    ...FONTS.h5,
+    color: COLORS.blackColor,
+  },
+  firstInputContainerStyle: {},
+  secondInputContainerStyle: {},
+  thirdInputContainerStyle: {},
+  firstInputStyles: {
+    ...FONTS.h3,
+    borderTopRightRadius: SIZES.padding10,
+    borderTopLeftRadius: SIZES.padding10,
+  },
+  secondInputStyles: {
+    paddingVertical: SIZES.padding10,
+    height: SIZES.height > 900 ? 300 : 200,
+    textAlignVertical: 'top',
+    ...FONTS.text4,
+    color: COLORS.blackColor,
+    borderBottomRightRadius: SIZES.radius,
+    borderBottomLeftRadius: SIZES.radius,
+    borderBottomWidth: 0,
+  },
+  androidContainerStyle: {
+    paddingHorizontal: SIZES.padding10,
+    height: SIZES.height > 900 ? 300 : 200,
+  },
+  androidTextStyle: {
+    ...FONTS.text4,
+    color: COLORS.blackColor,
+  },
+  thirdInputStyles: {
+    marginTop: SIZES.padding10,
+    ...FONTS.h5,
+    color: COLORS.blueColor,
+    borderRadius: SIZES.padding10,
+    borderBottomWidth: 0,
+  },
+  iconStyle: {
+    position: 'absolute',
+    top: '10%',
+    right: '10%',
+  },
+  buttonContainerStyle: {
+    position: 'absolute',
+    top: SIZES.height > 900 ? SIZES.height / 2 + 300 : SIZES.height / 2 + 245,
+    left: SIZES.height > 900 ? 20 : 5,
   },
 });
 

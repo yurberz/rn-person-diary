@@ -23,11 +23,14 @@ const Input = forwardRef<TextInput, IInputProps>(
     },
     ref,
   ) => {
-    // const isInEditMode = isEditable;
     return (
       <View style={inputContainerStyle}>
         <TextInput
-          style={[styles.defaultInputStyle, inputStyle, styles.selectedInputStyle(isEditable)]}
+          style={[
+            styles.defaultInputStyle,
+            inputStyle,
+            styles.selectedInputStyle(isEditable),
+          ]}
           placeholder={placeholder}
           maxLength={maxLength}
           multiline={multiline}

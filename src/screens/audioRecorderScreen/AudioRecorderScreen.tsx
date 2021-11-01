@@ -44,6 +44,7 @@ const AudioRecorderScreen = ({navigation, route}: AudioRecorderScreenProps) => {
 
     navigate(routeName(), {
       uri: uri,
+      marker: undefined,
     });
   };
 

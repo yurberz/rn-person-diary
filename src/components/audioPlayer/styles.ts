@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {COLORS, SIZES} from '../../constants/theme';
 
 const styles = StyleSheet.create({
   playerContainerStyle: {
@@ -7,12 +8,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: 40,
-    marginTop: 10,
-    backgroundColor: '#ffffff',
-    borderWidth: 1,
-    borderColor: 'rgba(236, 240, 241, 0.5)',
-    paddingHorizontal: 5,
-    borderRadius: 10,
+    marginTop: SIZES.padding10,
+    backgroundColor: COLORS.greyBackground,
+    paddingHorizontal: SIZES.padding10,
+    borderRadius: SIZES.radius,
   },
   buttonStyle: {
     width: 310,

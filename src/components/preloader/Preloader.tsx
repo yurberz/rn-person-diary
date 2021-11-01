@@ -1,11 +1,12 @@
 import React from 'react';
 import {ActivityIndicator, View} from 'react-native';
+import {COLORS} from '../../constants/theme';
 import styles from './styles';
 
 const Preloader = () => {
   return (
     <View style={styles.containerStyle}>
-      <ActivityIndicator size="large" color="rgb(0,122,255)" />
+      <ActivityIndicator size="large" color={COLORS.blueColor} />
     </View>
   );
 };

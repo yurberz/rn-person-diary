@@ -25,10 +25,7 @@ const ImagesBlock: React.FC<IImagesBlockProps> = ({
     return (
       <View>
         <View>
-          <Image
-            source={{uri: url}}
-            style={styles.imageStyle}
-          />
+          <Image source={{uri: url}} style={styles.imageStyle} />
 
           <TouchableOpacity
             style={[iconStyle]}
@@ -49,7 +46,10 @@ const ImagesBlock: React.FC<IImagesBlockProps> = ({
       horizontal={false}
       numColumns={2}
       columnWrapperStyle={styles.columnWrapperStyle}
-      style={[styles.flatListStyle, styles.selectedContainerStyle(isInEditMode)]}
+      style={[
+        styles.flatListStyle,
+        styles.selectedContainerStyle(isInEditMode),
+      ]}
     />
   );
 };

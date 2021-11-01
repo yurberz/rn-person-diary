@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-
+import {SIZES} from '../../constants/theme';
 const styles = StyleSheet.create({
   drawerContainerStyle: {
     flex: 1,
@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: SIZES.padding10,
+    paddingHorizontal: SIZES.padding20,
   },
 });
 

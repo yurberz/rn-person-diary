@@ -12,6 +12,7 @@ import NoteScreen from './nestedScreens/noteScreen/NoteScreen';
 import FullImageScreen from '../fullImageScreen/FullImageScreen';
 import GeoTagScreen from '../geoTagScreen/GeoTagScreen';
 import AudioRecorderScreen from '../audioRecorderScreen/AudioRecorderScreen';
+import {COLORS, FONTS, SIZES} from '../../constants/theme';
 
 const HomeStack = createStackNavigator<HomeStackParamList>();
 
@@ -24,11 +25,14 @@ const HomeScreen = ({
       screenOptions={{
         headerShadowVisible: false,
         headerTitleAlign: 'center',
+        headerTitleStyle: {
+          ...FONTS.h1,
+        },
         headerLeftContainerStyle: {
-          paddingStart: 10,
+          paddingStart: SIZES.padding10,
         },
         headerRightContainerStyle: {
-          paddingEnd: 10,
+          paddingEnd: SIZES.padding10,
         },
       }}>
       <HomeStack.Screen
@@ -41,15 +45,17 @@ const HomeScreen = ({
               onPress={() => dispatch(DrawerActions.openDrawer())}
               iconName="ios-menu-outline"
               iconSize={30}
-              iconColor="rgb(0,122,255)"
+              iconColor={COLORS.blueColor}
             />
           ),
           headerRight: () => (
             <IconButton
-              onPress={() => navigate('AddScreen', {uri: '', marker: undefined})}
+              onPress={() =>
+                navigate('AddScreen', {uri: '', marker: undefined})
+              }
               iconName="create-outline"
               iconSize={30}
-              iconColor="rgb(48, 2, 30)"
+              iconColor={COLORS.blackColor}
             />
           ),
         }}
@@ -62,9 +68,9 @@ const HomeScreen = ({
           headerLeft: () => (
             <IconButton
               onPress={() => goBack()}
-              iconName="caret-back-outline"
+              iconName="ios-caret-back-outline"
               iconSize={30}
-              iconColor="black"
+              iconColor={COLORS.blackColor}
             />
           ),
         }}
@@ -79,7 +85,7 @@ const HomeScreen = ({
               onPress={() => goBack()}
               iconName="close-sharp"
               iconSize={30}
-              iconColor="rgb(255,69,68)"
+              iconColor={COLORS.blackColor}
             />
           ),
         }}
@@ -98,7 +104,7 @@ const HomeScreen = ({
         options={{
           headerShown: false,
         }}
-        />
+      />
       <HomeStack.Screen
         name="AudioRecorderScreen"
         component={AudioRecorderScreen}

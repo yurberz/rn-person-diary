@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {COLORS, FONTS} from '../../constants/theme';
 
 const styles = StyleSheet.create({
   textContainerStyle: {
@@ -8,13 +9,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textStyle: {
-    fontSize: 70,
-    color: 'rgb(10, 132, 255)',
+    ...FONTS.largeTitle,
+    color: COLORS.blueColor,
   },
   secsTextStyle: {
-    fontSize: 30,
-    color: 'rgb(10, 132, 255)',
-    opacity: 0.7,
+    ...FONTS.h1,
+    color: COLORS.blueColor,
   },
   iconContainerStyle: {
     justifyContent: 'center',

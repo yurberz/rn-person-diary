@@ -10,7 +10,6 @@ import {
   UIManager,
 } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {useIsFocused} from '@react-navigation/core';
 import {Audio, AVPlaybackStatus} from 'expo-av';
 import {
   AddScreenProps,
@@ -26,9 +25,10 @@ import DatePickerModal from '../../../../components/datePickerModal/DatePickerMo
 import ChooseImage from '../../../../components/chooseImage/ChooseImage';
 import ButtonsBlock from '../../../../components/buttonsBlock/ButtonsBlock';
 import ImagesBlock from '../../../../components/imagesBlock/ImagesBlock';
-import { IMarkerProps } from '../../../../helpers/ts-helpers/interfaces';
+import {IMarkerProps} from '../../../../helpers/ts-helpers/interfaces';
 import GeoTagBlock from '../../../../components/geoTagBlock/GeoTagBlock';
 import AudioPlayer from '../../../../components/audioPlayer/AudioPlayer';
+import {COLORS} from '../../../../constants/theme';
 import styles from './styles';
 
 if (
@@ -39,11 +39,8 @@ if (
 }
 
 const AddScreen = ({navigation, route}: AddScreenProps) => {
-  // const isFocused = useIsFocused();
-
   const dispatchAction = useAppDispatch();
   const {navigate, setOptions, addListener, dispatch} = navigation;
-
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState('');
@@ -85,23 +82,15 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
           onPress={handleSubmit}
           iconName="checkmark-sharp"
           iconSize={30}
-          iconColor="rgb(48, 209, 88)"
+          iconColor={COLORS.greenColor}
         />
       ),
     });
   }, [navigation, handleSubmit]);
 
-  // useEffect(() => {
-  //   setTitle('');
-  //   setDescription('');
-  //   setTags('');
-  //   setDate(new Date());
-  //   isAddAction = false;
-  // }, [isFocused]);
-
   useEffect(() => {
     if (route.params?.marker !== undefined) {
-      setGeoTag(route.params?.marker)
+      setGeoTag(route.params?.marker);
     }
   }, [route.params?.marker]);
 
@@ -180,11 +169,14 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
   };
 
   const showMap = () => {
-    navigation.navigate('GeoTagScreen', {noteTitle: title, prevScreen: 'AddScreen'});
+    navigation.navigate('GeoTagScreen', {
+      noteTitle: title,
+      prevScreen: 'AddScreen',
+    });
   };
 
   const removeGeoTag = () => {
-    setGeoTag(undefined)
+    setGeoTag(undefined);
   };
 
   const formattedDateTime = dateFormat(date);
@@ -234,18 +226,18 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
           isEditable={true}
         />
         {recording ? (
-            <AudioPlayer
-              isPlaying={isPlaying}
-              playSound={playSound}
-              setRecording={setRecording}
-            />
-          ) : null}
+          <AudioPlayer
+            isPlaying={isPlaying}
+            playSound={playSound}
+            setRecording={setRecording}
+          />
+        ) : null}
         {geoTag && (
-        <GeoTagBlock
-        isEditable={true}
-        marker={geoTag}
-        onPress={removeGeoTag}
-        />
+          <GeoTagBlock
+            isEditable={true}
+            marker={geoTag}
+            onPress={removeGeoTag}
+          />
         )}
         {images.length > 0 ? (
           <ImagesBlock
@@ -253,12 +245,12 @@ const AddScreen = ({navigation, route}: AddScreenProps) => {
             onPress={removeImage}
             iconName="ios-close-outline"
             iconSize={30}
-            iconColor="#ffffff"
+            iconColor={COLORS.whiteColor}
             iconStyle={styles.iconStyle}
             editable={true}
           />
         ) : null}
-        
+
         <ButtonsBlock
           buttonsContainerStyle={styles.buttonContainerStyle}
           calendarButton={() => setIsDateModal(true)}

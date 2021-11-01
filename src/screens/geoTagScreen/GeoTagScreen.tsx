@@ -2,26 +2,24 @@ import React, {useEffect, useRef, useState} from 'react';
 import {
   StyleSheet,
   View,
-  Dimensions,
   Button,
   StatusBar,
   TouchableOpacity,
   Text,
-  Platform,
 } from 'react-native';
-import IconButton from '../../components/iconButton/IconButton';
 import MapView, {PROVIDER_GOOGLE, Marker, Callout} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
-import mapStyle from './mapStyle.json';
-import {GeoTagScreenProps} from '../../helpers/ts-helpers/types';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {GeoTagScreenProps} from '../../helpers/ts-helpers/types';
+import IconButton from '../../components/iconButton/IconButton';
+import {COLORS, SIZES} from '../../constants/theme';
+import mapStyle from './mapStyle.json';
 
 const GeoTagScreen = ({
   navigation: {goBack, navigate},
   route: {params},
 }: GeoTagScreenProps) => {
   const {noteTitle} = params;
-  const {width, height} = Dimensions.get('window');
   const [geolocation, setGeolocation] = useState({
     region: {
       latitude: 0,
@@ -40,7 +38,8 @@ const GeoTagScreen = ({
 
   useEffect(() => {
     Geolocation.getCurrentPosition(position => {
-      const aspectRatio = width / height;
+      const aspectRatio = SIZES.width / SIZES.height;
+
       setGeolocation({
         region: {
           latitude: position.coords.latitude,
@@ -58,16 +57,16 @@ const GeoTagScreen = ({
   }, []);
 
   return (
-    <SafeAreaView style={styles.safeView}>
-      <StatusBar barStyle={'light-content'} />
+    <SafeAreaView>
       <View style={styles.container}>
         <MapView
-          showsMyLocationButton={true}
           provider={PROVIDER_GOOGLE}
           customMapStyle={mapStyle}
           style={styles.map}
           region={geolocation.region}
-          toolbarEnabled={false}
+          loadingEnabled
+          loadingIndicatorColor="#666666"
+          loadingBackgroundColor="#eeeeee"
           onPress={e =>
             setGeolocation({
               region: {...geolocation.region},
@@ -81,6 +80,7 @@ const GeoTagScreen = ({
           {geolocation.marker ? (
             <Marker
               coordinate={geolocation.marker}
+              title={noteTitle}
               onDragEnd={e =>
                 setGeolocation({
                   region: {...geolocation.region},
@@ -92,28 +92,26 @@ const GeoTagScreen = ({
                 })
               }
               draggable
-            >
-              <Callout>
-                <Text>{noteTitle}</Text>
-              </Callout>
-            </Marker>
+            />
           ) : null}
         </MapView>
+
         <View style={styles.icons}>
           <IconButton
             onPress={() => goBack()}
             iconName="close"
-            iconColor="white"
+            iconColor={COLORS.whiteColor}
             iconSize={40}
           />
         </View>
+
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={() =>
-              navigate('AddScreen', {marker: geolocation.marker, uri: ''})
-            }>
-            <Text style={styles.textStyle}>Submit</Text>
-          </TouchableOpacity>
+          <Button
+            title={'Submit'}
+            onPress={() => {
+              navigate('AddScreen', {marker: geolocation.marker, uri: ''});
+            }}
+          />
         </View>
       </View>
     </SafeAreaView>
@@ -124,7 +122,7 @@ const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     height: '100%',
-    width: Dimensions.get('window').width,
+    width: SIZES.width,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
@@ -146,7 +144,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 10,
     overflow: 'hidden',
-    marginBottom: 20,
+    marginBottom: SIZES.padding20,
     backgroundColor: 'white',
   },
   textStyle: {

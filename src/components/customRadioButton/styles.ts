@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {IRadioButtonStyle} from '../../helpers/ts-helpers/interfaces';
+import {COLORS} from '../../constants/theme';
 
 const styles = StyleSheet.create<IRadioButtonStyle>({
   radioButtonStyle: {
@@ -9,7 +10,7 @@ const styles = StyleSheet.create<IRadioButtonStyle>({
   },
   textRadioButtonStyle: (clicked: boolean) => ({
     marginRight: 6,
-    color: clicked ? '#000000' : '#C7C7CD',
+    color: clicked ? COLORS.blackColor : COLORS.greyColor,
   }),
 });
 
